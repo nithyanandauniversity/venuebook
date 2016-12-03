@@ -1,0 +1,9 @@
+---
+:orm: sequel
+:test: rspec
+:mock: none
+:script: none
+:renderer: none
+:stylesheet: none
+:namespace: Venuebook
+:migration_format: number
