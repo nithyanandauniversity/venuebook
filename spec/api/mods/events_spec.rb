@@ -6,8 +6,7 @@ describe "Events" do
       post '/api/v1/event', event: {venue:venue[:id], start_date: Date.today, end_date: Date.tomorrow}
 
       res = JSON.parse(last_response.body)
-      p res
-      expet(Event.find(id:res[:id]).venue["name"]).to eql "Yogam"
+      expect(Event.find(id:res["id"]).venue[:name]).to eql "Yogam"
    end
 end
       
