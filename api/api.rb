@@ -8,6 +8,8 @@ module Venuebook
 	 "Hello api"
       end
 
-      mount Venuebook::Venue
+      mount Venuebook::VenueAPI
+      mount Venuebook::CenterAPI
+      mount Venuebook::EventAPI
    end
 end
