@@ -22,6 +22,17 @@ module Venuebook
 				address.update(params[:address])
 			end
 
+			delete "/:id" do
+				center = Center.find(id: params[:id])
+				center.destroy
+			end
+
+			delete "/:id/address/:address_id" do
+				center = Center.find(id: params[:id])
+				address = center.addresses.find(id: params[:address_id]).first
+				address.destroy
+			end
+
 		end
 	end
 
