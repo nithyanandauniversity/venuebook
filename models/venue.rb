@@ -1,3 +1,3 @@
 class Venue < Sequel::Model
-   one_to_many :events
+	one_to_many :events
 end

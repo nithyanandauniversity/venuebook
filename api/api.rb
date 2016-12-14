@@ -11,5 +11,6 @@ module Venuebook
       mount Venuebook::VenueAPI
       mount Venuebook::CenterAPI
       mount Venuebook::EventAPI
+      mount Venuebook::ParticipantAPI
    end
 end
