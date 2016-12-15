@@ -9,7 +9,8 @@ describe 'Participant' do
 
 		expect(response['first_name']).to eql "Saravana"
 		expect(response['last_name']).to eql "Balaraj"
-		# expect(response['member_id']).not_to eql nil
+		expect(response['member_id']).not_to eql nil
+		expect(response['member_id'].split('-')[0]).to eql Participant.find(id: response['id']).created_at.strftime('%Y%m%d')
 	end
 
 	it "should be able to edit participant" do

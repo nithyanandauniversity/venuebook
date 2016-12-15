@@ -8,6 +8,8 @@ Sequel.migration do
       String :state
       String :zip_postal
       String :country
+      DateTime :created_at
+      DateTime :updated_at
     end
   end
 

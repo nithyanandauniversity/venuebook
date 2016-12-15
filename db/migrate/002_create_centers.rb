@@ -4,6 +4,8 @@ Sequel.migration do
       primary_key :id
       String :name
       String :location
+      DateTime :created_at
+      DateTime :updated_at
     end
   end
 

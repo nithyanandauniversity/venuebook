@@ -6,6 +6,8 @@ Sequel.migration do
       String :center
       String :country
       Integer :capacity
+      DateTime :created_at
+      DateTime :updated_at
     end
   end
 

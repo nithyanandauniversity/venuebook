@@ -5,8 +5,8 @@ module Venuebook
 
 			post do
 				participant = Participant.create(params)
-				# member_id = participant.created_at.strftime('%Y%m%d') + '-' + SecureRandom.hex(4)
-				# puts member_id
+				member_id = participant.created_at.strftime('%Y%m%d') + '-' + SecureRandom.hex(4)
+				participant.update(member_id: member_id)
 			end
 
 			put '/:id' do

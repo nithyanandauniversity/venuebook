@@ -10,6 +10,8 @@ Sequel.migration do
       String :member_id
       String :other_names
       Integer :parent_id
+      DateTime :created_at
+      DateTime :updated_at
     end
   end
 
