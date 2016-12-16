@@ -1,3 +1,4 @@
 class Event < Sequel::Model
-   many_to_one :venue
+	self.plugin :timestamps
+	many_to_one :venue
 end
