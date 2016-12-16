@@ -2,9 +2,24 @@ module Venuebook
 	class EventAPI<Grape::API
 		namespace "event" do
 			post do
-				event = params[:event]
-				event[:venue] = Venue.find(id:event[:venue].to_i)
 				Event.create(params[:event])
+			end
+
+			post '/:id/venue' do
+				event = Event.find(id: params[:id])
+				event.add_event_venue(params[:venue])
+			end
+
+			put '/:id/venue/:venue_id' do
+				event = Event.find(id: params[:id])
+				event_venue = event.event_venue(id: params[:venue_id]).first
+				event_venue.update(params[:venue])
+			end
+
+			delete '/:id/venue/:venue_id' do
+				event = Event.find(id: params[:id])
+				event_venue = event.event_venue(id: params[:venue_id]).first
+				event_venue.destroy
 			end
 
 			put "/:id" do
