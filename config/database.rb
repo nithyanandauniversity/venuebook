@@ -6,3 +6,4 @@ Sequel::Model.db = case Padrino.env
   when :production  then Sequel.connect("mysql2://root:@127.0.0.1/venuebook_production",  :loggers => [logger])
   when :test        then Sequel.connect("mysql2://root:@127.0.0.1/venuebook_test",        :loggers => [logger])
 end
+Sequel::Model.db.extension(:pagination)
