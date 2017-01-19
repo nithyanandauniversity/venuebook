@@ -1,0 +1,6 @@
+production:
+  url: 'http://partbook.domain.org/api/v1/participant'
+development:
+  url: 'http://localhost:3001/api/v1/participant'
+test:
+  url: 'http://localhost:30011/api/v1/participant'

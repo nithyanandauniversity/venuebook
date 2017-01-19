@@ -4,23 +4,19 @@ module Venuebook
 		namespace "participant" do
 
 			get do
-				return Participant.search(params[:search])
+				return Participant.search(params)
 			end
 
 			post do
 				participant = Participant.create(params)
-				member_id = participant.created_at.strftime('%Y%m%d') + '-' + SecureRandom.hex(4)
-				participant.update(member_id: member_id)
 			end
 
 			put '/:id' do
-				participant = Participant.find(id: params[:id])
-				participant.update(params[:participant])
+				participant = Participant.update(params[:id], params)
 			end
 
 			delete '/:id' do
-				participant = Participant.find(id: params[:id])
-				participant.destroy
+				Participant.delete(params[:id])
 			end
 		end
 	end

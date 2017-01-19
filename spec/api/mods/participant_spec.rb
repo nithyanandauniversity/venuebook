@@ -3,10 +3,10 @@ require 'spec_helper'
 describe 'Participant' do
 
 	it "should be able to search participant by name" do
-		Participant.all.each { |p| p.destroy }
+		Participant.delete_all
 
-		user1 = Participant.create(first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male")
-		user2 = Participant.create(first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male")
+		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})
 
 		get "/api/v1/participant", search: {
 			page: 1,
@@ -21,10 +21,10 @@ describe 'Participant' do
 	end
 
 	it "should be able to search participant by email address" do
-		Participant.all.each { |p| p.destroy }
+		Participant.delete_all
 
-		user1 = Participant.create(first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male")
-		user2 = Participant.create(first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male")
+		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})
 
 		get "/api/v1/participant", search: {
 			page: 1,
@@ -39,7 +39,7 @@ describe 'Participant' do
 	end
 
 	it "should be able to create participant" do
-		post '/api/v1/participant', {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}
+		post '/api/v1/participant', participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}
 
 		response = JSON.parse(last_response.body)
 
@@ -47,13 +47,13 @@ describe 'Participant' do
 		expect(response['last_name']).to eql "Balaraj"
 		expect(response['gender']).to eql "Male"
 		expect(response['member_id']).not_to eql nil
-		expect(response['member_id'].split('-')[0]).to eql Participant.find(id: response['id']).created_at.strftime('%Y%m%d')
+		expect(response['member_id'].split('-')[0]).to eql Time.parse(response['created_at']).strftime('%Y%m%d')
 	end
 
 	it "should be able to edit participant" do
-		participant = Participant.create(first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male")
+		participant = Participant.create({participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}})
 
-		put "api/v1/participant/#{participant.id}", participant: {last_name:"B"}
+		put "api/v1/participant/#{participant['id']}", participant: {last_name:"B"}
 
 		response = JSON.parse(last_response.body)
 
@@ -63,11 +63,11 @@ describe 'Participant' do
 	end
 
 	it "should be able to delete participant" do
-		participant = Participant.create(first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male")
+		participant = Participant.create({participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}})
 
-		delete "api/v1/participant/#{participant.id}"
+		delete "api/v1/participant/#{participant['id']}"
 
-		expect(Participant.find(id: participant.id)).to eql nil
+		expect(last_response.status).to eql 200
 	end
 
 end
