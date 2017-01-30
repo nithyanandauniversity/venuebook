@@ -5,12 +5,13 @@ module Venuebook
       version 'v1', using: :path
       format :json
       get do
-	 "Hello api"
+         "Hello api"
       end
 
       mount Venuebook::VenueAPI
       mount Venuebook::CenterAPI
       mount Venuebook::EventAPI
       mount Venuebook::ParticipantAPI
+      mount Venuebook::EventAttendanceAPI
    end
 end

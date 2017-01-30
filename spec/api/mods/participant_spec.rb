@@ -4,6 +4,7 @@ describe 'Participant' do
 
 	it "should be able to search participant by name" do
 		Participant.delete_all
+		sleep(1.5)
 
 		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})
@@ -22,6 +23,7 @@ describe 'Participant' do
 
 	it "should be able to search participant by email address" do
 		Participant.delete_all
+		sleep(1.5)
 
 		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})

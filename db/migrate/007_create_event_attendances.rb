@@ -4,7 +4,7 @@ Sequel.migration do
       primary_key :id
       Integer :event_id
       Integer :venue_id
-      Integer :participant_id
+      String :member_id
       Integer :attendance
       DateTime :attendance_date
       DateTime :created_at
