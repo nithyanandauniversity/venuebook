@@ -7,3 +7,4 @@ vendor/gems/*
 db/*.db
 .*.sw*
 passenger.*.pid*
+node_modules/

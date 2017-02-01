@@ -1,0 +1,51 @@
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/dist/es6.tmpl.js:17:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/dist/es6.tmpl.js:222:1: Unexpected reserved word export
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/brackets.js:16:1: Unexpected reserved word export
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/helpers.js:1:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/helpers.js:1:8: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/infinite-checker.js:18:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/infinite-checker.js:18:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/infinite-checker.js:18:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/infinite-checker.js:18:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/primitives.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/primitives.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/primitives.js:1:27: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/primitives.js:117:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/primitives.js:117:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/primitives.js:117:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/lib/primitives.js:117:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/tmpl.js:16:1: Unexpected reserved word export
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/index.js:3:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/index.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/index.js:3:17: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/index.js:3:22: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:1:24: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:1:29: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:2:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:2:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:2:19: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:2:24: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:3:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:3:27: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:4:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:4:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:4:16: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:4:21: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:5:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:5:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:5:14: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:5:19: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:527:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:527:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:527:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-tmpl@3.0.2/src/notevil/index.js:527:16: Semi-colon expected
