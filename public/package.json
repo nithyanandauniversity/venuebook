@@ -1,0 +1,25 @@
+{
+  "name": "venuebook",
+  "version": "1.0.0",
+  "description": "VenueBook TOF Tracker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/sabermatrix/venuebook.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/sabermatrix/venuebook#readme",
+  "dependencies": {
+    "riot": "^3.2.0"
+  },
+  "devDependencies": {
+    "gulp-riot": "^1.0.6",
+    "jquery": "^3.1.1",
+    "riot-redux": "^0.3.3",
+    "semantic-ui": "^2.2.7"
+  }
+}

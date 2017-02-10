@@ -1,0 +1,24 @@
+{
+  "base": "public/",
+  "paths": {
+    "source": {
+      "config": "src/theme.config",
+      "definitions": "src/definitions/",
+      "site": "src/site/",
+      "themes": "src/themes/",
+      "tags": "tags/"
+    },
+    "output": {
+      "packaged": "dist/",
+      "uncompressed": "dist/components/",
+      "compressed": "dist/components/",
+      "themes": "dist/themes/",
+      "tags": "./"
+    },
+    "clean": "dist/"
+  },
+  "permission": false,
+  "autoInstall": false,
+  "rtl": false,
+  "version": "2.2.7"
+}
