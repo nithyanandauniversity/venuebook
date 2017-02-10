@@ -29,4 +29,8 @@
 			{member_id: '2', first_name: 'Senthuraan', last_name: 'P', email: 'psenthu@gmail.com', contact_number: '81012993'}
 		]
 	</script>
+
+	<style scoped>
+		:scope { font-size: 0.75em; }
+	</style>
 </participant-list>

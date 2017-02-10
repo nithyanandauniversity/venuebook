@@ -18,7 +18,7 @@
 	</script>
 
 	<style scoped>
-		:scope { font-size: 2rem }
+		:scope { font-size: 2em }
 		h3 { color: #444 }
 		ul { color: #999 }
 	</style>
