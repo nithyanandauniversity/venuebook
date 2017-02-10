@@ -1,1 +1,0 @@
-module.exports = require("npm:abbrev@1.0.9/abbrev.js");

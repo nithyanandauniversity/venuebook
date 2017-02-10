@@ -1,1 +1,0 @@
-module.exports = require("npm:gauge@2.7.2/index.js");

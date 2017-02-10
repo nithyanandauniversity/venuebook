@@ -1,9 +1,0 @@
-MultipleErrors: /Users/saravana/.jspm/packages/npm/rollup@0.36.4/dist/rollup.es.js:11:1: Unexpected reserved word import
-/Users/saravana/.jspm/packages/npm/rollup@0.36.4/dist/rollup.es.js:11:8: Semi-colon expected
-/Users/saravana/.jspm/packages/npm/rollup@0.36.4/dist/rollup.es.js:11:63: Semi-colon expected
-/Users/saravana/.jspm/packages/npm/rollup@0.36.4/dist/rollup.es.js:12:1: Unexpected reserved word import
-/Users/saravana/.jspm/packages/npm/rollup@0.36.4/dist/rollup.es.js:12:13: Semi-colon expected
-/Users/saravana/.jspm/packages/npm/rollup@0.36.4/dist/rollup.es.js:12:16: Semi-colon expected
-/Users/saravana/.jspm/packages/npm/rollup@0.36.4/dist/rollup.es.js:12:21: Semi-colon expected
-/Users/saravana/.jspm/packages/npm/rollup@0.36.4/dist/rollup.es.js:9255:1: Unexpected reserved word export
-/Users/saravana/.jspm/packages/npm/rollup@0.36.4/dist/rollup.es.js:9255:8: Semi-colon expected

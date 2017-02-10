@@ -1,9 +1,24 @@
 <!doctype html>
-<meta charset="utf-8">
-<script src="/jspm_packages/system.js"></script>
-<script src="/jspm.browser.js"></script>
-<script src="/jspm.config.js"></script>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="dist/semantic.min.css" />
+
+	<script src="node_modules/jquery/dist/jquery.min.js"></script>
+	<script src="node_modules/riot/riot.min.js"></script>
+	<script src="dist/semantic.min.js"></script>
+
+	<!-- <script src="/jspm_packages/system.js"></script> -->
+	<!-- <script src="/jspm.browser.js"></script> -->
+	<!-- <script src="/jspm.config.js"></script> -->
+
+
+
+</head>
+
 <body>
-  <app></app>
-  <script> SystemJS.import("main"); </script>
+	<nav></nav>
+	<app></app>
+
+	<script src="./all-tags.js"></script>
+	<script>riot.mount('*')</script>
 </body>

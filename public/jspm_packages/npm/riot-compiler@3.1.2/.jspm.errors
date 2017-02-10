@@ -1,7 +1,0 @@
-MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-compiler@3.1.2/dist/es6.compiler.js:6:1: Unexpected reserved word import
-/Users/saravana/.jspm/packages/npm/riot-compiler@3.1.2/dist/es6.compiler.js:6:8: Semi-colon expected
-/Users/saravana/.jspm/packages/npm/riot-compiler@3.1.2/dist/es6.compiler.js:6:26: Semi-colon expected
-/Users/saravana/.jspm/packages/npm/riot-compiler@3.1.2/dist/es6.compiler.js:700:1: Unexpected reserved word export
-/Users/saravana/.jspm/packages/npm/riot-compiler@3.1.2/dist/es6.compiler.js:700:8: Semi-colon expected
-/Users/saravana/.jspm/packages/npm/riot-compiler@3.1.2/dist/es6.compiler.js:700:8: Unexpected reserved word default
-/Users/saravana/.jspm/packages/npm/riot-compiler@3.1.2/dist/es6.compiler.js:700:16: Semi-colon expected

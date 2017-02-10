@@ -1,1 +1,0 @@
-module.exports = require("npm:co@4.6.0/index");

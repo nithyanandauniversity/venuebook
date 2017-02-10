@@ -1,1 +1,0 @@
-module.exports = require("npm:binary-extensions@1.8.0/binary-extensions.json!systemjs-json");
