@@ -1,9 +1,12 @@
 <app class="ui container">
-	<h3>{ opts.title }</h3>
+
+	<participants></participants>
+
+	<!-- <h3>{ opts.title }</h3>
 	<p>{ subtitle }</p>
 	<ul>
 		<li each={ list }>{ name }</li>
-	</ul>
+	</ul> -->
 
 	<script>
 		this.subtitle = 'Easy, right?';
