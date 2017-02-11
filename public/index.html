@@ -3,22 +3,22 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="dist/semantic.min.css" />
 
+	<script src="/jspm_packages/system.js"></script>
+	<script src="/config.js"></script>
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
-	<script src="node_modules/riot/riot.min.js"></script>
+	<!-- <script src="node_modules/riot/riot.min.js"></script> -->
+	<!-- <script src="node_modules/riot-redux/dist/riot-redux.js"></script> -->
 	<script src="dist/semantic.min.js"></script>
-
-	<!-- <script src="/jspm_packages/system.js"></script> -->
-	<!-- <script src="/jspm.browser.js"></script> -->
-	<!-- <script src="/jspm.config.js"></script> -->
-
-
-
 </head>
 
 <body>
 	<nav title="TOF Tracker"></nav>
 	<app></app>
 
-	<script src="./all-tags.js"></script>
-	<script>riot.mount('*')</script>
+	<script> SystemJS.import("main"); </script>
+	<!-- <script src="./all-tags.js"></script> -->
+	<!-- <script src="reducers/index.js"></script> -->
+	<script>
+		// riot.mount('*')
+	</script>
 </body>

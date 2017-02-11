@@ -1,0 +1,1 @@
+module.exports = require("npm:riot-compiler@3.1.4/lib/compiler.js");
