@@ -30,9 +30,11 @@ Padrino.configure_apps do
   set :session_secret, '03c18f633fe2b5183e3c1ec605fec022f19b387c4d9ec464923cf46fbe297a2e'
   set :protection, :except => :path_traversal
   set :protect_from_csrf, true
+  set :public_folder, 'public'
 end
 
 Padrino.mount('API', :app_file => Padrino.root('api/api.rb'), :app_class => 'Venuebook::API').to('/api')
+Padrino.mount('APP', :app_file => Padrino.root('app.rb'), :app_class=> 'App').to('/')
 
 # Mounts the core application for this project
 #
