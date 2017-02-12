@@ -1,16 +1,16 @@
 import riot from 'riot';
 
-// import store from './store/store.main!';
+import store from 'store/main.store';
 
-import 'nav.tag!';
-import 'app.tag!';
-import 'participants.tag!';
-import 'participant-list.tag!';
-import 'participant-search.tag!';
+import 'tags/nav.tag!';
+import 'tags/app.tag!';
+import 'tags/participants.tag!';
+import 'tags/participant-list.tag!';
+import 'tags/participant-search.tag!';
 
-// riot.mount('*');
-riot.mount('nav');
-riot.mount('app');
-riot.mount('participant');
-riot.mount('participant-search');
-riot.mount('participant-list');
+riot.mount('*');
+// riot.mount('nav');
+// riot.mount('app');
+// riot.mount('participant');
+// riot.mount('participant-search');
+// riot.mount('participant-list');

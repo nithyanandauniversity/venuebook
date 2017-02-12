@@ -1,15 +1,16 @@
-import { LIST_PARTICIPANT, ADD_PARTICIPANT, VIEW_PARTICIPANT, EDIT_PARTICIPANT, SEARCH_PARTICIPANT, DELETE_PARTICIPANT } from './constants/ParticipantActions'
+import { LIST_PARTICIPANT, ADD_PARTICIPANT, VIEW_PARTICIPANT, EDIT_PARTICIPANT, SEARCH_PARTICIPANT, DELETE_PARTICIPANT } from '../../constants/ParticipantActions'
 
 const initialState = {
-	view: LIST_PARTICIPANT
+	view: LIST_PARTICIPANT,
+	page: 1
 }
 
-export default function participants(state = initialState, action) {
+export default function participants(state = {}, action) {
 	switch (action.type) {
 		case LIST_PARTICIPANT:
 			return {
-				view: LIST_PARTICIPANT
-				page: action.page
+				view: LIST_PARTICIPANT,
+				page: action.page,
 				query: action.query
 			}
 		case ADD_PARTICIPANT:
@@ -35,6 +36,11 @@ export default function participants(state = initialState, action) {
 			return {
 				view: DELETE_PARTICIPANT,
 				id: action.id
+			}
+		default:
+			return {
+				view: LIST_PARTICIPANT,
+				page: 1
 			}
 	}
 }
