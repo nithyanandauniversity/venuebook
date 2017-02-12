@@ -1,12 +1,7 @@
 <app class="ui container">
 
-	<participants></participants>
 
-	<!-- <h3>{ opts.title }</h3>
-	<p>{ subtitle }</p>
-	<ul>
-		<li each={ list }>{ name }</li>
-	</ul> -->
+	<participants store={opts.store} state={opts.store.getState().participants}></participants>
 
 	<script>
 		this.subtitle = 'Easy, right?';
@@ -16,6 +11,7 @@
 			{ name: 'list' }
 		];
 	</script>
+
 
 	<style scoped>
 		:scope { font-size: 2em }

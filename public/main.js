@@ -8,9 +8,6 @@ import 'tags/participants.tag!';
 import 'tags/participant-list.tag!';
 import 'tags/participant-search.tag!';
 
-riot.mount('*');
-// riot.mount('nav');
-// riot.mount('app');
-// riot.mount('participant');
-// riot.mount('participant-search');
-// riot.mount('participant-list');
+// riot.mount('*');
+riot.mount('nav');
+riot.mount('app', {store: store});
