@@ -3,8 +3,7 @@ Sequel.migration do
     create_table :venues do
       primary_key :id
       String :name
-      String :center
-      String :country
+      Integer :center_id
       Integer :capacity
       DateTime :created_at
       DateTime :updated_at
