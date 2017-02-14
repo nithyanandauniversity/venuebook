@@ -7,7 +7,9 @@
 						<!-- <img src="assets/images/logo.png"> -->
 						<h2>{ opts.title }</h2>
 					</div>
-					<a each={ navigations } class={ name == active ? 'active item' : 'item'}>{ name }</a>
+					<a each={ navigations } class={ name == active ? 'active item' : 'item'}>
+						{ name }
+					</a>
 				</div>
 			</div>
 		</div>

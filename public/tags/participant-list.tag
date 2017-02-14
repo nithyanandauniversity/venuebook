@@ -12,27 +12,34 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr each={ participants }>
-				<td>{member_id}</td>
+			<tr each={ participant in participants } scope={ this }>
+				<td>{participant.member_id}</td>
 				<td>
 					<label>
-						<strong>{first_name}</strong> {last_name}
+						<strong>{participant.first_name}</strong> {participant.last_name}
 					</label>
 					<br>
 					<label
 						if={spiritual_name}
-						style="font-size: .9em;">({spiritual_name})</label>
+						style="font-size: .9em;">({participant.spiritual_name})</label>
 				</td>
-				<td>{email}</td>
-				<td>{contact_number}</td>
+				<td>{participant.email}</td>
+				<td>{participant.contact_number}</td>
 				<td style="color: black !important;">
-					<div class="ui action-btn vertical olive animated button" tabindex="0">
+					<button
+						class="ui action-btn vertical olive animated button"
+						tabindex="0"
+						onclick={ showView() }>
 						<div class="hidden content">View</div>
 						<div class="visible content">
 							<i class="action info icon"></i>
 						</div>
-					</div>
-					<div class="ui action-btn vertical yellow animated button" tabindex="0">
+					</button>
+					<div
+						class="ui action-btn vertical yellow animated button"
+						tabindex="0"
+						data="{participant.member_id}"
+						onclick={ showForm() }>
 						<div class="hidden content">Edit</div>
 						<div class="visible content">
 							<i class="action write icon"></i>
@@ -51,6 +58,21 @@
 	</table>
 
 	<script>
+
+		const self = this;
+
+		showView = (e) => {
+			return (e) => {
+				self.parent.showView(e.item.participant);
+			}
+		}
+
+		showForm = (e) => {
+			return (e) => {
+				self.parent.showForm(e.item.participant);
+			}
+		}
+
 		this.participants = [
 			{member_id: '1', first_name: 'Saravana', last_name: 'Balaraj', email: 'sgsaravana@gmail.com', contact_number: '(+65) 86286022'},
 			{member_id: '2', first_name: 'Dinesh', last_name: 'Gupta', email: 'sri.sadhana@innerawakening.org', spiritual_name: 'Sri Nithya  Sadhanananda', contact_number: '(+65) 91399486'},
