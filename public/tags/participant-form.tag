@@ -236,6 +236,17 @@
 
 		</div>
 
+		<div class="ui right aligned grid">
+			<div class="column">
+				<button class="ui large green button" onclick="{save}">
+					SAVE
+				</button>
+				<button class="ui large red button" onclick="{cancel}">
+					{opts.state.view == 'ADD_PARTICIPANT' ? 'RESET' : 'CANCEL'}
+				</button>
+			</div>
+		</div>
+
 	</div>
 
 	<script>
@@ -245,8 +256,8 @@
 		this.contacts  = [];
 		this.addresses = [];
 
-		setGender = (e, g) => {
-			return (e, g) => {
+		setGender = (e) => {
+			return (e) => {
 				self.gender = e.target.dataset.value;
 			}
 		}
@@ -343,6 +354,23 @@
 			console.log(self.opts.state);
 
 		});
+
+		reset() {
+			console.log("RESET !!!");
+		}
+
+		save() {
+			console.log("SAVE !!!");
+		}
+
+		cancel() {
+			if (this.opts.state.view == 'ADD_PARTICIPANT') {
+				this.reset();
+			}
+			else {
+				this.parent.showList();
+			}
+		}
 
 	</script>
 
