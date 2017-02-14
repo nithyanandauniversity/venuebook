@@ -61,13 +61,13 @@
 
 		const self = this;
 
-		showView = (e) => {
+		showView(e) {
 			return (e) => {
 				self.parent.showView(e.item.participant);
 			}
 		}
 
-		showForm = (e) => {
+		showForm(e) {
 			return (e) => {
 				self.parent.showForm(e.item.participant);
 			}

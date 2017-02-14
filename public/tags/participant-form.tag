@@ -256,41 +256,41 @@
 		this.contacts  = [];
 		this.addresses = [];
 
-		setGender = (e) => {
+		setGender(e) {
 			return (e) => {
 				self.gender = e.target.dataset.value;
 			}
 		}
 
-		setGrad = (e) => {
+		setGrad(e) {
 			return (e) => {
 				self.ia_graduate = e.target.dataset.value;
 			}
 		}
 
-		setHealer = (e) => {
+		setHealer(e) {
 			return (e) => {
 				self.is_healer = e.target.dataset.value
 			}
 		}
 
-		addContact = (e) => {
+		addContact(e) {
 			return (e) => {
 				self.insertContact(false);
 			}
 		}
 
-		addAddress = (e) => {
+		addAddress(e) {
 			return (e) => {
 				self.insertAddress(false);
 			}
 		}
 
-		this.getDefault = (c) => {
+		getDefault(c) {
 			return c.default;
 		}
 
-		markContactDefault = (e) => {
+		markContactDefault(e) {
 			return (e) => {
 				let def = self.contacts.filter(self.getDefault)[0];
 				def.default            = false;
@@ -298,7 +298,7 @@
 			}
 		}
 
-		markAddressDefault = (e) => {
+		markAddressDefault(e) {
 			return (e) => {
 				let def = self.addresses.filter(self.getDefault)[0];
 				def.default            = false;
@@ -306,19 +306,19 @@
 			}
 		}
 
-		removeContact = (e) => {
+		removeContact(e) {
 			return (e) => {
 				self.contacts.splice(e.item.i, 1);
 			}
 		}
 
-		removeAddress = (e) => {
+		removeAddress(e) {
 			return (e) => {
 				self.addresses.splice(e.item.i, 1);
 			}
 		}
 
-		this.insertContact = (def = false) => {
+		insertContact(def = false) {
 			this.contacts.push({
 				contact_type: 'Home',
 				value: '',
@@ -326,7 +326,7 @@
 			});
 		}
 
-		this.insertAddress = (def = false) => {
+		insertAddress(def = false) {
 			this.addresses.push({
 				street: '',
 				city: '',

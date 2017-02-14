@@ -14,24 +14,24 @@
 	</participant-view>
 
 	<script>
-		this.showNew = (e) => {
+		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_PARTICIPANT'});
 			this.update();
 			this.tags['participant-form'].trigger('create');
 		}
 
-		this.showList = (e) => {
+		showList(e) {
 			this.opts.store.dispatch({type: 'LIST_PARTICIPANT'});
 			this.update();
 		}
 
-		this.showView = (participant) => {
+		showView(participant) {
 			// console.log('show view!', participant);
 			this.opts.store.dispatch({type: 'VIEW_PARTICIPANT', id: participant.member_id});
 			this.update();
 		}
 
-		this.showForm = (participant) => {
+		showForm(participant) {
 			// console.log('show form!', participant);
 			this.opts.store.dispatch({type: 'EDIT_PARTICIPANT', id: participant.member_id});
 			this.update();
