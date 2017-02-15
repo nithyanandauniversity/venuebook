@@ -4,13 +4,13 @@
 	<participant-list if={opts.state.view == 'LIST_PARTICIPANT'}></participant-list>
 
 	<participant-form
-		if={opts.state.view == 'ADD_PARTICIPANT' || opts.state.view == 'EDIT_PARTICIPANT'}
-		state={opts.state}>
+		if    = {opts.state.view == 'ADD_PARTICIPANT' || opts.state.view == 'EDIT_PARTICIPANT'}
+		state = {opts.state}>
 	</participant-form>
 
 	<participant-view
-		if={opts.state.view == 'VIEW_PARTICIPANT'}
-		state={opts.state}>
+		if    = {opts.state.view == 'VIEW_PARTICIPANT'}
+		state = {opts.state}>
 	</participant-view>
 
 	<script>
@@ -29,6 +29,7 @@
 			// console.log('show view!', participant);
 			this.opts.store.dispatch({type: 'VIEW_PARTICIPANT', id: participant.member_id});
 			this.update();
+			this.tags['participant-view'].trigger('view');
 		}
 
 		showForm(participant) {

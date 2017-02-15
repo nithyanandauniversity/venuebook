@@ -11,6 +11,7 @@ import 'tags/participant-list.tag!';
 import 'tags/participant-search.tag!';
 import 'tags/participant-form.tag!';
 import 'tags/participant-view.tag!';
+import 'tags/participant-comments.tag!';
 
 // riot.mount('*');
 riot.mount('nav');
