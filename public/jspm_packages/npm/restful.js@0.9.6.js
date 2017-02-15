@@ -1,0 +1,1 @@
+module.exports = require("npm:restful.js@0.9.6/dist/es5/index.js");

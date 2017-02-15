@@ -17,6 +17,7 @@
     "jquery": "^3.1.1",
     "jspm": "^0.17.0-beta.39",
     "redux": "^3.6.0",
+    "restful.js": "^0.9.6",
     "riot": "^3.2.0",
     "semantic-ui-calendar": "0.0.6"
   },

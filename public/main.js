@@ -1,6 +1,8 @@
 import riot from 'riot';
-
 import store from 'store/main.store';
+import models from './models';
+
+models();
 
 import 'tags/nav.tag!';
 import 'tags/app.tag!';

@@ -735,9 +735,6 @@
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "npm:jsbn@0.1.0": {
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
-  },
   "npm:generate-object-property@1.2.0": {
     "is-property": "npm:is-property@^1.0.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
@@ -1247,5 +1244,26 @@
   },
   "npm:js-tokens@3.0.1": {},
   "npm:lodash-es@4.17.4": {},
-  "npm:lodash@4.17.4": {}
+  "npm:lodash@4.17.4": {},
+  "npm:jsbn@0.1.1": {
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
+  },
+  "npm:restful.js@0.9.6": {
+    "immutable": "npm:immutable@3.7.6",
+    "object-assign": "npm:object-assign@2.0.0",
+    "qs": "npm:qs@5.2.0",
+    "warning": "npm:warning@2.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:qs@5.2.0": {},
+  "npm:warning@2.1.0": {
+    "loose-envify": "npm:loose-envify@^1.0.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:immutable@3.7.6": {
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
+  },
+  "npm:object-assign@2.0.0": {},
+  "npm:whatwg-fetch@2.0.2": {}
 }
