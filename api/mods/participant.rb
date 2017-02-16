@@ -1,7 +1,7 @@
 module Venuebook
 
 	class ParticipantAPI < Grape::API
-		namespace "participant" do
+		namespace "participants" do
 
 			get do
 				return Participant.search(params)

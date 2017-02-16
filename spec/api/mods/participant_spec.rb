@@ -9,7 +9,7 @@ describe 'Participant' do
 		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})
 
-		get "/api/v1/participant", search: {
+		get "/api/v1/participants", search: {
 			page: 1,
 			limit: 10,
 			keyword: 'sara'
@@ -28,7 +28,7 @@ describe 'Participant' do
 		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})
 
-		get "/api/v1/participant", search: {
+		get "/api/v1/participants", search: {
 			page: 1,
 			limit: 10,
 			keyword: 'psenthu'
@@ -41,7 +41,7 @@ describe 'Participant' do
 	end
 
 	it "should be able to create participant" do
-		post '/api/v1/participant', participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}
+		post '/api/v1/participants', participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}
 
 		response = JSON.parse(last_response.body)
 
@@ -55,7 +55,7 @@ describe 'Participant' do
 	it "should be able to edit participant" do
 		participant = Participant.create({participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}})
 
-		put "api/v1/participant/#{participant['id']}", participant: {last_name:"B"}
+		put "api/v1/participants/#{participant['id']}", participant: {last_name:"B"}
 
 		response = JSON.parse(last_response.body)
 
@@ -67,7 +67,7 @@ describe 'Participant' do
 	it "should be able to delete participant" do
 		participant = Participant.create({participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}})
 
-		delete "api/v1/participant/#{participant['id']}"
+		delete "api/v1/participants/#{participant['id']}"
 
 		expect(last_response.status).to eql 200
 	end
