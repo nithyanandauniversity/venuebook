@@ -7,6 +7,10 @@ module Venuebook
 				return Participant.search(params)
 			end
 
+			get '/:id' do
+				return Participant.get(params[:id])
+			end
+
 			post do
 				participant = Participant.create(params)
 			end

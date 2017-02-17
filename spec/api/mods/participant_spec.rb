@@ -21,6 +21,17 @@ describe 'Participant' do
 		expect(response[0]['first_name']).to eql "Saravana"
 	end
 
+	it "should be able to get participant by id" do
+		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+
+		get "/api/v1/participants/#{user1['id']}"
+
+		response = JSON.parse(last_response.body)
+
+		expect(response['id']).to eql user1['id']
+		expect(response['first_name']).to eql "Saravana"
+	end
+
 	it "should be able to search participant by email address" do
 		Participant.delete_all
 		sleep(1.5)

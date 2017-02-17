@@ -4,13 +4,18 @@ class Participant < Sequel::Model
 	self.plugin :timestamps
 	one_to_many :event_attendances
 
-	def self.create(params)
-		response = RestClient.post PARBOOK_URL, params
+	def self.search(params)
+		response = RestClient.get PARBOOK_URL, {params: params}
 		JSON.parse(response.body)
 	end
 
-	def self.search(params)
-		response = RestClient.get PARBOOK_URL, {params: params}
+	def self.get(id)
+		response = RestClient.get PARBOOK_URL + "/#{id}"
+		JSON.parse(response.body)
+	end
+
+	def self.create(params)
+		response = RestClient.post PARBOOK_URL, params
 		JSON.parse(response.body)
 	end
 
