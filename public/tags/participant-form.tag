@@ -373,11 +373,55 @@
 			self.insertAddress(true);
 
 			self.update();
-		})
+		});
+
+		loadEditForm(participant, attr) {
+			console.log("participant, attr");
+			console.log(participant, attr);
+
+			this.refs.first_name.value  = participant.first_name;
+			this.refs.last_name.value   = participant.last_name;
+			this.refs.email.value       = participant.email;
+			this.refs.other_names.value = participant.other_names;
+			this.refs.dob.value         = participant.dob;
+			this.refs.notes.value       = participant.notes;
+			this.gender                 = participant.gender;
+
+			this.refs.role.value     = attr.role;
+			this.ia_graduate         = attr.ia_graduate;
+			this.refs.ia_dates.value = attr.ia_dates;
+			this.is_healer           = attr.is_healer;
+
+			$("#participant-dob").calendar({
+				type        : 'date',
+				initialDate : participant.dob
+			});
+
+			participant.contacts.forEach((c) => { this.insertContact(c.id == participant.default_contact) });
+			participant.addresses.forEach((a) => { this.insertAddress(a.id == participant.default_address) });
+
+			this.update();
+
+			this.assignAddresses(participant.addresses);
+			this.assignContacts(participant.contacts);
+		}
 
 		this.on('edit', () => {
 			let state = self.parent.opts.state;
 			console.log(self.opts.state);
+
+			this.edit_id = this.opts.state.id;
+			this.parent.opts.service.get(this.edit_id, (err, response) => {
+				if (!err) {
+					this.participant = response.body().data();
+					this.attributes  = JSON.parse(this.participant.participant_attributes);
+					this.loadEditForm(this.participant, this.attributes);
+				}
+				else {
+					this.participant = null;
+					console.log("ERROR LOADING PARTICIPANT !");
+				}
+			});
 
 		});
 
@@ -398,12 +442,29 @@
 			};
 		}
 
+		assignAddresses(addresses) {
+			addresses.forEach((address, i) => {
+				this.refs['street_' + i].value      = address.street
+				this.refs['city_' + i].value        = address.city
+				this.refs['state_' + i].value       = address.state
+				this.refs['postal_code_' + i].value = address.postal_code
+				this.refs['country_' + i].value     = address.country
+			});
+		}
+
 		generateContacts(contact, i) {
 			return {
 				contact_type : this.refs['contact_type_' + i].value,
 				value        : this.refs['contact_value_' + i].value,
 				default      : contact.default
 			};
+		}
+
+		assignContacts(contacts) {
+			contacts.forEach((contact, i) => {
+				this.refs['contact_type_' + i].value = contact.contact_type;
+				this.refs['contact_value_' + i].value = contact.value;
+			});
 		}
 
 		save() {
