@@ -24,35 +24,35 @@
 					<div class="content">
 						<span
 							class          = "right floated"
-							data-tooltip   = "Not a Healer"
+							data-tooltip   = "{!attributes.is_healer && 'Not a'} Healer"
 							data-inverted  = ""
 							data-variation = "mini">
-							<i class="heart grey icon"></i>
+							<i class="heart {attributes.is_healer && 'red' || 'grey'} icon"></i>
 						</span>
 						<span
 							class          = "right floated"
-							data-tooltip   = "IA Graduate"
+							data-tooltip   = "{!attributes.ia_graduate && 'Not an'} IA Graduate"
 							data-inverted  = ""
 							data-variation = "mini">
-							<i class="trophy green icon"></i>
+							<i class="trophy {attributes.ia_graduate && 'green' || 'grey'} icon"></i>
 						</span>
 
 						<div
 							class = "header"
 							style = "font-size: 1em; margin-bottom: .2em;">
-							First name Last name
+							{participant.first_name} {participant.last_name}
 						</div>
 						<div
 							class = "meta"
 							style = "font-size: 0.8em;">
-							Spiritual name
+							{participant.other_names || 'N/A'}
 						</div>
 						<div
 							class = "description"
 							style = "font-size: 0.9em; margin-top: 1em;">
 							<div class="fields">
 								<div class="field">
-									<label>Emailaddress@domain.com</label>
+									<label>{participant.email}</label>
 								</div>
 							</div>
 						</div>
@@ -79,8 +79,21 @@
 			this.parent.showForm({id: this.opts.state.id});
 		}
 
+		participant = {};
+		attributes  = {};
+
 		this.on('view', () => {
-			console.log(self.opts.state);
+			this.view_id = this.opts.state.id;
+			this.parent.opts.service.get(this.view_id, (err, response) => {
+				if (!err) {
+					this.participant = response.body().data();
+					this.attributes = JSON.parse(this.participant.participant_attributes);
+					this.update();
+				}
+				else {
+					this.participant = null;
+				}
+			});
 		});
 
 	</script>

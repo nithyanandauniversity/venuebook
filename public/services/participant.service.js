@@ -1,8 +1,9 @@
 export default class ParticipantService {
 
 	constructor(api) {
-		this.collection = api.all('participants');
-		this.url = this.collection.url();
+		this.api        = api;
+		this.collection = this.api.all('participants');
+		this.url        = this.collection.url();
 	}
 
 	search(params, callback) {
@@ -16,7 +17,7 @@ export default class ParticipantService {
 	}
 
 	get(id, callback) {
-		this.collection.get(id)
+		this.api.one('participants', id).get()
 			.then((response) => {
 				callback(null, response);
 			})
