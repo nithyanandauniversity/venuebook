@@ -296,7 +296,7 @@
 
 		setHealer(e) {
 			return (e) => {
-				self.is_healer = e.target.dataset.value
+				self.is_healer = e.target.dataset.value;
 			}
 		}
 
@@ -417,10 +417,10 @@
 					dob                    : this.refs.dob.value,
 					notes                  : this.refs.notes.value,
 					participant_attributes : JSON.stringify({
-						role        : this.refs.role.value,
-						ia_graduate : this.ia_graduate,
+						role        : parseInt(this.refs.role.value),
+						ia_graduate : parseInt(this.ia_graduate),
 						ia_dates    : this.refs.ia_dates.value,
-						is_healer   : this.is_healer
+						is_healer   : parseInt(this.is_healer)
 					})
 				},
 				addresses : this.addresses.map(this.generateAddresses),
