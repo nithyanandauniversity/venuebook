@@ -3,10 +3,7 @@ export default class ParticipantService {
 	constructor(api) {
 		this.collection = api.all('participants');
 		this.url = this.collection.url();
-
-		console.log(this.url);
 	}
-
 
 	search(params, callback) {
 		this.collection.getAll(params)
@@ -18,14 +15,42 @@ export default class ParticipantService {
 			});
 	}
 
-	get() {}
+	get(id, callback) {
+		this.collection.get(id)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
 
 	find() {}
 
-	create() {}
+	create(params, callback) {
+		this.collection.post(params)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
 
-	update() {}
+	update(id, params, callback) {}
 
-	remove() {}
+	removeContact() {}
+
+	removeAddress() {}
+
+	remove(id, callback) {
+		this.collection.delete(id)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
 
 }

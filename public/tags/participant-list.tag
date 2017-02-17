@@ -13,7 +13,7 @@
 		</thead>
 		<tbody>
 			<tr each={ participant in participants } scope={ this }>
-				<td>{participant.member_id}</td>
+				<td style="font-size: 0.8em; width: 120px;">{participant.member_id}</td>
 				<td>
 					<label>
 						<strong>{participant.first_name}</strong> {participant.last_name}
@@ -45,7 +45,11 @@
 							<i class="action write icon"></i>
 						</div>
 					</div>
-					<div class="ui action-btn vertical red animated button" tabindex="0">
+					<div
+						class="ui action-btn vertical red animated button"
+						tabindex="0"
+						data="{participant.member_id}"
+						onclick={ remove() }>
 						<div class="hidden content">Delete</div>
 						<div class="visible content">
 							<i class="action remove icon"></i>
@@ -73,11 +77,53 @@
 			}
 		}
 
-		this.participants = [
-			{member_id: '1', first_name: 'Saravana', last_name: 'Balaraj', email: 'sgsaravana@gmail.com', contact_number: '(+65) 86286022'},
-			{member_id: '2', first_name: 'Dinesh', last_name: 'Gupta', email: 'sri.sadhana@innerawakening.org', spiritual_name: 'Sri Nithya  Sadhanananda', contact_number: '(+65) 91399486'},
-			{member_id: '3', first_name: 'Srinath', last_name: 'Loganathan', email: 'srinath_lsn@gmail.com', contact_number: '(+49) 17623162673'}
-		]
+		getData(res) {
+			return res.data();
+		}
+
+		remove(e) {
+			return (e) => {
+				if (confirm("Are you sure you want to delete the participant?")) {
+					this.parent.opts.service.remove(e.item.participant.id, (err, response) => {
+						if (!err) {
+							console.log(response.body().data(), response.statusCode());
+							this.initialLoad();
+						}
+						else {
+							console.log('some error occurred');
+						}
+					});
+				}
+				else {
+					console.log("Do no delete!");
+				}
+			}
+		}
+
+		this.participants = [];
+
+		initialLoad() {
+			this.parent.opts.service.search({page: 1, limit: 10}, (err, response) => {
+				if (!err) {
+					let result = response.body();
+					if (result.length > 0) {
+						this.participants = result.map(this.getData);
+						this.update();
+					}
+				}
+				else {
+					console.log("ERROR !");
+				}
+			});
+		}
+
+		this.initialLoad();
+
+		// this.participants = [
+		// 	{member_id: '1', first_name: 'Saravana', last_name: 'Balaraj', email: 'sgsaravana@gmail.com', contact_number: '(+65) 86286022'},
+		// 	{member_id: '2', first_name: 'Dinesh', last_name: 'Gupta', email: 'sri.sadhana@innerawakening.org', spiritual_name: 'Sri Nithya  Sadhanananda', contact_number: '(+65) 91399486'},
+		// 	{member_id: '3', first_name: 'Srinath', last_name: 'Loganathan', email: 'srinath_lsn@gmail.com', contact_number: '(+49) 17623162673'}
+		// ]
 	</script>
 
 	<style scoped>

@@ -1,6 +1,7 @@
 import 'fetch';
 import restful, { fetchBackend } from 'restful';
 
+import { COUNTRIES } from '../constants/countries';
 import Participant from './participant.service';
 // import Event from './event.service';
 // import Program from './program.service';
@@ -18,11 +19,20 @@ export default class Services {
 		// this.eventService = new Event(api);
 		// this.programService = new Program(api);
 
-		// Search Function test
-		// this.participantService.search({page: 1, limit: 10}, (err, response) => {
-		// 	console.log("err, response");
-		// 	console.log(err, response);
-		// });
+		this.countries = this.generateCountriesList();
+	}
+
+	generateCountriesList() {
+		let countries = [];
+
+		for (let code in COUNTRIES) {
+			countries.push({
+				code  : code,
+				value : COUNTRIES[code]
+			});
+		}
+
+		return function() { return countries; };
 	}
 
 

@@ -76,7 +76,7 @@
 		const self = this;
 
 		edit() {
-			this.parent.showForm({member_id: this.opts.state.id});
+			this.parent.showForm({id: this.opts.state.id});
 		}
 
 		this.on('view', () => {

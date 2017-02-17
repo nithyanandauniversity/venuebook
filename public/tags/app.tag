@@ -1,9 +1,18 @@
 <app class="ui container">
 
 
-	<participants store={opts.store} state={opts.store.getState().participants}></participants>
+	<participants
+		store={opts.store}
+		state={opts.store.getState().participants}
+		service={opts.services.participantService}
+		countries={opts.services.countries}></participants>
 
 	<script>
+
+		// countries() {
+		// 	return this.opts.services.countries();
+		// }
+
 		this.subtitle = 'Easy, right?';
 		this.list = [
 			{ name: 'my' },
