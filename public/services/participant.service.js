@@ -7,7 +7,7 @@ export default class ParticipantService {
 	}
 
 	search(params, callback) {
-		this.collection.getAll(params)
+		this.collection.getAll({search: params})
 			.then((response) => {
 				callback(null, response);
 			})
@@ -26,8 +26,6 @@ export default class ParticipantService {
 			});
 	}
 
-	find() {}
-
 	create(params, callback) {
 		this.collection.post(params)
 			.then((response) => {
@@ -38,11 +36,39 @@ export default class ParticipantService {
 			});
 	}
 
-	update(id, params, callback) {}
+	update(id, params, callback) {
+		this.collection.put(id, params)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
 
-	removeContact() {}
+	removeContact(participant_id, contact_id, callback) {
+		let participant = this.api.one('participants', participant_id);
 
-	removeAddress() {}
+		participant.delete('contact', contact_id)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
+	removeAddress(participant_id, address_id, callback) {
+		let participant = this.api.one('participants', participant_id);
+
+		participant.delete('address', address_id)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			})
+	}
 
 	remove(id, callback) {
 		this.collection.delete(id)

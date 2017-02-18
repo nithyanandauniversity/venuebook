@@ -1,8 +1,8 @@
 <participant-list>
-	<table class="ui blue table">
+	<table class="ui blue table" show="{participants.length > 0}">
 		<thead>
 			<tr>
-				<th>#</th>
+				<th>ID #</th>
 				<th>Full Name</th>
 				<th>Email</th>
 				<th>Contact</th>
@@ -20,36 +20,36 @@
 					</label>
 					<br>
 					<label
-						if={spiritual_name}
-						style="font-size: .9em;">({participant.spiritual_name})</label>
+						if={participant.other_names}
+						style="font-size: .9em;">({participant.other_names})</label>
 				</td>
 				<td>{participant.email}</td>
 				<td>{participant.contact_number}</td>
 				<td style="color: black !important;">
 					<button
-						class="ui action-btn vertical olive animated button"
-						tabindex="0"
-						onclick={ showView() }>
+						class    = "ui action-btn vertical olive animated button"
+						tabindex = "0"
+						onclick  = { showView() }>
 						<div class="hidden content">View</div>
 						<div class="visible content">
 							<i class="action info icon"></i>
 						</div>
 					</button>
 					<div
-						class="ui action-btn vertical yellow animated button"
-						tabindex="0"
-						data="{participant.member_id}"
-						onclick={ showForm() }>
+						class    = "ui action-btn vertical yellow animated button"
+						tabindex = "0"
+						data     = "{participant.member_id}"
+						onclick  = { showForm() }>
 						<div class="hidden content">Edit</div>
 						<div class="visible content">
 							<i class="action write icon"></i>
 						</div>
 					</div>
 					<div
-						class="ui action-btn vertical red animated button"
-						tabindex="0"
-						data="{participant.member_id}"
-						onclick={ remove() }>
+						class    = "ui action-btn vertical red animated button"
+						tabindex = "0"
+						data     = "{participant.member_id}"
+						onclick  = { remove() }>
 						<div class="hidden content">Delete</div>
 						<div class="visible content">
 							<i class="action remove icon"></i>
@@ -58,7 +58,29 @@
 				</td>
 			</tr>
 		</tbody>
-		<tfoot></tfoot>
+		<tfoot>
+			<tr>
+				<td colspan="5">
+					<div class="ui center aligned">
+						<button
+							class   = "ui labeled icon button {first_page && 'disabled'}"
+							onclick = { goToPrevious() }>
+							<i class="chevron left icon"></i>
+							Previous
+						</button>
+						<button class="ui labeled button disabled">
+							Page #{current_page} | Showing {record_range} of {record_count}
+						</button>
+						<button
+							class   = "ui right labeled icon button {last_page && 'disabled'}"
+							onclick = { goToNext() }>
+							<i class="chevron right icon"></i>
+							Next
+						</button>
+					</div>
+				</td>
+			</tr>
+		</tfoot>
 	</table>
 
 	<script>
@@ -102,13 +124,40 @@
 
 		this.participants = [];
 
-		initialLoad() {
-			this.parent.opts.service.search({page: 1, limit: 10}, (err, response) => {
-				if (!err) {
-					let result = response.body();
-					if (result.length > 0) {
-						this.participants = result.map(this.getData);
+		goToPrevious(e) {
+			return(e) => {
+				if (!this.first_page) {
+					this.getParticipants({page: (this.current_page - 1), limit: 5});
+				}
+			}
+		}
+
+		goToNext(e) {
+			return(e) => {
+				if (!this.last_page) {
+					this.getParticipants({page: (this.current_page + 1), limit: 5});
+				}
+			}
+		}
+
+		getParticipants(params) {
+			this.parent.opts.service.search(params, (err, response) => {
+				if (!err && response.body().length) {
+					let result = this.getData(response.body()[0]);
+					console.log("result");
+					console.log(result);
+					if (result.participants && result.current_page_record_count > 0) {
+						this.participants = result.participants;
+						this.current_page = result.current_page;
+						this.page_count   = result.page_count;
+						this.first_page   = result.first_page;
+						this.last_page    = result.last_page;
+						this.record_range = result.current_page_record_range.split('..').join(' to ');
+						this.record_count = result.pagination_record_count;
 						this.update();
+					}
+					else {
+						// NO RESULTS
 					}
 				}
 				else {
@@ -117,13 +166,8 @@
 			});
 		}
 
-		this.initialLoad();
+		this.getParticipants({page: 1, limit: 5});
 
-		// this.participants = [
-		// 	{member_id: '1', first_name: 'Saravana', last_name: 'Balaraj', email: 'sgsaravana@gmail.com', contact_number: '(+65) 86286022'},
-		// 	{member_id: '2', first_name: 'Dinesh', last_name: 'Gupta', email: 'sri.sadhana@innerawakening.org', spiritual_name: 'Sri Nithya  Sadhanananda', contact_number: '(+65) 91399486'},
-		// 	{member_id: '3', first_name: 'Srinath', last_name: 'Loganathan', email: 'srinath_lsn@gmail.com', contact_number: '(+49) 17623162673'}
-		// ]
 	</script>
 
 	<style scoped>

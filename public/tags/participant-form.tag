@@ -158,15 +158,21 @@
 							</td>
 							<td style="width: 105px; text-align: right;">
 								<button
-									class   = "circular ui icon olive button"
-									show    = "{!contact.default}"
-									onclick = "{markContactDefault()}">
+									class          = "circular ui icon olive button"
+									show           = "{!contact.default}"
+									data-tooltip   = "Make Default"
+									data-inverted  = ""
+									data-variation = "mini"
+									onclick        = "{markContactDefault()}">
 									<i class="checkmark icon"></i>
 								</button>
 								<button
-									class   = "circular ui icon orange button"
-									show    = "{!contact.default}"
-									onclick = "{removeContact()}">
+									class          = "circular ui icon orange button"
+									show           = "{!contact.default}"
+									data-tooltip   = "Remove Contact"
+									data-inverted  = ""
+									data-variation = "mini"
+									onclick        = "{removeContact()}">
 									<i class="remove icon"></i>
 								</button>
 							</td>
@@ -242,16 +248,22 @@
 							</td>
 							<td style="width: 65px;">
 								<button
-									class="circular ui icon olive button"
-									show="{!address.default}"
-									style="margin-bottom: 5px;"
-									onclick="{markAddressDefault()}">
+									class          = "circular ui icon olive button"
+									show           = "{!address.default}"
+									style          = "margin-bottom: 5px;"
+									data-tooltip   = "Make Default"
+									data-inverted  = ""
+									data-variation = "mini"
+									onclick        = "{markAddressDefault()}">
 									<i class="checkmark icon"></i>
 								</button>
 								<button
-									class="circular ui icon orange button"
-									show="{!address.default}"
-									onclick="{removeAddress()}">
+									class          = "circular ui icon orange button"
+									show           = "{!address.default}"
+									data-tooltip   = "Remove Address"
+									data-inverted  = ""
+									data-variation = "mini"
+									onclick        = "{removeAddress()}">
 									<i class="remove icon"></i>
 								</button>
 							</td>
@@ -334,32 +346,60 @@
 
 		removeContact(e) {
 			return (e) => {
-				self.contacts.splice(e.item.i, 1);
+				let contact = this.contacts[e.item.i];
+
+				if (!contact.id) {
+					self.contacts.splice(e.item.i, 1);
+				}
+				else {
+					if (confirm("Are you sure you want to remove this Contact information?")) {
+						this.parent.opts.service.removeContact(this.edit_id, contact.id, (err, response) => {
+							if (!err) {
+								self.contacts.splice(e.item.i, 1);
+							}
+						});
+					}
+				}
 			}
 		}
 
 		removeAddress(e) {
 			return (e) => {
-				self.addresses.splice(e.item.i, 1);
+				let address = this.addresses[e.item.i];
+
+				if (!address.id) {
+					self.addresses.splice(e.item.i, 1);
+				}
+				else {
+					if (confirm("Are you sure you want to remove this Address?")) {
+						this.parent.opts.service.removeAddress(this.edit_id, address.id, (err, response) => {
+							if (!err) {
+								self.addresses.splice(e.item.i, 1);
+							}
+						});
+					}
+				}
 			}
 		}
 
-		insertContact(def = false) {
+		insertContact(def = false, id = undefined) {
 			this.contacts.push({
-				contact_type: 'Home',
-				value: '',
-				default: def
+				id           : id,
+				contact_type : 'Home',
+				value        : '',
+				default      : def
 			});
 		}
 
-		insertAddress(def = false) {
+		insertAddress(def = false, id = undefined) {
 			this.addresses.push({
-				street: '',
-				city: '',
-				state: '',
-				postal_code: '',
-				country: '',
-				default: def
+				id          : id,
+				street      : '',
+				city        : '',
+				state       : '',
+				postal_code : '',
+				country     : '',
+				default     : def
 			});
 		}
 
@@ -397,8 +437,8 @@
 				initialDate : participant.dob
 			});
 
-			participant.contacts.forEach((c) => { this.insertContact(c.id == participant.default_contact) });
-			participant.addresses.forEach((a) => { this.insertAddress(a.id == participant.default_address) });
+			participant.contacts.forEach((c) => { this.insertContact(c.id == participant.default_contact, c.id) });
+			participant.addresses.forEach((a) => { this.insertAddress(a.id == participant.default_address, a.id) });
 
 			this.update();
 
@@ -468,7 +508,18 @@
 		}
 
 		save() {
-			let params = {
+			if (!this.edit_id) {
+				// CREATE PARTICIPANT
+				this.create();
+			}
+			else {
+				// EDIT PARTICIPANT
+				this.edit();
+			}
+		}
+
+		generateParticipantParams() {
+			return {
 				participant : {
 					first_name             : this.refs.first_name.value,
 					last_name              : this.refs.last_name.value,
@@ -487,11 +538,19 @@
 				addresses : this.addresses.map(this.generateAddresses),
 				contacts  : this.contacts.map(this.generateContacts)
 			};
+		}
 
-			this.parent.opts.service.create(params, (err, response) => {
-				console.log("err, response");
-				console.log(err, response);
+		create() {
+			this.parent.opts.service.create(this.generateParticipantParams(), (err, response) => {
+				if (!err) {
+					console.log(response.body().data(), response.statusCode());
+					this.parent.showList();
+				}
+			});
+		}
 
+		edit() {
+			this.parent.opts.service.update(this.edit_id, this.generateParticipantParams(), (err, response) => {
 				if (!err) {
 					console.log(response.body().data(), response.statusCode());
 					this.parent.showList();
