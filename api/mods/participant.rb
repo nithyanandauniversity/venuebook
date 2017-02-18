@@ -19,9 +19,18 @@ module Venuebook
 				participant = Participant.update(params[:id], params)
 			end
 
+			delete '/:id/contact/:contact_id' do
+				Participant.deleteContact(params[:id], params[:contact_id])
+			end
+
+			delete '/:id/address/:address_id' do
+				Participant.deleteAddress(params[:id], params[:address_id])
+			end
+
 			delete '/:id' do
 				Participant.delete(params[:id])
 			end
+
 		end
 	end
 
