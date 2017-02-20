@@ -16,7 +16,14 @@
 		</thead>
 		<tbody>
 			<tr each={ participants } scope={ this }>
-				<td style="font-size: 0.8em; width: 120px;">{member_id}</td>
+				<td style="font-size: 0.8em; width: 120px;">
+					<div
+						class = "ui violet ribbon label"
+						if    = "{itmAttr(participant_attributes).role > 1}">
+						{userRoles[itmAttr(participant_attributes).role]}
+					</div>
+					<span>{member_id}</span>
+				</td>
 				<td>
 					<label>
 						<strong>{first_name}</strong> {last_name}
@@ -27,13 +34,8 @@
 					</label>
 					<br>
 					<label
-						if={other_names}
-						style="font-size: .9em;">({other_names})</label>
-					<span
-						class = "ui violet horizontal label"
-						if    = "{itmAttr(participant_attributes).role > 1}">
-						{userRoles[itmAttr(participant_attributes).role]}
-					</span>
+						if    = {other_names}
+						style = "font-size: .9em;">({other_names})</label>
 				</td>
 				<td>{email}</td>
 				<td>
