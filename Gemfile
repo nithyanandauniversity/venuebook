@@ -24,6 +24,10 @@ gem 'sequel'
 gem 'rspec', :group => 'test'
 gem 'rack-test', :require => 'rack/test', :group => 'test'
 
+group :development do
+  gem "capistrano", "~> 3.7"
+end
+
 # Padrino Stable Gem
 gem 'padrino', '0.13.3.3'
 gem 'rest-client'
