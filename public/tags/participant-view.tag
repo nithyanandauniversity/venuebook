@@ -22,6 +22,12 @@
 			<div class="nine wide column">
 				<div class="ui fluid card">
 					<div class="content">
+						<div
+							class = "ui violet ribbon label"
+							style = "left: -48px; bottom: 5px; font-size: 0.6em;"
+							if    = "{attributes.role > 1}">
+							{userRoles[attributes.role]}
+						</div>
 						<span
 							class          = "right floated"
 							data-tooltip   = "{!attributes.is_healer && 'Not a'} Healer"
@@ -59,7 +65,7 @@
 										data-inverted  = ""
 										data-variation = "mini"
 										if             = "participant.gender">
-										<i class = "icon brown {participant.gender.toLowerCase()}"></i>
+										<i class = "icon brown {participant.gender && participant.gender.toLowerCase()}"></i>
 									</span>
 									<label>{participant.email}</label>
 								</div>
@@ -115,6 +121,8 @@
 
 		this.participant = {};
 		this.attributes  = {};
+
+		this.userRoles = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
 
 		this.on('view', () => {
 			this.view_id = this.opts.state.id;

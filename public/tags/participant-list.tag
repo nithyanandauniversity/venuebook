@@ -18,31 +18,22 @@
 			<tr each={ participants } scope={ this }>
 				<td style="font-size: 0.8em; width: 120px;">{member_id}</td>
 				<td>
-					<div>
-						<label>
-							<strong>{first_name}</strong> {last_name}
-							<i class = "icon trophy green"
-							if = {itmAttr(participant_attributes).ia_graduate}></i>
-							<i class = "icon heart red"
-							if = {itmAttr(participant_attributes).is_healer}></i>
-						</label>
-						<!-- <span
-							if             = {itmAttr(participant_attributes).ia_graduate}
-							data-tooltip   = "IA Graduate"
-							data-inverted  = ""
-							data-variation = "mini">
-						</span>
-						<span
-							if             = {itmAttr(participant_attributes).is_healer}
-							data-tooltip   = "Healer"
-							data-inverted  = ""
-							data-variation = "mini">
-						</span> -->
-					</div>
+					<label>
+						<strong>{first_name}</strong> {last_name}
+						<i class = "icon trophy green"
+						if = {itmAttr(participant_attributes).ia_graduate}></i>
+						<i class = "icon heart red"
+						if = {itmAttr(participant_attributes).is_healer}></i>
+					</label>
 					<br>
 					<label
 						if={other_names}
 						style="font-size: .9em;">({other_names})</label>
+					<span
+						class = "ui violet horizontal label"
+						if    = "{itmAttr(participant_attributes).role > 1}">
+						{userRoles[itmAttr(participant_attributes).role]}
+					</span>
 				</td>
 				<td>{email}</td>
 				<td>
@@ -160,6 +151,8 @@
 		}
 
 		this.participants = [];
+
+		this.userRoles = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
 
 		itmAttr(p) {
 			return JSON.parse(p || {})
