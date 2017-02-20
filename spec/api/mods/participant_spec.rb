@@ -12,13 +12,45 @@ describe 'Participant' do
 		get "/api/v1/participants", search: {
 			page: 1,
 			limit: 10,
-			keyword: 'sara'
+			keyword: 'senthuran'
 		}
 
-		response = JSON.parse(last_response.body)
+		response = JSON.parse(last_response.body)[0]['participants']
 
 		expect(response.length).to eql 1
-		expect(response[0]['first_name']).to eql "Saravana"
+		expect(response[0]['first_name']).to eql "Senthuran"
+	end
+
+	it "should be able to search participant by email address" do
+		Participant.delete_all
+		sleep(1.5)
+
+		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})
+		user3 = Participant.create({participant: {first_name: "Dinesh", last_name: "Gupta", email: "sri.sadhana@innerawakening.org", other_names: "Sri Nithya Sadhanananda", gender: "Male"}})
+		user4 = Participant.create({participant: {first_name: "Kamleshwari", last_name: "V", email: "leshlesh76@gmail.com", other_names: "Ma Nithya Nishpapananda", gender: "Female"}})
+
+		get "/api/v1/participants", search: {
+			page: 1,
+			limit: 10,
+			keyword: 'psenthu'
+		}
+
+		response1 = JSON.parse(last_response.body)[0]['participants']
+
+		expect(response1.length).to eql 1
+		expect(response1[0]['email']).to eql "psenthu@gmail.com"
+
+		get "/api/v1/participants", search: {
+			page: 1,
+			limit: 10,
+			keyword: 'Kaml'
+		}
+
+		response2 = JSON.parse(last_response.body)[0]['participants']
+
+		expect(response2.length).to eql 1
+		expect(response2[0]['email']).to eql "leshlesh76@gmail.com"
 	end
 
 	it "should be able to get participant by id" do
@@ -30,25 +62,6 @@ describe 'Participant' do
 
 		expect(response['id']).to eql user1['id']
 		expect(response['first_name']).to eql "Saravana"
-	end
-
-	it "should be able to search participant by email address" do
-		Participant.delete_all
-		sleep(1.5)
-
-		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
-		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})
-
-		get "/api/v1/participants", search: {
-			page: 1,
-			limit: 10,
-			keyword: 'psenthu'
-		}
-
-		response = JSON.parse(last_response.body)
-
-		expect(response.length).to eql 1
-		expect(response[0]['email']).to eql "psenthu@gmail.com"
 	end
 
 	it "should be able to create participant" do

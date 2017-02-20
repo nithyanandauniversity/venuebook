@@ -79,15 +79,15 @@
 			this.parent.showForm({id: this.opts.state.id});
 		}
 
-		participant = {};
-		attributes  = {};
+		this.participant = {};
+		this.attributes  = {};
 
 		this.on('view', () => {
 			this.view_id = this.opts.state.id;
 			this.parent.opts.service.get(this.view_id, (err, response) => {
 				if (!err) {
 					this.participant = response.body().data();
-					this.attributes = JSON.parse(this.participant.participant_attributes);
+					this.attributes  = JSON.parse(this.participant.participant_attributes) || {};
 					this.update();
 				}
 				else {

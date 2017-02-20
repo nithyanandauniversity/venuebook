@@ -4,7 +4,12 @@
 	style = "margin: 25px 0;">
 
 	<div class="ui fluid right action left icon input">
-		<input type="text" placeholder="Search participants..." autocomplete="off">
+		<input
+			type         = "text"
+			ref          = "searchQ"
+			placeholder  = "Search participants..."
+			onkeypress   = { executeSearch() }
+			autocomplete = "off" />
 		<!-- <div class="ui icon input"> -->
 		<i class="search icon"></i>
 		<!-- </div> -->
@@ -12,5 +17,21 @@
 			<i class="add user icon"></i> New
 		</div>
 	</div>
+
+	<script>
+
+		executeSearch(e) {
+			return(e) => {
+				if (e.which === 13) {
+					this.parent.performSearch({
+						page    : 1,
+						limit   : 10,
+						keyword : e.target.value
+					});
+				}
+			}
+		}
+
+	</script>
 
 </participant-search>

@@ -109,7 +109,7 @@
 					this.parent.opts.service.remove(e.item.participant.id, (err, response) => {
 						if (!err) {
 							console.log(response.body().data(), response.statusCode());
-							this.initialLoad();
+							this.getParticipants(this.getDefaultQueryParams());
 						}
 						else {
 							console.log('some error occurred');
@@ -127,7 +127,7 @@
 		goToPrevious(e) {
 			return(e) => {
 				if (!this.first_page) {
-					this.getParticipants({page: (this.current_page - 1), limit: 5});
+					this.getParticipants({page: (this.current_page - 1), limit: 10});
 				}
 			}
 		}
@@ -135,8 +135,15 @@
 		goToNext(e) {
 			return(e) => {
 				if (!this.last_page) {
-					this.getParticipants({page: (this.current_page + 1), limit: 5});
+					this.getParticipants({page: (this.current_page + 1), limit: 10});
 				}
+			}
+		}
+
+		getDefaultQueryParams() {
+			return {
+				page  : this.current_page && this.record_count > 1 ? this.current_page : 1,
+				limit : 10
 			}
 		}
 
@@ -154,11 +161,11 @@
 						this.last_page    = result.last_page;
 						this.record_range = result.current_page_record_range.split('..').join(' to ');
 						this.record_count = result.pagination_record_count;
-						this.update();
 					}
 					else {
 						// NO RESULTS
 					}
+					this.update();
 				}
 				else {
 					console.log("ERROR !");
@@ -166,7 +173,14 @@
 			});
 		}
 
-		this.getParticipants({page: 1, limit: 5});
+		this.on('search', (data) => {
+			console.log("this.parent.opts.store");
+			let state = this.parent.opts.store.getState();
+			console.log('PERFORM SEARCH', state.participants.query);
+			this.getParticipants(state.participants.query);
+		});
+
+		this.getParticipants(this.getDefaultQueryParams());
 
 	</script>
 
