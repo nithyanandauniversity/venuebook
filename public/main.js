@@ -11,7 +11,7 @@ import 'tags/participant-form.tag!';
 import 'tags/participant-view.tag!';
 import 'tags/participant-comments.tag!';
 
-const Services = new AllServices(window.location.hostname);
+const Services = new AllServices();
 
 // riot.mount('*');
 riot.mount('nav');

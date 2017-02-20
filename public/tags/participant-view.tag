@@ -44,6 +44,7 @@
 						</div>
 						<div
 							class = "meta"
+							if    = "{ participant.other_names }"
 							style = "font-size: 0.8em;">
 							{participant.other_names || 'N/A'}
 						</div>
@@ -52,13 +53,46 @@
 							style = "font-size: 0.9em; margin-top: 1em;">
 							<div class="fields">
 								<div class="field">
+									<span
+										class          = "right floated"
+										data-tooltip   = "{participant.gender}"
+										data-inverted  = ""
+										data-variation = "mini"
+										if             = "participant.gender">
+										<i class = "icon brown {participant.gender.toLowerCase()}"></i>
+									</span>
 									<label>{participant.email}</label>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="extra content">
+					<div class="extra content" style="font-size: 0.75em;">
 						<!-- Contact Information here -->
+						<div class="ui two column grid">
+							<div class="six wide column">
+								<span
+									each  = {participant.contacts}
+									style = "cursor: default;">
+									<i class="icon {contact_type == 'Home' ? 'call' : 'mobile'} {id == participant.default_contact && 'blue'}">
+									</i>
+									{value}
+								</span>
+							</div>
+							<div class="ten wide column">
+								<table class="ui very basic table">
+									<tr each = {participant.addresses}>
+										<td style="padding: 0;">
+											<i class="icon marker {id == participant.default_address && 'blue'}"></i>
+										</td>
+										<td>
+											<span>{street}</span>
+											<span>{city} {state} <em>{postal_code}</em></span>
+											<div><strong>{country}</strong></div>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

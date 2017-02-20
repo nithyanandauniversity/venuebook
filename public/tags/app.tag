@@ -9,10 +9,6 @@
 
 	<script>
 
-		// countries() {
-		// 	return this.opts.services.countries();
-		// }
-
 		this.subtitle = 'Easy, right?';
 		this.list = [
 			{ name: 'my' },

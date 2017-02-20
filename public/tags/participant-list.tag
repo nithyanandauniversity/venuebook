@@ -1,5 +1,8 @@
 <participant-list>
-	<table class="ui blue table" show="{participants.length > 0}">
+	<table
+		class = "ui blue table"
+		show  = "{participants.length > 0}"
+		style = "margin-bottom: 25px;">
 		<thead>
 			<tr>
 				<th>ID #</th>
@@ -12,19 +15,43 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr each={ participant in participants } scope={ this }>
-				<td style="font-size: 0.8em; width: 120px;">{participant.member_id}</td>
+			<tr each={ participants } scope={ this }>
+				<td style="font-size: 0.8em; width: 120px;">{member_id}</td>
 				<td>
-					<label>
-						<strong>{participant.first_name}</strong> {participant.last_name}
-					</label>
+					<div>
+						<label>
+							<strong>{first_name}</strong> {last_name}
+							<i class = "icon trophy green"
+							if = {itmAttr(participant_attributes).ia_graduate}></i>
+							<i class = "icon heart red"
+							if = {itmAttr(participant_attributes).is_healer}></i>
+						</label>
+						<!-- <span
+							if             = {itmAttr(participant_attributes).ia_graduate}
+							data-tooltip   = "IA Graduate"
+							data-inverted  = ""
+							data-variation = "mini">
+						</span>
+						<span
+							if             = {itmAttr(participant_attributes).is_healer}
+							data-tooltip   = "Healer"
+							data-inverted  = ""
+							data-variation = "mini">
+						</span> -->
+					</div>
 					<br>
 					<label
-						if={participant.other_names}
-						style="font-size: .9em;">({participant.other_names})</label>
+						if={other_names}
+						style="font-size: .9em;">({other_names})</label>
 				</td>
-				<td>{participant.email}</td>
-				<td>{participant.contact_number}</td>
+				<td>{email}</td>
+				<td>
+					<span if={contact}>
+						<i class="icon {contact.contact_type == 'Home' ? 'call' : 'mobile'}">
+						</i>
+						{contact.value}
+					</span>
+				</td>
 				<td style="color: black !important;">
 					<button
 						class    = "ui action-btn vertical olive animated button"
@@ -38,7 +65,7 @@
 					<div
 						class    = "ui action-btn vertical yellow animated button"
 						tabindex = "0"
-						data     = "{participant.member_id}"
+						data     = "{member_id}"
 						onclick  = { showForm() }>
 						<div class="hidden content">Edit</div>
 						<div class="visible content">
@@ -48,7 +75,7 @@
 					<div
 						class    = "ui action-btn vertical red animated button"
 						tabindex = "0"
-						data     = "{participant.member_id}"
+						data     = "{member_id}"
 						onclick  = { remove() }>
 						<div class="hidden content">Delete</div>
 						<div class="visible content">
@@ -61,22 +88,32 @@
 		<tfoot>
 			<tr>
 				<td colspan="5">
-					<div class="ui center aligned">
-						<button
-							class   = "ui labeled icon button {first_page && 'disabled'}"
-							onclick = { goToPrevious() }>
-							<i class="chevron left icon"></i>
-							Previous
-						</button>
-						<button class="ui labeled button disabled">
-							Page #{current_page} | Showing {record_range} of {record_count}
-						</button>
-						<button
-							class   = "ui right labeled icon button {last_page && 'disabled'}"
-							onclick = { goToNext() }>
-							<i class="chevron right icon"></i>
-							Next
-						</button>
+					<div class="ui two column grid">
+						<div class="ui left aligned column">
+							<span style="margin-right: 10px;">
+								<i class="icon trophy green"></i>- IA Graduate
+							</span>
+							<span>
+								<i class="icon heart red"></i>- Healer
+							</span>
+						</div>
+						<div class="ui right aligned column">
+							<button
+								class   = "ui labeled icon button {first_page && 'disabled'}"
+								onclick = { goToPrevious() }>
+								<i class="chevron left icon"></i>
+								Previous
+							</button>
+							<button class="ui labeled button disabled">
+								Page #{current_page} | Showing {record_range} of {record_count}
+							</button>
+							<button
+								class   = "ui right labeled icon button {last_page && 'disabled'}"
+								onclick = { goToNext() }>
+								<i class="chevron right icon"></i>
+								Next
+							</button>
+						</div>
 					</div>
 				</td>
 			</tr>
@@ -89,13 +126,13 @@
 
 		showView(e) {
 			return (e) => {
-				self.parent.showView(e.item.participant);
+				self.parent.showView(e.item);
 			}
 		}
 
 		showForm(e) {
 			return (e) => {
-				self.parent.showForm(e.item.participant);
+				self.parent.showForm(e.item);
 			}
 		}
 
@@ -106,7 +143,7 @@
 		remove(e) {
 			return (e) => {
 				if (confirm("Are you sure you want to delete the participant?")) {
-					this.parent.opts.service.remove(e.item.participant.id, (err, response) => {
+					this.parent.opts.service.remove(e.item.id, (err, response) => {
 						if (!err) {
 							console.log(response.body().data(), response.statusCode());
 							this.getParticipants(this.getDefaultQueryParams());
@@ -123,6 +160,10 @@
 		}
 
 		this.participants = [];
+
+		itmAttr(p) {
+			return JSON.parse(p || {})
+		}
 
 		goToPrevious(e) {
 			return(e) => {
