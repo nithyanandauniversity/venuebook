@@ -29,7 +29,7 @@ export default class Services {
 		}
 		else {
 			if (hostname.indexOf('lifebliss-singapore') >= 0) {
-				return 'partibook.lifebliss-singapore.org';
+				return 'venuebook.lifebliss-singapore.org';
 			}
 		}
 	}
