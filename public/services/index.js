@@ -8,8 +8,9 @@ import Participant from './participant.service';
 
 export default class Services {
 
-	constructor() {
-		const api = restful('http://localhost:9292/api/v1', fetchBackend(fetch));
+	constructor(host) {
+		const hostname = this.getHostname(host);
+		const api = restful('http://' + hostname + '/api/v1', fetchBackend(fetch));
 
 		const participantsCollection = api.all('participants');
 		// const eventsCollection = api.all('events');
@@ -20,6 +21,17 @@ export default class Services {
 		// this.programService = new Program(api);
 
 		this.countries = this.generateCountriesList();
+	}
+
+	getHostname(hostname) {
+		if (hostname == 'localhost') {
+			return 'localhost:9292';
+		}
+		else {
+			if (hostname.indexOf('lifebliss-singapore') >= 0) {
+				return 'partibook.lifebliss-singapore.org';
+			}
+		}
 	}
 
 	generateCountriesList() {

@@ -1,5 +1,5 @@
 production:
-  url: 'http://partbook.domain.org/api/v1/participant'
+  url: 'http://partibook.lifebliss-singapore.org/api/v1/participant'
 development:
   url: 'http://localhost:3001/api/v1/participant'
 test:
