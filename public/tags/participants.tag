@@ -24,6 +24,8 @@
 
 	<script>
 
+		this.searchQ = '';
+
 		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_PARTICIPANT'});
 			this.update();
@@ -31,10 +33,9 @@
 		}
 
 		showList(e) {
-			let searchQ = this.tags['participant-search'].refs.searchQ.value;
 
-			if (searchQ != '') {
-				this.tags['participant-search'].trigger('doSearch');
+			if (this.searchQ != '') {
+				this.performSearch(this.tags['participant-list'].getPage());
 			}
 			else {
 				this.opts.store.dispatch({type: 'LIST_PARTICIPANT'});
@@ -42,8 +43,12 @@
 			}
 		}
 
-		performSearch(e) {
-			this.opts.store.dispatch({type: 'SEARCH_PARTICIPANT', query: e});
+		performSearch(pageNo) {
+			this.opts.store.dispatch({type: 'SEARCH_PARTICIPANT', query: {
+				page    : pageNo || 1,
+				limit   : 10,
+				keyword : this.searchQ || ''
+			}});
 			this.update();
 			this.tags['participant-list'].trigger('search');
 		}

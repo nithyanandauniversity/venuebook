@@ -177,14 +177,23 @@
 			}
 		}
 
+		getPage() {
+			return this.current_page && this.record_count > 1 ? this.current_page : 1;
+		}
+
 		getDefaultQueryParams() {
 			return {
-				page  : this.current_page && this.record_count > 1 ? this.current_page : 1,
+				page  : this.getPage(),
 				limit : 10
 			}
 		}
 
 		getParticipants(params) {
+
+			if (this.parent.searchQ) {
+				params.keyword = this.parent.searchQ;
+			}
+
 			this.parent.opts.service.search(params, (err, response) => {
 				if (!err && response.body().length) {
 					let result = this.getData(response.body()[0]);
