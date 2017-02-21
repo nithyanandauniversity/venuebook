@@ -106,7 +106,7 @@
 
 				<div class="four wide field" show={ia_graduate == 1}>
 					<label for="ia_dates">IA Dates</label>
-					<input type="text" ref="ia_dates" placeholder="IA Dates (MMM, YYYYY)" />
+					<input type="text" ref="ia_dates" placeholder="IA Dates (MMM, YYYY)" />
 				</div>
 
 				<div class="field" show={ia_graduate == 1}>
@@ -154,6 +154,7 @@
 								<select ref="{'contact_type_' + i}" class="ui dropdown">
 									<option value="Mobile">Mobile</option>
 									<option value="Home">Home</option>
+									<option value="Work">Work</option>
 								</select>
 							</td>
 							<td style="width: 105px; text-align: right;">
@@ -466,7 +467,25 @@
 		});
 
 		reset() {
-			console.log("RESET !!!");
+			this.contacts  = [];
+			this.addresses = [];
+
+			this.refs.first_name.value  = ''
+			this.refs.last_name.value   = ''
+			this.refs.email.value       = ''
+			this.refs.other_names.value = ''
+			this.refs.dob.value         = ''
+			this.refs.notes.value       = ''
+			this.refs.role.value        = "0"
+
+			this.gender      = undefined;
+			this.ia_graduate = undefined;
+			this.is_healer   = undefined;
+
+			self.insertContact(true);
+			self.insertAddress(true);
+
+			self.update();
 		}
 
 		countries = this.parent.opts.countries();

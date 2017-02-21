@@ -78,8 +78,8 @@
 							<div class="six wide column">
 								<span
 									each  = {participant.contacts}
-									style = "cursor: default;">
-									<i class="icon {contact_type == 'Home' ? 'call' : 'mobile'} {id == participant.default_contact && 'blue'}">
+									style = "cursor: default; display: block;">
+									<i class="icon {contact_type == 'Home' && 'call'} {contact_type == 'Mobile' && 'mobile'} {contact_type == 'Work' && 'building'} {id == participant.default_contact && 'blue'}">
 									</i>
 									{value}
 								</span>

@@ -40,7 +40,7 @@
 				<td>{email}</td>
 				<td>
 					<span if={contact}>
-						<i class="icon {contact.contact_type == 'Home' ? 'call' : 'mobile'}">
+						<i class="icon {contact.contact_type == 'Home' && 'call'} {contact.contact_type == 'Mobile' && 'mobile'} {contact.contact_type == 'Work' && 'building'}">
 						</i>
 						{contact.value}
 					</span>
@@ -58,7 +58,7 @@
 					<div
 						class    = "ui action-btn vertical yellow animated button"
 						tabindex = "0"
-						data     = "{member_id}"
+						data     = "{ member_id }"
 						onclick  = { showForm() }>
 						<div class="hidden content">Edit</div>
 						<div class="visible content">
@@ -68,7 +68,7 @@
 					<div
 						class    = "ui action-btn vertical red animated button"
 						tabindex = "0"
-						data     = "{member_id}"
+						data     = "{ member_id }"
 						onclick  = { remove() }>
 						<div class="hidden content">Delete</div>
 						<div class="visible content">
