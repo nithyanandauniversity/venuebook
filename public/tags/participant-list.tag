@@ -139,7 +139,7 @@
 					this.parent.opts.service.remove(e.item.id, (err, response) => {
 						if (!err) {
 							console.log(response.body().data(), response.statusCode());
-							this.getParticipants(this.getDefaultQueryParams());
+							this.performSearch();
 						}
 						else {
 							console.log('some error occurred');
@@ -147,6 +147,7 @@
 					});
 				}
 				else {
+					// User Cancelled
 					console.log("Do no delete!");
 				}
 			}
@@ -209,11 +210,14 @@
 			});
 		}
 
-		this.on('search', (data) => {
-			console.log("this.parent.opts.store");
+		performSearch() {
 			let state = this.parent.opts.store.getState();
 			console.log('PERFORM SEARCH', state.participants.query);
 			this.getParticipants(state.participants.query);
+		}
+
+		this.on('search', (data) => {
+			this.performSearch();
 		});
 
 		this.getParticipants(this.getDefaultQueryParams());

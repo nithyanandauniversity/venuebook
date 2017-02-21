@@ -70,6 +70,16 @@
 									<label>{participant.email}</label>
 								</div>
 							</div>
+							<div
+								if    = "{participant.notes}"
+								class = "ui segment orange"
+								style = "margin-top: 25px;">
+								<label style="font-weight: bolder;">
+									<i class="icon write"></i>
+									Notes
+								</label>
+								<p>{participant.notes}</p>
+							</div>
 						</div>
 					</div>
 					<div class="extra content" style="font-size: 0.75em;">
@@ -78,7 +88,7 @@
 							<div class="six wide column">
 								<span
 									each  = {participant.contacts}
-									style = "cursor: default; display: block;">
+									style = "cursor: default; display: block; margin-bottom: 5px;">
 									<i class="icon {contact_type == 'Home' && 'call'} {contact_type == 'Mobile' && 'mobile'} {contact_type == 'Work' && 'building'} {id == participant.default_contact && 'blue'}">
 									</i>
 									{value}

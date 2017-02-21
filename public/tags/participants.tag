@@ -2,12 +2,12 @@
 
 	<!-- Participant Search Component -->
 	<participant-search
-		show={opts.state.view == 'LIST_PARTICIPANT' || opts.state.view == 'SEARCH_PARTICIPANT'}>
+		show = {opts.state.view == 'LIST_PARTICIPANT' || opts.state.view == 'SEARCH_PARTICIPANT'}>
 	</participant-search>
 
 	<!-- Participant List Component -->
 	<participant-list
-		show={opts.state.view == 'LIST_PARTICIPANT' || opts.state.view == 'SEARCH_PARTICIPANT'}>
+		show = {opts.state.view == 'LIST_PARTICIPANT' || opts.state.view == 'SEARCH_PARTICIPANT'}>
 	</participant-list>
 
 	<!-- Participant Form Component for Add / Edit -->
@@ -31,8 +31,15 @@
 		}
 
 		showList(e) {
-			this.opts.store.dispatch({type: 'LIST_PARTICIPANT'});
-			this.update();
+			let searchQ = this.tags['participant-search'].refs.searchQ.value;
+
+			if (searchQ != '') {
+				this.tags['participant-search'].trigger('doSearch');
+			}
+			else {
+				this.opts.store.dispatch({type: 'LIST_PARTICIPANT'});
+				this.update();
+			}
 		}
 
 		performSearch(e) {

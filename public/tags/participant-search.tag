@@ -20,17 +20,23 @@
 
 	<script>
 
+		search() {
+			this.parent.performSearch({
+				page    : 1,
+				limit   : 10,
+				keyword : this.refs.searchQ.value
+			});
+		}
+
 		executeSearch(e) {
 			return(e) => {
 				if (e.which === 13) {
-					this.parent.performSearch({
-						page    : 1,
-						limit   : 10,
-						keyword : e.target.value
-					});
+					this.search();
 				}
 			}
 		}
+
+		this.on('doSearch', this.search);
 
 	</script>
 
