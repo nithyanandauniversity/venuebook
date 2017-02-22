@@ -482,28 +482,6 @@
 
 		});
 
-		reset() {
-			this.contacts  = [];
-			this.addresses = [];
-
-			this.refs.first_name.value  = ''
-			this.refs.last_name.value   = ''
-			this.refs.email.value       = ''
-			this.refs.other_names.value = ''
-			this.refs.dob.value         = ''
-			this.refs.notes.value       = ''
-			this.refs.role.value        = "0"
-
-			this.gender      = undefined;
-			this.ia_graduate = undefined;
-			this.is_healer   = undefined;
-
-			self.insertContact(true);
-			self.insertAddress(true);
-
-			self.update();
-		}
-
 		countries = this.parent.opts.countries();
 
 		generateAddresses(addresses) {
@@ -640,6 +618,28 @@
 					this.parent.showList();
 				}
 			});
+		}
+
+		reset() {
+			this.contacts  = [];
+			this.addresses = [];
+
+			this.refs.first_name.value  = ''
+			this.refs.last_name.value   = ''
+			this.refs.email.value       = ''
+			this.refs.other_names.value = ''
+			this.refs.dob.value         = ''
+			this.refs.notes.value       = ''
+			this.refs.role.value        = "0"
+
+			this.gender      = undefined;
+			this.ia_graduate = undefined;
+			this.is_healer   = undefined;
+
+			self.insertContact(true);
+			self.insertAddress(true);
+
+			self.update();
 		}
 
 		cancel() {

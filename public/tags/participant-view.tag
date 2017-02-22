@@ -113,7 +113,7 @@
 				</div>
 			</div>
 			<div class="seven wide column">
-				<participant-comments></participant-comments>
+				<participant-comments comments = "{participant.comments}"></participant-comments>
 			</div>
 
 		</div>
