@@ -23,15 +23,15 @@
 			</h4>
 
 			<div class="fields">
-				<div class="five wide field">
-					<label for="first_name">First name</label>
+				<div class="five wide field {validation && validation.emptyName && 'error'}">
+					<label for = "first_name">First name</label>
 					<input type="text" ref="first_name" placeholder="First Name" />
 				</div>
 				<div class="five wide field">
 					<label for="last_name">Last name</label>
 					<input type="text" ref="last_name" placeholder="Last Name" />
 				</div>
-				<div class="six wide field">
+				<div class="six wide field {validation && ((validation.emptyEmail && validation.emptyContact) || (!validation.emptyEmail && !validation.validEmail)) && 'error'}">
 					<label for="email">Email</label>
 					<input type="text" ref="email" placeholder="Email Address" />
 				</div>
@@ -179,6 +179,13 @@
 							</td>
 						</tr>
 					</table>
+					<div style="text-align: center;">
+						<span
+							show  = "{validation && validation.emptyEmail && validation.emptyContact}"
+							class = "ui pointing red basic label">
+							Email or Contact number is mandatory
+						</span>
+					</div>
 				</div>
 				<div class="eight wide field">
 					<h4 class="ui dividing header">
@@ -270,6 +277,13 @@
 							</td>
 						</tr>
 					</table>
+					<div style="text-align: center;">
+						<span
+							show  = "{validation && validation.emptyAddress}"
+							class = "ui pointing red basic label">
+							Address: City and Country is Mandatory
+						</span>
+					</div>
 				</div>
 			</div>
 
@@ -292,8 +306,9 @@
 
 		const self = this;
 
-		this.contacts  = [];
-		this.addresses = [];
+		// this.validation = {};
+		this.contacts   = [];
+		this.addresses  = [];
 
 		setGender(e) {
 			return (e) => {
@@ -303,6 +318,7 @@
 
 		setGrad(e) {
 			return (e) => {
+				console.log(e.target.dataset.value);
 				self.ia_graduate = e.target.dataset.value;
 			}
 		}
@@ -490,15 +506,23 @@
 
 		countries = this.parent.opts.countries();
 
-		generateAddresses(address, i) {
-			return {
-				street      : this.refs['street_' + i].value,
-				city        : this.refs['city_' + i].value,
-				state       : this.refs['state_' + i].value,
-				postal_code : this.refs['postal_code_' + i].value,
-				country     : this.refs['country_' + i].value,
-				default     : address.default
-			};
+		generateAddresses(addresses) {
+			return addresses.reduce((data, record, i) => {
+				let address = {
+					street      : this.refs['street_' + i].value,
+					city        : this.refs['city_' + i].value,
+					state       : this.refs['state_' + i].value,
+					postal_code : this.refs['postal_code_' + i].value,
+					country     : this.refs['country_' + i].value,
+					default     : record.default
+				};
+
+				if ((address.city && address.city.length > 0) && (address.country != '' && address.country.length > 0)) {
+					data.push(address);
+				}
+
+				return data;
+			}, []);
 		}
 
 		assignAddresses(addresses) {
@@ -511,29 +535,70 @@
 			});
 		}
 
-		generateContacts(contact, i) {
-			return {
-				contact_type : this.refs['contact_type_' + i].value,
-				value        : this.refs['contact_value_' + i].value,
-				default      : contact.default
-			};
+		generateContacts(contacts) {
+			return contacts.reduce((data, record, i) => {
+				let contact = {
+					contact_type : this.refs['contact_type_' + i].value,
+					value        : this.refs['contact_value_' + i].value,
+					default      : record.default
+				}
+
+				if (contact.value && contact.value.length > 0) {
+					data.push(contact);
+				}
+
+				return data;
+			}, []);
 		}
 
 		assignContacts(contacts) {
 			contacts.forEach((contact, i) => {
-				this.refs['contact_type_' + i].value = contact.contact_type;
+				this.refs['contact_type_' + i].value  = contact.contact_type;
 				this.refs['contact_value_' + i].value = contact.value;
 			});
 		}
 
+		validateForm(params) {
+			let emailRegex = new RegExp(/^[a-z0-9](\.?[a-z0-9_-]){0,}@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/);
+			this.validation = {};
+
+			if (!params.participant.first_name || params.participant.first_name == '') {
+				this.validation.emptyName = true;
+			}
+
+			if (params.participant.email && params.participant.email != '') {
+				this.validation.emptyEmail = false;
+				this.validation.validEmail = emailRegex.test(params.participant.email);
+			}
+			else {
+				this.validation.emptyEmail = true;
+			}
+
+			this.validation.emptyContact = params.contacts.length == 0;
+ 			this.validation.emptyAddress = params.addresses.length == 0;
+
+			let is_valid = !this.validation.emptyName
+				&& (this.validation.validEmail || (this.validation.emptyEmail && !this.validation.emptyContact))
+				&& !this.validation.emptyAddress;
+
+			return is_valid;
+		}
+
 		save() {
+			let saveParams = this.generateParticipantParams();
+			this.errors = this.validateForm(saveParams);
+
+			if (!this.validateForm(saveParams)) {
+				return false;
+			}
+
 			if (!this.edit_id) {
 				// CREATE PARTICIPANT
-				this.create();
+				this.create(saveParams);
 			}
 			else {
 				// EDIT PARTICIPANT
-				this.edit();
+				this.edit(saveParams);
 			}
 		}
 
@@ -554,13 +619,13 @@
 						is_healer   : parseInt(this.is_healer)
 					})
 				},
-				addresses : this.addresses.map(this.generateAddresses),
-				contacts  : this.contacts.map(this.generateContacts)
+				addresses : this.generateAddresses(this.addresses),
+				contacts  : this.generateContacts(this.contacts)
 			};
 		}
 
-		create() {
-			this.parent.opts.service.create(this.generateParticipantParams(), (err, response) => {
+		create(data) {
+			this.parent.opts.service.create(data, (err, response) => {
 				if (!err) {
 					console.log(response.body().data(), response.statusCode());
 					this.parent.showList();
@@ -568,8 +633,8 @@
 			});
 		}
 
-		edit() {
-			this.parent.opts.service.update(this.edit_id, this.generateParticipantParams(), (err, response) => {
+		edit(data) {
+			this.parent.opts.service.update(this.edit_id, data, (err, response) => {
 				if (!err) {
 					console.log(response.body().data(), response.statusCode());
 					this.parent.showList();
