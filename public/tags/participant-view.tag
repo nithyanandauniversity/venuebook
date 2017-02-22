@@ -6,7 +6,7 @@
 		<div class="row" style="margin-bottom: 25px;">
 			<h2>
 				<span>
-					View Participant
+					View Participant [{participant.member_id}]
 				</span>
 				<div class="ui green basic button right floated" onclick = { edit }>
 					<i class="write left icon"></i> Edit

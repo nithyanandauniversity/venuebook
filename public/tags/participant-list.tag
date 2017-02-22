@@ -5,7 +5,6 @@
 		style = "margin-bottom: 25px;">
 		<thead>
 			<tr>
-				<th>ID #</th>
 				<th>Full Name</th>
 				<th>Email</th>
 				<th>Contact</th>
@@ -16,15 +15,12 @@
 		</thead>
 		<tbody>
 			<tr each={ participants } scope={ this }>
-				<td style="font-size: 0.8em; width: 120px;">
+				<td>
 					<div
-						class = "ui violet ribbon label"
+						class = "ui violet label"
 						if    = "{itmAttr(participant_attributes).role > 1}">
 						{userRoles[itmAttr(participant_attributes).role]}
 					</div>
-					<span>{member_id}</span>
-				</td>
-				<td>
 					<label>
 						<strong>{first_name}</strong> {last_name}
 						<i class = "icon trophy green"
@@ -80,7 +76,7 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="5">
+				<td colspan="4">
 					<div class="ui two column grid">
 						<div class="ui left aligned column">
 							<span style="margin-right: 10px;">

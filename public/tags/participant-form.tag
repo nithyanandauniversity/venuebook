@@ -6,7 +6,7 @@
 		<div class="row" style="margin-bottom: 35px;">
 			<h2>
 				<span>
-					{opts.state.view == 'ADD_PARTICIPANT' ? 'Create New' : 'Edit'} Participant
+					{opts.state.view == 'ADD_PARTICIPANT' ? 'Create New' : 'Edit'} Participant {opts.state.view == 'EDIT_PARTICIPANT' && ' [' + participant.member_id + ']'}
 				</span>
 				<div
 					class   = "ui primary basic button right floated"
