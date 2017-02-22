@@ -6,7 +6,7 @@
 		<div class="row" style="margin-bottom: 35px;">
 			<h2>
 				<span>
-					{opts.state.view == 'ADD_PARTICIPANT' ? 'Create New' : 'Edit'} Participant {opts.state.view == 'EDIT_PARTICIPANT' && ' [' + participant.member_id + ']'}
+					{opts.state.view == 'ADD_PARTICIPANT' ? 'Create New' : 'Edit'} Participant {opts.state.view == 'EDIT_PARTICIPANT' && participant && ' [' + participant.member_id + ']'}
 				</span>
 				<div
 					class   = "ui primary basic button right floated"
@@ -141,7 +141,7 @@
 						<tr
 							each="{contact, i in contacts}"
 							class="{contact.default && 'positive'}">
-							<td>
+							<td style="padding-right: 0;">
 								<span class={contact.default && 'ui ribbon label'}>#{i + 1}</span>
 							</td>
 							<td>
@@ -151,15 +151,17 @@
 									placeholder = "Contact number" />
 							</td>
 							<td>
-								<select ref="{'contact_type_' + i}" class="ui dropdown">
+								<select
+									ref   = "{'contact_type_' + i}"
+									class = "ui dropdown">
 									<option value="Mobile">Mobile</option>
 									<option value="Home">Home</option>
 									<option value="Work">Work</option>
 								</select>
 							</td>
-							<td style="width: 105px; text-align: right;">
+							<td style="width: 90px; text-align: right;">
 								<button
-									class          = "circular ui icon olive button"
+									class          = "circular mini ui icon olive button"
 									show           = "{!contact.default}"
 									data-tooltip   = "Make Default"
 									data-inverted  = ""
@@ -168,7 +170,7 @@
 									<i class="checkmark icon"></i>
 								</button>
 								<button
-									class          = "circular ui icon orange button"
+									class          = "circular mini ui icon orange button"
 									show           = "{!contact.default}"
 									data-tooltip   = "Remove Contact"
 									data-inverted  = ""
@@ -247,7 +249,7 @@
 											<option value="">Select Country...</option>
 											<option
 												each  = {country in countries}
-												value = "{country.code}">
+												value = "{country.value}">
 												{country.value}
 											</option>
 										</select>
@@ -256,7 +258,7 @@
 							</td>
 							<td style="width: 65px;">
 								<button
-									class          = "circular ui icon olive button"
+									class          = "circular mini ui icon olive button"
 									show           = "{!address.default}"
 									style          = "margin-bottom: 5px;"
 									data-tooltip   = "Make Default"
@@ -266,7 +268,7 @@
 									<i class="checkmark icon"></i>
 								</button>
 								<button
-									class          = "circular ui icon orange button"
+									class          = "circular mini ui icon orange button"
 									show           = "{!address.default}"
 									data-tooltip   = "Remove Address"
 									data-inverted  = ""
@@ -482,7 +484,8 @@
 
 		});
 
-		countries = this.parent.opts.countries();
+		this.countries = this.parent.opts.countries();
+		this.dialcodes = this.parent.opts.dialcodes;
 
 		generateAddresses(addresses) {
 			return addresses.reduce((data, record, i) => {

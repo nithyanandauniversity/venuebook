@@ -1,7 +1,7 @@
 import 'fetch';
 import restful, { fetchBackend } from 'restful';
 
-import { COUNTRIES } from '../constants/countries';
+import { COUNTRIES, DIALCODES } from '../constants/countries';
 import Participant from './participant.service';
 // import Event from './event.service';
 // import Program from './program.service';
@@ -21,6 +21,7 @@ export default class Services {
 		// this.programService = new Program(api);
 
 		this.countries = this.generateCountriesList();
+		this.dialcodes = DIALCODES;
 	}
 
 	generateCountriesList() {

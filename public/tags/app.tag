@@ -1,11 +1,12 @@
 <app class="ui container">
 
-
 	<participants
-		store={opts.store}
-		state={opts.store.getState().participants}
-		service={opts.services.participantService}
-		countries={opts.services.countries}></participants>
+		store     = {opts.store}
+		state     = {opts.store.getState().participants}
+		service   = {opts.services.participantService}
+		countries = {opts.services.countries}
+		dialcodes = {opts.services.dialcodes}>
+	</participants>
 
 	<script>
 
