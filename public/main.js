@@ -10,6 +10,7 @@ import 'tags/participant-search.tag!';
 import 'tags/participant-form.tag!';
 import 'tags/participant-view.tag!';
 import 'tags/participant-comments.tag!';
+import 'tags/riot-pagination.tag!';
 
 const Services = new AllServices();
 

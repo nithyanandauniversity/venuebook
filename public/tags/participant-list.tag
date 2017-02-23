@@ -77,16 +77,40 @@
 		<tfoot>
 			<tr>
 				<td colspan="4">
-					<div class="ui two column grid">
-						<div class="ui left aligned column">
-							<span style="margin-right: 10px;">
-								<i class="icon trophy green"></i>- IA Graduate
-							</span>
-							<span>
-								<i class="icon heart red"></i>- Healer
+					<div class="ui centered column grid">
+						<div class="row">
+							<riot-pagination
+								show         = "{ participants.length }"
+								current-page = "{ currentPage }"
+								per-page     = "{ perPage }"
+								page-changed = "{ switchPage }"
+								page-count   = "{ pageCount }"
+								record-count = "{ recordCount }"
+								max-buttons  = "8"
+								show-first   = "true"
+								show-last    = "true"
+								show-next    = "true"
+								show-prev    = "true">
+							</riot-pagination>
+						</div>
+						<div class="row">
+							<span class="ui label">
+								Showing { recordRange } / { recordCount } records in { pageCount } pages
 							</span>
 						</div>
-						<div class="ui right aligned column">
+					</div>
+					<div class="ui left aligned column grid">
+						<div class="row">
+							<div class="ui left aligned column">
+								<span style="margin-right: 10px;">
+									<i class="icon trophy green"></i>- IA Graduate
+								</span>
+								<span>
+									<i class="icon heart red"></i>- Healer
+								</span>
+							</div>
+						</div>
+						<!-- <div class="ui right aligned column">
 							<button
 								class   = "ui labeled icon button {first_page && 'disabled'}"
 								onclick = { goToPrevious() }>
@@ -94,7 +118,7 @@
 								Previous
 							</button>
 							<button class="ui labeled button disabled">
-								Page #{current_page} | Showing {record_range} of {record_count}
+								Page #{currentPage} | Showing {recordRange} of {recordCount}
 							</button>
 							<button
 								class   = "ui right labeled icon button {last_page && 'disabled'}"
@@ -102,7 +126,7 @@
 								<i class="chevron right icon"></i>
 								Next
 							</button>
-						</div>
+						</div> -->
 					</div>
 				</td>
 			</tr>
@@ -150,6 +174,7 @@
 		}
 
 		this.participants = [];
+		this.perPage      = 10;
 
 		this.userRoles = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
 
@@ -173,6 +198,12 @@
 			}
 		}
 
+		switchPage(pageNo) {
+			if (pageNo) {
+				this.getParticipants({page: pageNo, limit: this.perPage});
+			}
+		}
+
 		getPage() {
 			return this.current_page && this.record_count > 1 ? this.current_page : 1;
 		}
@@ -180,7 +211,7 @@
 		getDefaultQueryParams() {
 			return {
 				page  : this.getPage(),
-				limit : 10
+				limit : this.perPage
 			}
 		}
 
@@ -197,17 +228,18 @@
 					console.log(result);
 					if (result.participants && result.current_page_record_count > 0) {
 						this.participants = result.participants;
-						this.current_page = result.current_page;
-						this.page_count   = result.page_count;
-						this.first_page   = result.first_page;
-						this.last_page    = result.last_page;
-						this.record_range = result.current_page_record_range.split('..').join(' to ');
-						this.record_count = result.pagination_record_count;
+						this.currentPage = result.current_page;
+						this.pageCount   = result.page_count;
+						this.firstPage   = result.first_page;
+						this.lastPage    = result.last_page;
+						this.recordRange = result.current_page_record_range.split('..').join(' to ');
+						this.recordCount = result.pagination_record_count;
 					}
 					else {
 						// NO RESULTS
 					}
 					this.update();
+					this.tags['riot-pagination'].trigger('refresh');
 				}
 				else {
 					console.log("ERROR !");
