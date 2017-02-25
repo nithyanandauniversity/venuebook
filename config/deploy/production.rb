@@ -25,7 +25,7 @@ role :app, %w{iamsaravana.com}
 role :web, %w{iamsaravana.com}
 role :db,  %w{iamsaravana.com}
 
-set :branch, 'restful-js'
+set :branch, 'saravana-dev'
 
 
 # Configuration
