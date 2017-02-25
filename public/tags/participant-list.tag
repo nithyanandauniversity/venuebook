@@ -112,23 +112,6 @@
 								</span>
 							</div>
 						</div>
-						<!-- <div class="ui right aligned column">
-							<button
-								class   = "ui labeled icon button {first_page && 'disabled'}"
-								onclick = { goToPrevious() }>
-								<i class="chevron left icon"></i>
-								Previous
-							</button>
-							<button class="ui labeled button disabled">
-								Page #{currentPage} | Showing {recordRange} of {recordCount}
-							</button>
-							<button
-								class   = "ui right labeled icon button {last_page && 'disabled'}"
-								onclick = { goToNext() }>
-								<i class="chevron right icon"></i>
-								Next
-							</button>
-						</div> -->
 					</div>
 				</td>
 			</tr>
@@ -267,4 +250,6 @@
 		:scope { font-size: 0.7em; }
 		i.action, .action-btn { color: black !important;  }
 	</style>
+
 </participant-list>
+
