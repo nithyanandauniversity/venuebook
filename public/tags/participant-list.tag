@@ -76,7 +76,9 @@
 		</tbody>
 		<tfoot>
 			<tr>
-				<td colspan="4">
+				<td
+					colspan = "4"
+					style   = "border-top: 1px solid rgba(34,36,38,.1);">
 					<div class="ui centered column grid">
 						<div class="row">
 							<riot-pagination

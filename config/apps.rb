@@ -31,6 +31,8 @@ Padrino.configure_apps do
   set :protection, :except => :path_traversal
   set :protect_from_csrf, true
   set :public_folder, 'public'
+
+  set :static_cache_control, [:public, max_age: 60]
 end
 
 Padrino.mount('API', :app_file => Padrino.root('api/api.rb'), :app_class => 'Venuebook::API').to('/api')
