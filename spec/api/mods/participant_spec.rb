@@ -12,7 +12,7 @@ describe 'Participant' do
 		get "/api/v1/participants", search: {
 			page: 1,
 			limit: 10,
-			keyword: 'senthuran'
+			keyword: 'Senthuran'
 		}
 
 		response = JSON.parse(last_response.body)[0]['participants']
@@ -72,8 +72,8 @@ describe 'Participant' do
 				{street: "another one", city: "SG", country: "SG"}
 			 ],
 			 contacts: [
-				{contact_type: "Home", value: "3342453", default: false},
-				{contact_type: "Mobile", value: "454625363", default: true}
+				{contact_type: "Home", value: "3342453", is_default: false},
+				{contact_type: "Mobile", value: "454625363", is_default: true}
 			 ]
 
 		response = JSON.parse(last_response.body)
@@ -101,7 +101,7 @@ describe 'Participant' do
 			 ],
 			 contacts: [
 				{contact_type: "Home", value: "3342453"},
-				{contact_type: "Mobile", value: "454625363", default: true}
+				{contact_type: "Mobile", value: "454625363", is_default: true}
 			 ]
 
 		response = JSON.parse(last_response.body)
@@ -149,7 +149,9 @@ describe 'Participant' do
 
 		delete "api/v1/participants/#{participant['id']}"
 
-		expect(last_response.status).to eql 200
+		response = JSON.parse(last_response.body)
+
+		expect(response['id']).to eql participant['id']
 	end
 
 end

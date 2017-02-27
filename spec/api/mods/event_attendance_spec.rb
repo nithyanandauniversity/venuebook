@@ -152,8 +152,6 @@ describe 'Event Attendance' do
 
 		delete "/api/v1/event_attendance/#{event_attendance.id}"
 
-		response = JSON.parse(last_response.body)
-
 		expect(EventAttendance.find(id: event_attendance.id)).to eql nil
 	end
 

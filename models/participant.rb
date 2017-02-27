@@ -35,8 +35,7 @@ class Participant < Sequel::Model
 	end
 
 	def self.delete(id)
-		response = RestClient.delete PARBOOK_URL + "/#{id}"
-		JSON.parse(response)
+		RestClient.delete PARBOOK_URL + "/#{id}"
 	end
 
 	def self.delete_all
