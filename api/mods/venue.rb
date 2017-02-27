@@ -2,6 +2,10 @@ module Venuebook
 	class VenueAPI < Grape::API
 		format :json
 		namespace "venue" do
+			before do
+				authenticate!
+			end
+
 			post do
 				Venue.create(params)
 			end

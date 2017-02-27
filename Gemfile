@@ -32,6 +32,9 @@ end
 gem 'padrino', '0.13.3.3'
 gem 'rest-client'
 
+gem 'padrino-warden', :github => 'jondot/padrino-warden'
+gem 'warden-jwt', :github => 'sgsaravana/warden-jwt'
+
 gem 'guard'
 gem 'guard-rspec', require: false
 
