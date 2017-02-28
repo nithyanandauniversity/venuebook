@@ -3,10 +3,10 @@ require 'spec_helper'
 describe 'Event Attendance' do
 
 	it "should be able to create event registration" do
-		Participant.delete_all
-		user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+		# Participant.delete_all
+		# user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
-		sleep(1.5)
+		# sleep(1.5)
 
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue = Venue.create(name: "Yogam")
@@ -19,7 +19,7 @@ describe 'Event Attendance' do
 		post "/api/v1/event_attendance/", attendance: {
 			event_id: event.id,
 			venue_id: venue.id,
-			member_id: user['member_id'],
+			member_id: '20170201-2352hwed',
 			attendance: 1
 		}
 
@@ -28,14 +28,14 @@ describe 'Event Attendance' do
 		expect(response['event_id']).to eql event.id
 		expect(response['venue_id']).to eql venue.id
 		expect(response['attendance']).to eql EventAttendance::REGISTERED
-		expect(response['member_id']).to eql user['member_id']
+		expect(response['member_id']).to eql '20170201-2352hwed'
 	end
 
 	it "should be able to add an attendance without registering" do
-		Participant.delete_all
-		user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+		# Participant.delete_all
+		# user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
-		sleep(1.5)
+		# sleep(1.5)
 
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue = Venue.create(name: "Yogam")
@@ -48,7 +48,7 @@ describe 'Event Attendance' do
 		post "/api/v1/event_attendance/", attendance: {
 			event_id: event.id,
 			venue_id: venue.id,
-			member_id: user['member_id'],
+			member_id: '20170201-2352hwed3',
 			attendance: 3
 		}
 
@@ -57,14 +57,14 @@ describe 'Event Attendance' do
 		expect(response['event_id']).to eql event.id
 		expect(response['venue_id']).to eql venue.id
 		expect(response['attendance']).to eql EventAttendance::NOT_REGISTERED_AND_ATTENDED
-		expect(response['member_id']).to eql user['member_id']
+		expect(response['member_id']).to eql '20170201-2352hwed3'
 	end
 
 	it "should be able to mark a registration as attended" do
-		Participant.delete_all
-		user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+		# Participant.delete_all
+		# user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
-		sleep(1.5)
+		# sleep(1.5)
 
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue = Venue.create(name: "Yogam")
@@ -77,7 +77,7 @@ describe 'Event Attendance' do
 		event_attendance = EventAttendance.create({
 			event_id: event.id,
 			venue_id: venue.id,
-			member_id: user['member_id'],
+			member_id: '20170201-2352hwfth',
 			attendance: 1
 		})
 
@@ -88,14 +88,14 @@ describe 'Event Attendance' do
 		response = JSON.parse(last_response.body)
 
 		expect(response['attendance']).to eql EventAttendance::REGISTERED_AND_ATTENDED
-		expect(response['member_id']).to eql user['member_id']
+		expect(response['member_id']).to eql '20170201-2352hwfth'
 	end
 
 	it "should be able to edit an event attendance record" do
-		Participant.delete_all
-		user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+		# Participant.delete_all
+		# user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
-		sleep(1.5)
+		# sleep(1.5)
 
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue1 = Venue.create(name: "Yogam")
@@ -110,7 +110,7 @@ describe 'Event Attendance' do
 		event_attendance = EventAttendance.create({
 			event_id: event.id,
 			venue_id: venue1.id,
-			member_id: user['member_id'],
+			member_id: '20170201-2352hwed11',
 			attendance: 1
 		})
 
@@ -125,10 +125,10 @@ describe 'Event Attendance' do
 	end
 
 	it "should be able to remove an event attendance record" do
-		Participant.delete_all
-		user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+		# Participant.delete_all
+		# user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
-		sleep(1.5)
+		# sleep(1.5)
 
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue1 = Venue.create(name: "Yogam")
@@ -143,7 +143,7 @@ describe 'Event Attendance' do
 		event_attendance = EventAttendance.create({
 			event_id: event.id,
 			venue_id: venue1.id,
-			member_id: user['member_id'],
+			member_id: '20170201-2352hweddsgr',
 			attendance: 1
 		})
 
