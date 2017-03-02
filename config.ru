@@ -6,7 +6,7 @@
 
 require File.dirname(__FILE__) + '/lib/warden_initializer.rb'
 
-use Rack::Session::Cookie, :secret => ENV['SESSION_SECRET']
+use Rack::Session::Cookie, :secret => "ENV['SESSION_SECRET']"
 
 use Warden::Manager do |manager|
 	manager.default_strategies :jwt

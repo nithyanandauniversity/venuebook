@@ -2,6 +2,17 @@ require 'spec_helper'
 
 describe 'Participant' do
 
+	# before(:all) do
+	# 	curr_dir = Dir.pwd
+	# 	puts "Working Directory :: #{Dir.pwd}\n\n"
+	# 	exec 'cd ../parbook && RACK_ENV=test rackup -p 30011 -P partest.pid -D'
+	# 	exec "cd #{curr_dir}"
+	# end
+
+	# after(:all) do
+	# 	exec 'kill -9 $(cat ../parbook/partest.pid)'
+	# end
+
 	it "should be able to search participant by name" do
 		Participant.delete_all
 		sleep(1.5)

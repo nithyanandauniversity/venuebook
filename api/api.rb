@@ -1,4 +1,4 @@
-Dir["#{File.dirname(__FILE__)}/mods/**/*.rb"].each { |f| require f; puts f }
+Dir["#{File.dirname(__FILE__)}/mods/**/*.rb"].each { |f| require f; }
 
 module Venuebook
    class API < Grape::API
@@ -6,39 +6,38 @@ module Venuebook
       format :json
 
       helpers do
-         def warden
-            puts "WARDEN !"
-            puts env['warden']
-            env['warden']
+         def rsa_private
+            OpenSSL::PKey::RSA.generate 2048
          end
 
-         def current_user
-            warden.user
+         def rsa_public
+            rsa_private.public_key
          end
 
-         def authenticate!
-            unless current_user
-               puts "current_user: #{current_user.inspect}"
-               error!({status: 401, message: "401 Unauthorized"}, 401)
-            end
-         end
-      end
+      #    def warden
+      #       puts "WARDEN !"
+      #       puts env['warden']
+      #       env['warden']
+      #    end
 
-      rescue_from :all do |e|
-         puts "E :: #{e.inspect}\n"
-         Rack::Response.new([ e.message ], 500, { 'Content-type' => 'text/error' }).finish
+      #    def current_user
+      #       warden.user
+      #    end
+
+      #    def authenticate!
+      #       unless current_user
+      #          puts "current_user: #{current_user.inspect}"
+      #          # Rack::Response.new({status: 401, message: '401 Unauthorized'}.to_json, 401, { 'Content-type' => 'text/error' }).finish
+      #          error!({status: 401, message: "401 Unauthorized"}, 401)
+      #       end
+      #    end
       end
 
       get do
          "Hello api"
       end
 
-      # get '/unauthenticated' do
-      #    puts "\nUNAUTHENTICATED!\n"
-      #    Rack::Response.new({status: 401, message: '401 Unauthorized'}, 401, { 'Content-type' => 'text/json' }).finish
-      #    # {status: 401, message: '401 Unauthorized'}
-      # end
-
+      mount Venuebook::SessionAPI
       mount Venuebook::VenueAPI
       mount Venuebook::CenterAPI
       mount Venuebook::EventAPI

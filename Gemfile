@@ -24,6 +24,9 @@ gem 'sequel'
 gem 'rspec', :group => 'test'
 gem 'rack-test', :require => 'rack/test', :group => 'test'
 
+gem 'jwt'
+gem 'bcrypt'
+
 group :development do
   gem "capistrano", "~> 3.7"
 end

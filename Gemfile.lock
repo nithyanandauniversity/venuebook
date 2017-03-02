@@ -31,6 +31,7 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
+    bcrypt (3.1.11)
     builder (3.2.3)
     capistrano (3.7.2)
       airbrussh (>= 1.0.0)
@@ -210,10 +211,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   capistrano (~> 3.7)
   grape
   guard
   guard-rspec
+  jwt
   mysql2
   padrino (= 0.13.3.3)
   padrino-warden!
