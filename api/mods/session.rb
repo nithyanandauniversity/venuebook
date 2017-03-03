@@ -14,7 +14,8 @@ module Venuebook
 						:role => user.role
 					}
 
-					token = JWT.encode payload, rsa_private, 'RS256'
+					# token = JWT.encode payload, rsa_private, 'RS256'
+					token = JWT.encode payload, hmac_secret, 'HS256'
 
 					{token: token}
 				else

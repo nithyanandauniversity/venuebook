@@ -2,6 +2,19 @@ require 'spec_helper'
 
 describe 'Event Attendance' do
 
+	before(:all) do
+      User.dataset.all { |u| u.destroy }
+      user = User.create(first_name: "Saravana", last_name: "B", email: "sgsaravana@gmail.com", password: "123123", role: 1)
+
+      post "/api/v1/sessions/login", auth: {
+         email: "sgsaravana@gmail.com",
+         password: "123123"
+      }
+
+      response = JSON.parse(last_response.body)
+      @token   = response['token']
+   end
+
 	it "should be able to create event registration" do
 		# Participant.delete_all
 		# user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
@@ -11,17 +24,17 @@ describe 'Event Attendance' do
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue = Venue.create(name: "Yogam")
 
-		post "/api/v1/event/#{event.id}/venue", venue: {venue_id: venue.id, user_id: 32}
+		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
 		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
 		expect(Event.find(id: event.id).event_venue[0].user_id).to eql 32
 
-		post "/api/v1/event_attendance/", attendance: {
+		post "/api/v1/event_attendance/", {attendance: {
 			event_id: event.id,
 			venue_id: venue.id,
 			member_id: '20170201-2352hwed',
 			attendance: 1
-		}
+		}}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
@@ -40,17 +53,17 @@ describe 'Event Attendance' do
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue = Venue.create(name: "Yogam")
 
-		post "/api/v1/event/#{event.id}/venue", venue: {venue_id: venue.id, user_id: 32}
+		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
 		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
 		expect(Event.find(id: event.id).event_venue[0].user_id).to eql 32
 
-		post "/api/v1/event_attendance/", attendance: {
+		post "/api/v1/event_attendance/", {attendance: {
 			event_id: event.id,
 			venue_id: venue.id,
 			member_id: '20170201-2352hwed3',
 			attendance: 3
-		}
+		}}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
@@ -69,7 +82,7 @@ describe 'Event Attendance' do
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue = Venue.create(name: "Yogam")
 
-		post "/api/v1/event/#{event.id}/venue", venue: {venue_id: venue.id, user_id: 32}
+		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
 		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
 		expect(Event.find(id: event.id).event_venue[0].user_id).to eql 32
@@ -83,7 +96,7 @@ describe 'Event Attendance' do
 
 		expect(event_attendance.attendance).to eql EventAttendance::REGISTERED
 
-		put "/api/v1/event_attendance/#{event_attendance.id}", attendance: {attendance: 2}
+		put "/api/v1/event_attendance/#{event_attendance.id}", {attendance: {attendance: 2}}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
@@ -101,8 +114,8 @@ describe 'Event Attendance' do
 		venue1 = Venue.create(name: "Yogam")
 		venue2 = Venue.create(name: "MGM")
 
-		post "/api/v1/event/#{event.id}/venue", venue: {venue_id: venue1.id, user_id: 32}
-		post "/api/v1/event/#{event.id}/venue", venue: {venue_id: venue2.id, user_id: 33}
+		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue1.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue2.id, user_id: 33}}, {'HTTP_TOKEN' => @token}
 
 		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
 		expect(Event.find(id: event.id).event_venue[1].venue.name).to eql "MGM"
@@ -117,7 +130,7 @@ describe 'Event Attendance' do
 		expect(event_attendance.attendance).to eql EventAttendance::REGISTERED
 		expect(event_attendance.venue_id).to eql venue1.id
 
-		put "/api/v1/event_attendance/#{event_attendance.id}", attendance: {venue_id: venue2.id}
+		put "/api/v1/event_attendance/#{event_attendance.id}", {attendance: {venue_id: venue2.id}}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
@@ -134,8 +147,8 @@ describe 'Event Attendance' do
 		venue1 = Venue.create(name: "Yogam")
 		venue2 = Venue.create(name: "MGM")
 
-		post "/api/v1/event/#{event.id}/venue", venue: {venue_id: venue1.id, user_id: 32}
-		post "/api/v1/event/#{event.id}/venue", venue: {venue_id: venue2.id, user_id: 33}
+		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue1.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue2.id, user_id: 33}}, {'HTTP_TOKEN' => @token}
 
 		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
 		expect(Event.find(id: event.id).event_venue[1].venue.name).to eql "MGM"
@@ -150,7 +163,7 @@ describe 'Event Attendance' do
 		expect(event_attendance.attendance).to eql EventAttendance::REGISTERED
 		expect(event_attendance.venue_id).to eql venue1.id
 
-		delete "/api/v1/event_attendance/#{event_attendance.id}"
+		delete "/api/v1/event_attendance/#{event_attendance.id}", nil, {'HTTP_TOKEN' => @token}
 
 		expect(EventAttendance.find(id: event_attendance.id)).to eql nil
 	end

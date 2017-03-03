@@ -6,6 +6,10 @@ module Venuebook
       format :json
 
       helpers do
+         def hmac_secret
+            'my$ecretK3y'
+         end
+
          def rsa_private
             OpenSSL::PKey::RSA.generate 2048
          end
@@ -24,13 +28,28 @@ module Venuebook
       #       warden.user
       #    end
 
-      #    def authenticate!
-      #       unless current_user
-      #          puts "current_user: #{current_user.inspect}"
-      #          # Rack::Response.new({status: 401, message: '401 Unauthorized'}.to_json, 401, { 'Content-type' => 'text/error' }).finish
-      #          error!({status: 401, message: "401 Unauthorized"}, 401)
-      #       end
-      #    end
+         def authenticate!
+            token = request.headers['Token']
+
+            if token
+               begin
+                  decoded_token = JWT.decode token, hmac_secret, true, { :algorithm => 'HS256' }
+               rescue Exception => e
+                  puts e.inspect
+                  error!({status: 401, message: "401 Unauthorized"}, 401)
+               end
+            else
+               error!({status: 401, message: "401 Unauthorized"}, 401)
+            end
+
+            # decoded_token = JWT.decode token, rsa_public, true, { :algorithm => 'RS256' }
+
+            # unless current_user
+            #    puts "current_user: #{current_user.inspect}"
+            #    # Rack::Response.new({status: 401, message: '401 Unauthorized'}.to_json, 401, { 'Content-type' => 'text/error' }).finish
+            #    error!({status: 401, message: "401 Unauthorized"}, 401)
+            # end
+         end
       end
 
       get do

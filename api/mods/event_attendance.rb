@@ -2,6 +2,11 @@ module Venuebook
 
 	class EventAttendanceAPI < Grape::API
 		namespace "event_attendance" do
+
+			before do
+				authenticate!
+			end
+
 			post do
 				EventAttendance.create(params[:attendance])
 			end

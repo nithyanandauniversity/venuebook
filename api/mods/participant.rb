@@ -3,9 +3,9 @@ module Venuebook
 	class ParticipantAPI < Grape::API
 		namespace "participants" do
 
-			# before do
-			# 	authenticate!
-			# end
+			before do
+				authenticate!
+			end
 
 			get do
 				return Participant.search(params)

@@ -2,6 +2,11 @@ module Venuebook
 
 	class CenterAPI < Grape::API
 		namespace "center" do
+
+			before do
+				authenticate!
+			end
+
 			post do
 				Center.create(params)
 			end

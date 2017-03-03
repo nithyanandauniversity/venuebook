@@ -1,6 +1,11 @@
 module Venuebook
 	class EventAPI<Grape::API
 		namespace "event" do
+
+			before do
+				authenticate!
+			end
+
 			post do
 				Event.create(params[:event])
 			end
