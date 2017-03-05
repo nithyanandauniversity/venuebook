@@ -13,6 +13,19 @@ describe 'Participant' do
 	# 	exec 'kill -9 $(cat ../parbook/partest.pid)'
 	# end
 
+	before(:all) do
+		User.dataset.all { |u| u.destroy }
+		user = User.create(first_name: "Saravana", last_name: "B", email: "sgsaravana@gmail.com", password: "123123", role: 1)
+
+		post "/api/v1/sessions/login", {auth: {
+			email: "sgsaravana@gmail.com",
+			password: "123123"
+		}}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+		@token   = response['token']
+	end
+
 	it "should be able to search participant by name" do
 		Participant.delete_all
 		sleep(1.5)
@@ -20,11 +33,11 @@ describe 'Participant' do
 		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})
 
-		get "/api/v1/participants", search: {
+		get "/api/v1/participants", {search: {
 			page: 1,
 			limit: 10,
 			keyword: 'Senthuran'
-		}
+		}}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)[0]['participants']
 
@@ -41,22 +54,22 @@ describe 'Participant' do
 		user3 = Participant.create({participant: {first_name: "Dinesh", last_name: "Gupta", email: "sri.sadhana@innerawakening.org", other_names: "Sri Nithya Sadhanananda", gender: "Male"}})
 		user4 = Participant.create({participant: {first_name: "Kamleshwari", last_name: "V", email: "leshlesh76@gmail.com", other_names: "Ma Nithya Nishpapananda", gender: "Female"}})
 
-		get "/api/v1/participants", search: {
+		get "/api/v1/participants", {search: {
 			page: 1,
 			limit: 10,
 			keyword: 'psenthu'
-		}
+		}}, {'HTTP_TOKEN' => @token}
 
 		response1 = JSON.parse(last_response.body)[0]['participants']
 
 		expect(response1.length).to eql 1
 		expect(response1[0]['email']).to eql "psenthu@gmail.com"
 
-		get "/api/v1/participants", search: {
+		get "/api/v1/participants", {search: {
 			page: 1,
 			limit: 10,
 			keyword: 'Kaml'
-		}
+		}}, {'HTTP_TOKEN' => @token}
 
 		response2 = JSON.parse(last_response.body)[0]['participants']
 
@@ -67,7 +80,7 @@ describe 'Participant' do
 	it "should be able to get participant by id" do
 		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
-		get "/api/v1/participants/#{user1['id']}"
+		get "/api/v1/participants/#{user1['id']}", nil, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
@@ -77,15 +90,17 @@ describe 'Participant' do
 
 	it "should be able to create participant" do
 		post '/api/v1/participants',
-			participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"},
-			addresses: [
-				{street: "some road", city: "City", country: "SG"},
-				{street: "another one", city: "SG", country: "SG"}
-			 ],
-			 contacts: [
-				{contact_type: "Home", value: "3342453", is_default: false},
-				{contact_type: "Mobile", value: "454625363", is_default: true}
-			 ]
+			{
+				participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"},
+				addresses: [
+					{street: "some road", city: "City", country: "SG"},
+					{street: "another one", city: "SG", country: "SG"}
+				 ],
+				 contacts: [
+					{contact_type: "Home", value: "3342453", is_default: false},
+					{contact_type: "Mobile", value: "454625363", is_default: true}
+				 ]
+			}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
@@ -105,15 +120,17 @@ describe 'Participant' do
 
 	it "should be able to delete contact number for participant" do
 		post '/api/v1/participants',
-			participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"},
-			addresses: [
-				{street: "some road", city: "City", country: "SG"},
-				{street: "another one", city: "SG", country: "SG"}
-			 ],
-			 contacts: [
-				{contact_type: "Home", value: "3342453"},
-				{contact_type: "Mobile", value: "454625363", is_default: true}
-			 ]
+			{
+				participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"},
+				addresses: [
+					{street: "some road", city: "City", country: "SG"},
+					{street: "another one", city: "SG", country: "SG"}
+				 ],
+				 contacts: [
+					{contact_type: "Home", value: "3342453"},
+					{contact_type: "Mobile", value: "454625363", is_default: true}
+				 ]
+			}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
@@ -125,7 +142,7 @@ describe 'Participant' do
 
 		contact_id = participant['contacts'][1]['id']
 
-		delete "/api/v1/participants/#{participant_id}/contact/#{contact_id}"
+		delete "/api/v1/participants/#{participant_id}/contact/#{contact_id}", nil, {'HTTP_TOKEN' => @token}
 
 		new_participant = Participant.get(response['id'])
 
@@ -134,7 +151,7 @@ describe 'Participant' do
 
 		address_id = participant['addresses'][1]['id']
 
-		delete "/api/v1/participants/#{participant_id}/address/#{address_id}"
+		delete "/api/v1/participants/#{participant_id}/address/#{address_id}", nil, {'HTTP_TOKEN' => @token}
 
 		new_participant = Participant.get(response['id'])
 
@@ -146,7 +163,7 @@ describe 'Participant' do
 	it "should be able to edit participant" do
 		participant = Participant.create({participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}})
 
-		put "api/v1/participants/#{participant['id']}", participant: {last_name:"B"}
+		put "api/v1/participants/#{participant['id']}", {participant: {last_name:"B"}}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
@@ -158,7 +175,7 @@ describe 'Participant' do
 	it "should be able to delete participant" do
 		participant = Participant.create({participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}})
 
-		delete "api/v1/participants/#{participant['id']}"
+		delete "api/v1/participants/#{participant['id']}", nil, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 

@@ -14,7 +14,6 @@ describe 'Session API' do
 		}
 
 		response = JSON.parse(last_response.body)
-		puts response
 
 		expect(response['token']).not_to eql nil
 	end

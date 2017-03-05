@@ -15,7 +15,7 @@ class User < Sequel::Model
 
 	def self.authenticate(params)
 		user = self.find(email: params.email)
-		user.password == params.password
+		user && user.password == params.password
 	end
 
 end

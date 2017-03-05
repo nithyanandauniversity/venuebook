@@ -7,6 +7,7 @@ Sequel.migration do
       String :email
       String :encrypted_password
       Integer :role
+      Integer :center_id
     end
   end
 

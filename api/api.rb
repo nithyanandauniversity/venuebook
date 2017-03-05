@@ -18,15 +18,21 @@ module Venuebook
             rsa_private.public_key
          end
 
-      #    def warden
-      #       puts "WARDEN !"
-      #       puts env['warden']
-      #       env['warden']
-      #    end
-
-      #    def current_user
-      #       warden.user
-      #    end
+         def authenticated
+            token = request.headers['Token']
+            if token
+               begin
+                  decoded_token = JWT.decode token, hmac_secret, true, { :algorithm => 'HS256' }
+                  if decoded_token
+                     return true
+                  else
+                     return false
+                  end
+               rescue Exception => e
+                  return false
+               end
+            end
+         end
 
          def authenticate!
             token = request.headers['Token']
@@ -41,15 +47,8 @@ module Venuebook
             else
                error!({status: 401, message: "401 Unauthorized"}, 401)
             end
-
-            # decoded_token = JWT.decode token, rsa_public, true, { :algorithm => 'RS256' }
-
-            # unless current_user
-            #    puts "current_user: #{current_user.inspect}"
-            #    # Rack::Response.new({status: 401, message: '401 Unauthorized'}.to_json, 401, { 'Content-type' => 'text/error' }).finish
-            #    error!({status: 401, message: "401 Unauthorized"}, 401)
-            # end
          end
+
       end
 
       get do

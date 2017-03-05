@@ -27,7 +27,7 @@ describe 'Venue API' do
 
 	it "should be able to add address" do
 
-      center = Center.create(name: "Yogam", location: "Singapore", country: "Singapore")
+      center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
       venue  = Venue.create(name: "Yogam Center", center_id: center.id)
 
       post "/api/v1/venue/#{venue.id}/address", {address: {street:"11 Street", city:"Singapore", country: "Singapore"}}, {'HTTP_TOKEN' => @token}
@@ -40,7 +40,7 @@ describe 'Venue API' do
    end
 
 	it "should be assigned to a center" do
-		center = Center.create(name: "Yogam", location: "Singapore")
+		center = Center.create(name: "Yogam", state: "Singapore")
 
 		post '/api/v1/venue', {name: "Yogam Center 1", center_id:center.id, capacity: 56}, {'HTTP_TOKEN' => @token}
 
@@ -65,7 +65,7 @@ describe 'Venue API' do
 
 	it "should be able to edit venue address" do
 
-      center = Center.create(name: "Yogam", location: "Singapore", country: "Singapore")
+      center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
       venue = Venue.create(name: "Yogam Center", center_id: center.id)
 
       post "/api/v1/venue/#{venue.id}/address", {address: {street:"11 Street", city:"Singapore", country: "Singapore"}}, {'HTTP_TOKEN' => @token}
@@ -93,7 +93,7 @@ describe 'Venue API' do
 	end
 
 	it "should be able to delete venue address" do
-      center = Center.create(name: "Yogam", location: "Singapore", country: "Singapore")
+      center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
       venue = Venue.create(name: "Yogam Center", center_id: center.id)
 
       post "/api/v1/venue/#{venue.id}/address", {address: {street:"11 Street", city:"Singapore", country: "Singapore"}}, {'HTTP_TOKEN' => @token}
