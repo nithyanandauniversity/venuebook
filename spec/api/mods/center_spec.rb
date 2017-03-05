@@ -83,13 +83,23 @@ describe "Center" do
    end
 
    it "should be able to edit center" do
-      center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
+      post '/api/v1/centers', {
+         center: {name:"Yogam", state: "Singapore", country: "Singapore"},
+         admin: {first_name: "Saravana", email: "saravana@gmail.com", password: "123111"}
+      }, {'HTTP_TOKEN' => @token}
 
-      put "/api/v1/centers/#{center.id}", {center: {name: "Yogam Center"}}, {'HTTP_TOKEN' => @token}
+      res    = JSON.parse(last_response.body)
+      center = Center.find(id: res['id'])
+
+      put "/api/v1/centers/#{center.id}", {
+         center: {name: "Yogam Center"},
+         admin: {last_name: "B"}
+      }, {'HTTP_TOKEN' => @token}
 
       resp = JSON.parse(last_response.body)
 
-      expect(resp["name"]).to eql("Yogam Center")
+      expect(resp['center']["name"]).to eql "Yogam Center"
+      expect(resp['admin']['last_name']).to eql "B"
    end
 
    it "should be able to delete center" do

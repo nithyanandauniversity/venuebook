@@ -216,7 +216,7 @@
 
 		performSearch() {
 			let state = this.parent.opts.store.getState();
-			console.log('PERFORM SEARCH', state.participants.query);
+			// console.log('PERFORM SEARCH', state.participants.query);
 			this.getParticipants(state.participants.query || this.getDefaultQueryParams());
 		}
 

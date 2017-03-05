@@ -17,6 +17,10 @@
 	</center-form>
 
 	<!-- Center View Component -->
+	<center-view
+		if    = "{opts.state.view == 'VIEW_CENTER'}"
+		state = "{opts.state}">
+	</center-view>
 
 	<script>
 
@@ -25,9 +29,6 @@
 		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_CENTER'});
 			this.update();
-			console.log(this.opts);
-			console.log("this.opts.store.getState()");
-			console.log(this.opts.store.getState());
 			// this.tags['center-form'].trigger('create');
 		}
 
@@ -43,33 +44,33 @@
 		}
 
 		performSearch(pageNo) {
-			// this.opts.store.dispatch({type: 'SEARCH_CENTER', query: {
-			// 	page    : pageNo || 1,
-			// 	limit   : 10,
-			// 	keyword : this.searchQ || ''
-			// }});
-			// this.update();
-			// console.log("this.opts.store.getState()");
-			// console.log(this.opts.store.getState());
-			// this.tags['participant-list'].trigger('search');
+			this.opts.store.dispatch({type: 'SEARCH_CENTER', query: {
+				page    : pageNo || 1,
+				limit   : 10,
+				keyword : this.searchQ || ''
+			}});
+			this.update();
+			console.log("this.opts.store.getState()");
+			console.log(this.opts.store.getState());
+			this.tags['center-list'].trigger('search');
 		}
 
-		showView(participant) {
-			// console.log('show view!', participant);
-			// this.opts.store.dispatch({type: 'VIEW_PARTICIPANT', id: participant.id});
-			// this.update();
+		showView(center) {
+			console.log('show view!', center);
+			this.opts.store.dispatch({type: 'VIEW_CENTER', id: center.id});
+			this.update();
 			// console.log("this.opts.store.getState()");
 			// console.log(this.opts.store.getState());
-			// this.tags['participant-view'].trigger('view');
+			this.tags['center-view'].trigger('view');
 		}
 
-		showForm(participant) {
-			// console.log('show form!', participant);
-			// this.opts.store.dispatch({type: 'EDIT_PARTICIPANT', id: participant.id});
-			// this.update();
+		showForm(center) {
+			console.log('show form!', center);
+			this.opts.store.dispatch({type: 'EDIT_CENTER', id: center.id});
+			this.update();
 			// console.log("this.opts.store.getState()");
 			// console.log(this.opts.store.getState());
-			// this.tags['participant-form'].trigger('edit');
+			this.tags['center-form'].trigger('edit');
 		}
 	</script>
 

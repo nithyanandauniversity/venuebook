@@ -19,6 +19,7 @@ import 'tags/centers.tag!'
 import 'tags/centers/center-search.tag!';
 import 'tags/centers/center-list.tag!';
 import 'tags/centers/center-form.tag!';
+import 'tags/centers/center-view.tag!';
 
 import 'tags/programs.tag!'
 import 'tags/events.tag!'

@@ -141,7 +141,7 @@
 		}
 
 		getPage() {
-			return this.current_page && this.record_count > 1 ? this.current_page : 1;
+			return this.currentPage && this.recordCount > 1 ? this.currentPage : 1;
 		}
 
 		getDefaultQueryParams() {
@@ -186,7 +186,7 @@
 		performSearch() {
 			let state = this.parent.opts.store.getState();
 			console.log('PERFORM SEARCH', state.centers.query);
-			this.getCenters(state.centers.query);
+			this.getCenters(state.centers.query || this.getDefaultQueryParams());
 		}
 
 		this.on('search', (data) => {

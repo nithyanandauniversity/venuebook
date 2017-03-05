@@ -29,11 +29,7 @@
 
 			this.opts.services.sessionService.authenticate((err, result) => {
 				if (!err) {
-					let data = result.data();
-					console.log("data.status");
-					console.log(data.status);
-					console.log(sessionStorage.getItem('CURRENT_USER'));
-					if (data.status) {
+					if (result.data().status && sessionStorage.getItem('CURRENT_USER')) {
 						this.navigatePage({
 							type: 'PARTICIPANTS',
 							data: JSON.parse(sessionStorage.getItem('CURRENT_USER'))

@@ -16,6 +16,7 @@ module Venuebook
 
 				{
 					center: center,
+					venues: center.venues,
 					admin: center.admin
 				}
 			end
@@ -35,6 +36,13 @@ module Venuebook
 			put "/:id" do
 				center = Center.find(id: params[:id])
 				center.update(params[:center])
+
+				center.admin.update(params[:admin]) if params[:admin]
+
+				{
+					center: center,
+					admin: center.admin
+				}
 			end
 
 			delete "/:id" do

@@ -199,27 +199,6 @@
 			}
 		}
 
-		insertContact(def = false, id = undefined) {
-			this.contacts.push({
-				id           : id,
-				contact_type : 'Home',
-				value        : '',
-				default      : def
-			});
-		}
-
-		insertAddress(def = false, id = undefined) {
-			this.addresses.push({
-				id          : id,
-				street      : '',
-				city        : '',
-				state       : '',
-				postal_code : '',
-				country     : '',
-				default     : def
-			});
-		}
-
 		this.on('create', () => {
 
 			$("#participant-dob").calendar({
@@ -232,48 +211,39 @@
 			self.update();
 		});
 
-		// loadEditForm(participant, attr) {
-		// 	console.log("participant, attr");
-		// 	console.log(participant, attr);
+		loadEditForm(center, admin) {
+			this.refs.name.value     = center.name;
+			this.refs.category.value = center.category;
+			this.refs.city.value     = center.city;
+			this.refs.state.value    = center.state;
+			this.refs.country.value  = center.country;
+			this.refs.area.value     = center.area;
+			this.refs.region.value   = center.region;
 
-		// 	this.refs.first_name.value  = participant.first_name;
-		// 	this.refs.last_name.value   = participant.last_name;
-		// 	this.refs.email.value       = participant.email;
-		// 	this.refs.other_names.value = participant.other_names;
-		// 	this.refs.dob.value         = participant.dob;
-		// 	this.refs.notes.value       = participant.notes;
-		// 	this.gender                 = participant.gender;
+			this.refs.first_name.value = admin.first_name;
+			this.refs.last_name.value  = admin.last_name;
+			this.refs.email.value      = admin.email;
 
-		// 	this.refs.role.value     = attr.role;
-		// 	this.ia_graduate         = attr.ia_graduate;
-		// 	this.refs.ia_dates.value = attr.ia_dates;
-		// 	this.is_healer           = attr.is_healer;
-
-		// 	participant.contacts.forEach((c) => { this.insertContact(c.id == participant.default_contact, c.id) });
-		// 	participant.addresses.forEach((a) => { this.insertAddress(a.id == participant.default_address, a.id) });
-
-		// 	this.update();
-
-		// 	this.assignAddresses(participant.addresses);
-		// 	this.assignContacts(participant.contacts);
-		// }
+			this.update();
+		}
 
 		this.on('edit', () => {
 			let state = self.parent.opts.state;
 			console.log(self.opts.state);
 
 			this.edit_id = this.opts.state.id;
-			// this.parent.opts.service.get(this.edit_id, (err, response) => {
-			// 	if (!err) {
-			// 		this.participant = response.body().data();
-			// 		this.attributes  = JSON.parse(this.participant.participant_attributes);
-			// 		this.loadEditForm(this.participant, this.attributes);
-			// 	}
-			// 	else {
-			// 		this.participant = null;
-			// 		console.log("ERROR LOADING PARTICIPANT !");
-			// 	}
-			// });
+			this.parent.opts.service.get(this.edit_id, (err, response) => {
+				if (!err) {
+					let result  = response.body().data();
+					this.center = result.center;
+					this.admin  = result.admin;
+					this.loadEditForm(this.center, this.admin);
+				}
+				else {
+					this.center = null;
+					console.log("ERROR LOADING CENTER !");
+				}
+			});
 
 		});
 
@@ -288,7 +258,7 @@
 				this.validation.emptyName = true;
 			}
 
-			if (!params.admin.password || params.admin.password == '') {
+			if (!this.edit_id && (!params.admin.password || params.admin.password == '')) {
 				this.validation.emptyPassword = true;
 			}
 
@@ -321,7 +291,6 @@
 
 		save() {
 			let saveParams = this.generateCenterParams();
-			// this.errors = this.validateForm(saveParams);
 
 			if (!this.validateForm(saveParams)) {
 				console.log("this.validation");
@@ -360,8 +329,8 @@
 		}
 
 		create(data) {
-			console.log("data");
-			console.log(data);
+			// console.log("data");
+			// console.log(data);
 			this.parent.opts.service.create(data, (err, response) => {
 				if (!err) {
 					console.log(response.body().data(), response.statusCode());
@@ -375,14 +344,14 @@
 		}
 
 		edit(data) {
-			console.log("data");
-			console.log(data);
-			// this.parent.opts.service.update(this.edit_id, data, (err, response) => {
-			// 	if (!err) {
-			// 		console.log(response.body().data(), response.statusCode());
-			// 		this.parent.showList();
-			// 	}
-			// });
+			// console.log("data");
+			// console.log(data);
+			this.parent.opts.service.update(this.edit_id, data, (err, response) => {
+				if (!err) {
+					// console.log(response.body().data(), response.statusCode());
+					this.parent.showList();
+				}
+			});
 		}
 
 		reset() {
