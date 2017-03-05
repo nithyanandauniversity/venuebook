@@ -29,6 +29,7 @@ describe "Center" do
       expect(resp["name"]).to eql("Yogam Center")
       expect(resp["state"]).to eql("Singapore")
       expect(resp["country"]).to eql("Singapore")
+      expect(resp["code"]).not_to eql nil
 
       expect(center.admin).not_to eql nil
       expect(center.admin[:first_name]).to eql "Saravana"

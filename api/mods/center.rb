@@ -22,6 +22,7 @@ module Venuebook
 
 			post do
 				center = Center.create(params[:center])
+				center.update({code: SecureRandom.hex(6)})
 
 				admin           = User.new(params[:admin])
 				admin.center_id = center.id
