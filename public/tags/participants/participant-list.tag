@@ -54,7 +54,6 @@
 					<div
 						class    = "ui action-btn vertical yellow animated button"
 						tabindex = "0"
-						data     = "{ member_id }"
 						onclick  = { showForm() }>
 						<div class="hidden content">Edit</div>
 						<div class="visible content">
@@ -64,7 +63,6 @@
 					<div
 						class    = "ui action-btn vertical red animated button"
 						tabindex = "0"
-						data     = "{ member_id }"
 						onclick  = { remove() }>
 						<div class="hidden content">Delete</div>
 						<div class="visible content">
@@ -167,22 +165,6 @@
 			return JSON.parse(p || {})
 		}
 
-		goToPrevious(e) {
-			return(e) => {
-				if (!this.first_page) {
-					this.getParticipants({page: (this.current_page - 1), limit: 10});
-				}
-			}
-		}
-
-		goToNext(e) {
-			return(e) => {
-				if (!this.last_page) {
-					this.getParticipants({page: (this.current_page + 1), limit: 10});
-				}
-			}
-		}
-
 		switchPage(pageNo) {
 			if (pageNo) {
 				this.getParticipants({page: pageNo, limit: this.perPage});
@@ -209,16 +191,16 @@
 			this.parent.opts.service.search(params, (err, response) => {
 				if (!err && response.body().length) {
 					let result = this.getData(response.body()[0]);
-					console.log("result");
-					console.log(result);
+					// console.log("result");
+					// console.log(result);
 					if (result.participants && result.current_page_record_count > 0) {
 						this.participants = result.participants;
-						this.currentPage = result.current_page;
-						this.pageCount   = result.page_count;
-						this.firstPage   = result.first_page;
-						this.lastPage    = result.last_page;
-						this.recordRange = result.current_page_record_range.split('..').join(' to ');
-						this.recordCount = result.pagination_record_count;
+						this.currentPage  = result.current_page;
+						this.pageCount    = result.page_count;
+						this.firstPage    = result.first_page;
+						this.lastPage     = result.last_page;
+						this.recordRange  = result.current_page_record_range.split('..').join(' to ');
+						this.recordCount  = result.pagination_record_count;
 					}
 					else {
 						// NO RESULTS
@@ -234,7 +216,7 @@
 
 		performSearch() {
 			let state = this.parent.opts.store.getState();
-			console.log('PERFORM SEARCH', state.participants.query);
+			// console.log('PERFORM SEARCH', state.participants.query);
 			this.getParticipants(state.participants.query);
 		}
 

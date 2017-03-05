@@ -1,11 +1,6 @@
 import { LIST_PARTICIPANT, ADD_PARTICIPANT, VIEW_PARTICIPANT, EDIT_PARTICIPANT, SEARCH_PARTICIPANT, DELETE_PARTICIPANT } from '../../constants/ParticipantActions'
 
-const initialState = {
-	view: LIST_PARTICIPANT,
-	page: 1
-}
-
-export default function participants(state = {}, action) {
+export default function participants(state = {view: LIST_PARTICIPANT, page: 1}, action) {
 	switch (action.type) {
 		case LIST_PARTICIPANT:
 			return {
@@ -38,9 +33,6 @@ export default function participants(state = {}, action) {
 				id: action.id
 			}
 		default:
-			return {
-				view: LIST_PARTICIPANT,
-				page: 1
-			}
+			return state;
 	}
 }

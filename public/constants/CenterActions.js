@@ -1,0 +1,6 @@
+export const LIST_CENTER   = 'LIST_CENTER'
+export const ADD_CENTER    = 'ADD_CENTER'
+export const VIEW_CENTER   = 'VIEW_CENTER'
+export const EDIT_CENTER   = 'EDIT_CENTER'
+export const SEARCH_CENTER = 'SEARCH_CENTER'
+export const DELETE_CENTER = 'DELETE_CENTER'

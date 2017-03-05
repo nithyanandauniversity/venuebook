@@ -29,6 +29,9 @@
 		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_PARTICIPANT'});
 			this.update();
+			console.log(this.opts);
+			console.log("this.opts.store.getState()");
+			console.log(this.opts.store.getState());
 			this.tags['participant-form'].trigger('create');
 		}
 
@@ -50,6 +53,8 @@
 				keyword : this.searchQ || ''
 			}});
 			this.update();
+			console.log("this.opts.store.getState()");
+			console.log(this.opts.store.getState());
 			this.tags['participant-list'].trigger('search');
 		}
 
@@ -57,6 +62,8 @@
 			// console.log('show view!', participant);
 			this.opts.store.dispatch({type: 'VIEW_PARTICIPANT', id: participant.id});
 			this.update();
+			console.log("this.opts.store.getState()");
+			console.log(this.opts.store.getState());
 			this.tags['participant-view'].trigger('view');
 		}
 
@@ -64,6 +71,8 @@
 			// console.log('show form!', participant);
 			this.opts.store.dispatch({type: 'EDIT_PARTICIPANT', id: participant.id});
 			this.update();
+			console.log("this.opts.store.getState()");
+			console.log(this.opts.store.getState());
 			this.tags['participant-form'].trigger('edit');
 		}
 	</script>
