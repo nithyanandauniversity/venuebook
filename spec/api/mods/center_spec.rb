@@ -35,6 +35,23 @@ describe "Center" do
       expect(center.admin[:email]).to eql "saravana@gmail.com"
    end
 
+   it "should be able to get center by id" do
+
+      post '/api/v1/centers', {
+         center: {name:"Yogam Center", state: "Singapore", country: "Singapore"},
+         admin: {first_name: "Saravana", email: "saravana@gmail.com", password: "123111"}
+      }, {'HTTP_TOKEN' => @token}
+
+      res = JSON.parse(last_response.body)
+
+      get "/api/v1/centers/#{res['id']}", nil, {'HTTP_TOKEN' => @token}
+
+      response = JSON.parse(last_response.body)
+
+      expect(response['center']['name']).to eql "Yogam Center"
+      expect(response['admin']['email']).to eql "saravana@gmail.com"
+   end
+
    it "should be able to list all centers" do
       Center.dataset.all { |c| c.destroy }
       center1 = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")

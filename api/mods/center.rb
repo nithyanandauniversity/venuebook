@@ -12,7 +12,12 @@ module Venuebook
 			end
 
 			get '/:id' do
-				Center.get(params[:id])
+				center = Center.find(id: params[:id])
+
+				{
+					center: center,
+					admin: center.admin
+				}
 			end
 
 			post do
