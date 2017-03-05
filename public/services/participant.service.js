@@ -12,10 +12,6 @@ export default class ParticipantService {
 	}
 
 	search(params, callback) {
-		let token = sessionStorage.getItem('HTTP_TOKEN');
-		console.log("token");
-		console.log(token);
-
 		this.reloadApi();
 		this.collection.getAll({search: params})
 			.then((response) => {

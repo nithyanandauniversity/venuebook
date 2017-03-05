@@ -172,7 +172,7 @@
 		}
 
 		getPage() {
-			return this.current_page && this.record_count > 1 ? this.current_page : 1;
+			return this.currentPage && this.recordCount > 1 ? this.currentPage : 1;
 		}
 
 		getDefaultQueryParams() {
@@ -216,12 +216,16 @@
 
 		performSearch() {
 			let state = this.parent.opts.store.getState();
-			// console.log('PERFORM SEARCH', state.participants.query);
-			this.getParticipants(state.participants.query);
+			console.log('PERFORM SEARCH', state.participants.query);
+			this.getParticipants(state.participants.query || this.getDefaultQueryParams());
 		}
 
 		this.on('search', (data) => {
 			this.performSearch();
+		});
+
+		this.on('refresh', (data) => {
+			this.getParticipants(this.getDefaultQueryParams());
 		});
 
 		this.getParticipants(this.getDefaultQueryParams());

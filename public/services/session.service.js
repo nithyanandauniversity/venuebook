@@ -6,11 +6,6 @@ export default class SessionService {
 		this.url   = this.login.url();
 	}
 
-	// reloadApi() {
-	// 	this.api.header('Token', sessionStorage.getItem('HTTP_TOKEN'));
-	// 	this.auth = this.api.custom('sessions/authenticate');
-	// }
-
 	authenticate(callback){
 		this.api.header('Token', sessionStorage.getItem('HTTP_TOKEN'));
 		this.auth = this.api.custom('sessions/authenticate');

@@ -608,7 +608,6 @@
 		create(data) {
 			this.parent.opts.service.create(data, (err, response) => {
 				if (!err) {
-					console.log(response.body().data(), response.statusCode());
 					this.parent.showList();
 				}
 			});
