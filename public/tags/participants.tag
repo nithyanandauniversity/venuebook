@@ -29,7 +29,7 @@
 		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_PARTICIPANT'});
 			this.update();
-			this.tags['participant-form'].trigger('create');
+			// this.tags['participant-form'].trigger('create');
 		}
 
 		showList(e) {
@@ -58,15 +58,18 @@
 			// console.log('show view!', participant);
 			this.opts.store.dispatch({type: 'VIEW_PARTICIPANT', id: participant.id});
 			this.update();
-			this.tags['participant-view'].trigger('view');
+			// this.tags['participant-view'].trigger('view');
 		}
 
 		showForm(participant) {
 			// console.log('show form!', participant);
 			this.opts.store.dispatch({type: 'EDIT_PARTICIPANT', id: participant.id});
 			this.update();
-			this.tags['participant-form'].trigger('edit');
+			// this.tags['participant-form'].trigger('edit');
 		}
+
+		// this.opts.store.dispatch({type: 'LIST_PARTICIPANT'});
+		// this.update();
 	</script>
 
 </participants>

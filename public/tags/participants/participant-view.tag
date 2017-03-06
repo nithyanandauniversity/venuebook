@@ -132,10 +132,10 @@
 		this.participant = {};
 		this.attributes  = {};
 
-		this.userRoles = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
+		this.userRoles   = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
+		this.view_id     = this.opts.state.id;
 
-		this.on('view', () => {
-			this.view_id = this.opts.state.id;
+		if (this.view_id) {
 			this.parent.opts.service.get(this.view_id, (err, response) => {
 				if (!err) {
 					this.participant = response.body().data();
@@ -146,7 +146,9 @@
 					this.participant = null;
 				}
 			});
-		});
+		}
+		// this.on('view', () => {
+		// });
 
 	</script>
 

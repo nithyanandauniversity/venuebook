@@ -116,6 +116,12 @@
 		</tfoot>
 	</table>
 
+	<div
+		class = "ui message red"
+		show  = "{participants.length == 0}">
+		<h3>No Participants !</h3>
+	</div>
+
 	<script>
 
 		const self = this;
@@ -228,7 +234,8 @@
 			this.getParticipants(this.getDefaultQueryParams());
 		});
 
-		this.getParticipants(this.getDefaultQueryParams());
+		this.performSearch();
+		// this.getParticipants(this.getDefaultQueryParams());
 
 	</script>
 

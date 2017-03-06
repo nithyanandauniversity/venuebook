@@ -422,17 +422,17 @@
 			});
 		}
 
-		this.on('create', () => {
+		// this.on('create', () => {
 
-			$("#participant-dob").calendar({
-				type: 'date'
-			});
+			// $("#participant-dob").calendar({
+			// 	type: 'date'
+			// });
 
-			self.insertContact(true);
-			self.insertAddress(true);
+			// self.insertContact(true);
+			// self.insertAddress(true);
 
-			self.update();
-		});
+			// self.update();
+		// });
 
 		loadEditForm(participant, attr) {
 			console.log("participant, attr");
@@ -465,24 +465,24 @@
 			this.assignContacts(participant.contacts);
 		}
 
-		this.on('edit', () => {
-			let state = self.parent.opts.state;
-			console.log(self.opts.state);
+		// this.on('edit', () => {
+			// let state = self.parent.opts.state;
+			// console.log(self.opts.state);
 
-			this.edit_id = this.opts.state.id;
-			this.parent.opts.service.get(this.edit_id, (err, response) => {
-				if (!err) {
-					this.participant = response.body().data();
-					this.attributes  = JSON.parse(this.participant.participant_attributes);
-					this.loadEditForm(this.participant, this.attributes);
-				}
-				else {
-					this.participant = null;
-					console.log("ERROR LOADING PARTICIPANT !");
-				}
-			});
+			// this.edit_id = this.opts.state.id;
+			// this.parent.opts.service.get(this.edit_id, (err, response) => {
+			// 	if (!err) {
+			// 		this.participant = response.body().data();
+			// 		this.attributes  = JSON.parse(this.participant.participant_attributes);
+			// 		this.loadEditForm(this.participant, this.attributes);
+			// 	}
+			// 	else {
+			// 		this.participant = null;
+			// 		console.log("ERROR LOADING PARTICIPANT !");
+			// 	}
+			// });
 
-		});
+		// });
 
 		this.countries = this.parent.opts.countries();
 		this.dialcodes = this.parent.opts.dialcodes;
@@ -651,6 +651,39 @@
 			else {
 				this.parent.showList();
 			}
+		}
+
+
+
+		let state = self.parent.opts.state;
+		console.log(self.opts.state);
+
+		this.edit_id = this.opts.state.id;
+		if (this.edit_id) {
+
+			this.parent.opts.service.get(this.edit_id, (err, response) => {
+				if (!err) {
+					this.participant = response.body().data();
+					this.attributes  = JSON.parse(this.participant.participant_attributes);
+					this.loadEditForm(this.participant, this.attributes);
+				}
+				else {
+					this.participant = null;
+					console.log("ERROR LOADING PARTICIPANT !");
+				}
+			});
+
+		}
+		else {
+
+			$("#participant-dob").calendar({
+				type: 'date'
+			});
+
+			self.insertContact(true);
+			self.insertAddress(true);
+
+			self.update();
 		}
 
 	</script>

@@ -8,7 +8,6 @@ import 'tags/nav.tag!';
 import 'tags/pages.tag!';
 
 import 'tags/participants.tag!';
-
 import 'tags/participants/participant-search.tag!';
 import 'tags/participants/participant-list.tag!';
 import 'tags/participants/participant-form.tag!';
