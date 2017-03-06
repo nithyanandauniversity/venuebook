@@ -16,22 +16,27 @@ class Center < Sequel::Model
 			# SEARCH
 			if keyword
 				if attributes
-					centers = Center.where((Sequel.like(:name, "%#{keyword}%"))).paginate(page, size)
+					centers = Center.order(:id)
+					centers = centers.where(region: attributes.region) if attributes.region
+					centers = centers.where(area: attributes.area) if attributes.area
+					centers = centers.where(country: attributes.country) if attributes.country
+					centers = centers.where(city: attributes.city) if attributes.city
+					centers = centers.where(state: attributes.state) if attributes.state
+					centers = centers.where(category: attributes.category) if attributes.category
+					centers = centers.where((Sequel.like(:name, "%#{keyword}%"))).paginate(page, size)
 				else
 					centers = Center.where((Sequel.like(:name, "%#{keyword}%"))).paginate(page, size)
-					# centers = Center.where("name COLLATE UTF8_GENERAL_CI LIKE ?", "%#{keyword}%")
-					# participants = Participant.where("first_name COLLATE UTF8_GENERAL_CI LIKE ? " +
-					# 	"OR last_name COLLATE UTF8_GENERAL_CI LIKE ? " +
-					# 	"OR other_names COLLATE UTF8_GENERAL_CI LIKE ? " +
-					# 	"OR email COLLATE UTF8_GENERAL_CI LIKE ?",
-					# 	"'%#{keyword}%'", "'%#{keyword}%'",
-					# 	"'%#{keyword}%'", "'%#{keyword}%'"
-					# 	).paginate(page, size)
 				end
 			else
-				# participants = Center.where(
-				# 	(Sequel.like(:participant_attributes, "%#{attributes.join('%')}%"))
-				# ).paginate(page, size)
+				centers = Center.order(:id)
+				centers = centers.where(region: attributes.region) if attributes.region
+				centers = centers.where(area: attributes.area) if attributes.area
+				centers = centers.where(country: attributes.country) if attributes.country
+				centers = centers.where(city: attributes.city) if attributes.city
+				centers = centers.where(state: attributes.state) if attributes.state
+				centers = centers.where(category: attributes.category) if attributes.category
+
+				centers = centers.paginate(page, size)
 			end
 		else
 			# ALL

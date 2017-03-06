@@ -24,7 +24,8 @@
 
 	<script>
 
-		this.searchQ = '';
+		this.searchQ       = '';
+		this.searchFilters = {};
 
 		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_CENTER'});
@@ -45,9 +46,10 @@
 
 		performSearch(pageNo) {
 			this.opts.store.dispatch({type: 'SEARCH_CENTER', query: {
-				page    : pageNo || 1,
-				limit   : 10,
-				keyword : this.searchQ || ''
+				page       : pageNo || 1,
+				limit      : 10,
+				keyword    : this.searchQ || '',
+				attributes : this.searchFilters || {}
 			}});
 			this.update();
 			console.log("this.opts.store.getState()");
@@ -72,6 +74,9 @@
 			// console.log(this.opts.store.getState());
 			this.tags['center-form'].trigger('edit');
 		}
+
+		// this.opts.store.dispatch({type: 'LIST_CENTER'});
+		// this.update();
 	</script>
 
 </centers>

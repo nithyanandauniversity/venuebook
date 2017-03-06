@@ -82,7 +82,37 @@ describe "Center" do
       expect(response.length).to eql 1
    end
 
+   it "should be able to filter center by country" do
+      Center.dataset.all { |c| c.destroy }
+      center1 = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
+      center2 = Center.create(name: "San Jose Adheenam", state: "California", country: "USA")
+      center3 = Center.create(name: "Washington DC Adheenam", state: "Washigton", country: "USA")
+
+      get "/api/v1/centers", {search: {
+         page: 1,
+         limit: 10,
+         # keyword: '',
+         attributes: {country: "USA"}
+      }}, {'HTTP_TOKEN' => @token}
+
+      response = JSON.parse(last_response.body)[0]['centers']
+
+      expect(response.length).to eql 2
+
+      get "/api/v1/centers", {search: {
+         page: 1,
+         limit: 10,
+         keyword: '',
+         attributes: {country: "USA", state: "California"}
+      }}, {'HTTP_TOKEN' => @token}
+
+      response = JSON.parse(last_response.body)[0]['centers']
+
+      expect(response.length).to eql 1
+   end
+
    it "should be able to edit center" do
+      Center.dataset.all { |c| c.destroy }
       post '/api/v1/centers', {
          center: {name:"Yogam", state: "Singapore", country: "Singapore"},
          admin: {first_name: "Saravana", email: "saravana@gmail.com", password: "123111"}

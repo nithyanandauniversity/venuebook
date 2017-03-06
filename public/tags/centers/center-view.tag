@@ -92,25 +92,25 @@
 		this.admin  = {};
 		this.venues = [];
 
-		this.on('view', () => {
-			this.view_id = this.opts.state.id;
-			console.log("this.view_id");
-			console.log(this.view_id);
-			this.parent.opts.service.get(this.view_id, (err, response) => {
-				if (!err) {
-					let result  = response.body().data();
-					this.center = result.center;
-					this.admin  = result.admin;
-					this.venues = result.venues;
-					console.log("this.center");
-					console.log(this.center, this.admin, this.venues);
-					this.update();
-				}
-				else {
-					this.participant = null;
-				}
-			});
+		this.view_id = this.opts.state.id;
+		console.log("this.view_id");
+		console.log(this.view_id);
+		this.parent.opts.service.get(this.view_id, (err, response) => {
+			if (!err) {
+				let result  = response.body().data();
+				this.center = result.center;
+				this.admin  = result.admin;
+				this.venues = result.venues;
+				console.log("this.center");
+				console.log(this.center, this.admin, this.venues);
+				this.update();
+			}
+			else {
+				this.participant = null;
+			}
 		});
+		// this.on('view', () => {
+		// });
 
 	</script>
 </center-view>
