@@ -26,6 +26,10 @@
 		if = "{opts.store.getState().routes.path == 'EVENTS'}">
 	</events>
 
+	<users
+		if = "{opts.store.getState().routes.path == 'USERS'}">
+	</users>
+
 	<script>
 		console.log("this.opts");
 		console.log(this.opts);

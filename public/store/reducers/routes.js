@@ -1,4 +1,4 @@
-import { LOGIN, PARTICIPANTS, CENTERS, PROGRAMS, EVENTS } from '../../constants/Routes'
+import { LOGIN, PARTICIPANTS, CENTERS, PROGRAMS, EVENTS, USERS } from '../../constants/Routes'
 
 export default function routes(state = {path: 'LOGIN', data: null}, action) {
 	switch (action.type) {
@@ -26,7 +26,12 @@ export default function routes(state = {path: 'LOGIN', data: null}, action) {
 			return {
 				path : 'EVENTS',
 				data : action.data
-			}
+			};
+		case USERS:
+			return {
+				path : 'USERS',
+				data : action.data
+			};
 		default:
 			return state;
 	}

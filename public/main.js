@@ -22,6 +22,7 @@ import 'tags/centers/center-view.tag!';
 
 import 'tags/programs.tag!'
 import 'tags/events.tag!'
+import 'tags/users.tag!'
 
 import 'tags/riot-pagination.tag!';
 

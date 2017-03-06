@@ -77,6 +77,11 @@
 				name  : 'Events',
 				route : 'EVENTS',
 				role  : [1, 2, 3, 4, 5, 6]
+			},
+			{
+				name  : 'Users',
+				route : 'USERS',
+				role  : [1, 2, 3, 4]
 			}
 		];
 
