@@ -14,6 +14,16 @@ describe 'User API' do
 		@token   = response['token']
 	end
 
+	it "should be able to get the current user" do
+
+		get "/api/v1/users/current_user", nil, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+
+		expect(response['email']).to eql nil
+		expect(response['role']).to eql 1
+	end
+
 	it "should be able to create a new root user" do
 
 		post "/api/v1/users", {user: {

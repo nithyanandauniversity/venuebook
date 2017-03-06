@@ -18,13 +18,18 @@ module Venuebook
             rsa_private.public_key
          end
 
+         def current_user
+            token = authenticated
+            return token ? token[0] : nil
+         end
+
          def authenticated
             token = request.headers['Token']
             if token
                begin
                   decoded_token = JWT.decode token, hmac_secret, true, { :algorithm => 'HS256' }
                   if decoded_token
-                     return true
+                     return decoded_token
                   else
                      return false
                   end

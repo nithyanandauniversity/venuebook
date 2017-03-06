@@ -51,6 +51,7 @@ describe "Center" do
 
       expect(response['center']['name']).to eql "Yogam Center"
       expect(response['admin']['email']).to eql "saravana@gmail.com"
+      expect(response['admin']['role']).to eql 3
    end
 
    it "should be able to list all centers" do

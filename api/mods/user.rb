@@ -6,6 +6,10 @@ module Venuebook
 				authenticate!
 			end
 
+			get '/current_user' do
+				current_user
+			end
+
 			post do
 				user = User.create(params[:user])
 				user
