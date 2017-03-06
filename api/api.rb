@@ -56,6 +56,7 @@ module Venuebook
       end
 
       mount Venuebook::SessionAPI
+      mount Venuebook::UserAPI
       mount Venuebook::VenueAPI
       mount Venuebook::CenterAPI
       mount Venuebook::EventAPI
