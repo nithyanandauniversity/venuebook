@@ -5,7 +5,6 @@ Dir[File.expand_path(File.dirname(__FILE__) + "/../app/helpers.rb")].each(&metho
 RSpec.configure do |config|
 	config.mock_with :rspec
 	config.include Rack::Test::Methods
-	config.include Warden::Test::Helpers
 	config.color = true
 
 	# Use color not only in STDOUT but also in pagers and files

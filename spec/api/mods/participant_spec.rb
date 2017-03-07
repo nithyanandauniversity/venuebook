@@ -20,7 +20,7 @@ describe 'Participant' do
 		post "/api/v1/sessions/login", {auth: {
 			email: "sgsaravana@gmail.com",
 			password: "123123"
-		}}, {'HTTP_TOKEN' => @token}
+		}}
 
 		response = JSON.parse(last_response.body)
 		@token   = response['token']
@@ -116,6 +116,35 @@ describe 'Participant' do
 		expect(participant['contacts'].length).to eql 2
 
 		expect(participant['contacts'][1]['id']).to eql participant['default_contact']
+	end
+
+	it "should not allow data entry user to create participant" do
+		de1 = User.create(first_name: "Data entry1", email: "dataentry1@gmail.com", password: "123123", role: 6)
+
+		post "/api/v1/sessions/login", {auth: {
+			email: "dataentry1@gmail.com",
+			password: "123123"
+		}}
+
+		token = JSON.parse(last_response.body)['token']
+
+		post '/api/v1/participants',
+			{
+				participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"},
+				addresses: [
+					{street: "some road", city: "City", country: "SG"},
+					{street: "another one", city: "SG", country: "SG"}
+				 ],
+				 contacts: [
+					{contact_type: "Home", value: "3342453", is_default: false},
+					{contact_type: "Mobile", value: "454625363", is_default: true}
+				 ]
+			}, {'HTTP_TOKEN' => token}
+
+		response = JSON.parse(last_response.body)
+
+		expect(response['status']).to eql 403
+		expect(response['message']).to eql "Access Denied"
 	end
 
 	it "should be able to delete contact number for participant" do

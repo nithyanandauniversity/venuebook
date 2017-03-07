@@ -26,6 +26,8 @@ gem 'rack-test', :require => 'rack/test', :group => 'test'
 
 gem 'jwt'
 gem 'bcrypt'
+# gem 'grape-cancan'
+gem 'padrino-cancan'
 
 group :development do
   gem "capistrano", "~> 3.7"
@@ -35,8 +37,8 @@ end
 gem 'padrino', '0.13.3.3'
 gem 'rest-client'
 
-gem 'padrino-warden', :github => 'jondot/padrino-warden'
-gem 'warden-jwt', :github => 'sgsaravana/warden-jwt'
+# gem 'padrino-warden', :github => 'jondot/padrino-warden'
+# gem 'warden-jwt', :github => 'sgsaravana/warden-jwt'
 
 gem 'guard'
 gem 'guard-rspec', require: false

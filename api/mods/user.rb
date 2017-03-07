@@ -11,8 +11,10 @@ module Venuebook
 			end
 
 			post do
-				user = User.create(params[:user])
-				user
+				if authorize! :create, User
+					user = User.create(params[:user])
+					user
+				end
 			end
 
 		end

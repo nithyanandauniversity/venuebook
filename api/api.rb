@@ -23,6 +23,10 @@ module Venuebook
             return token ? token[0] : nil
          end
 
+         def authorize!(*args)
+            ::Ability.new(current_user).authorize!(*args)
+         end
+
          def authenticated
             token = request.headers['Token']
             if token
@@ -54,6 +58,10 @@ module Venuebook
             end
          end
 
+      end
+
+      rescue_from CanCan::AccessDenied do | exception |
+         error!({status: 403, message: "Access Denied"}, 403)
       end
 
       get do

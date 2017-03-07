@@ -4,6 +4,7 @@ class App < Padrino::Application
 
   # register Padrino::Warden
   register Padrino::Rendering
+  register Padrino::CanCan
   # register ScssInitializer
   # use ConnectionPoolManagement
   # register Padrino::Mailer

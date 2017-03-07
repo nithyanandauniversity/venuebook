@@ -8,31 +8,45 @@ module Venuebook
 			end
 
 			get do
-				return Participant.search(params)
+				if authorize! :read, Participant
+					return Participant.search(params)
+				end
 			end
 
 			get '/:id' do
-				return Participant.get(params[:id])
+				if authorize! :read, Participant
+					return Participant.get(params[:id])
+				end
 			end
 
 			post do
-				participant = Participant.create(params)
+				if authorize! :create, Participant
+					participant = Participant.create(params)
+				end
 			end
 
 			put '/:id' do
-				participant = Participant.update(params[:id], params)
+				if authorize! :update, Participant
+					participant = Participant.update(params[:id], params)
+				end
 			end
 
 			delete '/:id/contact/:contact_id' do
-				Participant.deleteContact(params[:id], params[:contact_id])
+				if authorize! :update, Participant
+					Participant.deleteContact(params[:id], params[:contact_id])
+				end
 			end
 
 			delete '/:id/address/:address_id' do
-				Participant.deleteAddress(params[:id], params[:address_id])
+				if authorize! :update, Participant
+					Participant.deleteAddress(params[:id], params[:address_id])
+				end
 			end
 
 			delete '/:id' do
-				Participant.delete(params[:id])
+				if authorize! :destroy, Participant
+					Participant.delete(params[:id])
+				end
 			end
 
 		end
