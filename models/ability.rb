@@ -21,6 +21,7 @@ class Ability
 		end
 
 		if user['role'] <= 3
+			can :destroy, Event
 			can :manage, Venue
 			can :manage, Address
 			# can :manage, Program

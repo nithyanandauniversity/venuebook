@@ -12,30 +12,40 @@ module Venuebook
 			end
 
 			post "/:id/address" do
-				venue = Venue.find(id: params[:id])
-				venue.add_address(params[:address])
+				if authorize! :create, Address
+					venue = Venue.find(id: params[:id])
+					venue.add_address(params[:address])
+				end
 			end
 
 			put "/:id" do
-				venue = Venue.find(id: params[:id])
-				venue.update(params[:venue])
+				if authorize! :update, Venue
+					venue = Venue.find(id: params[:id])
+					venue.update(params[:venue])
+				end
 			end
 
 			put "/:id/address/:address_id" do
-				venue = Venue.find(id: params[:id])
-				address = venue.addresses.find(id: params[:address_id]).first
-				address.update(params[:address])
+				if authorize! :update, Address
+					venue = Venue.find(id: params[:id])
+					address = venue.addresses.find(id: params[:address_id]).first
+					address.update(params[:address])
+				end
 			end
 
 			delete "/:id" do
-				venue = Venue.find(id: params[:id])
-				venue.destroy
+				if authorize! :destroy, Venue
+					venue = Venue.find(id: params[:id])
+					venue.destroy
+				end
 			end
 
 			delete "/:id/address/:address_id" do
-				venue = Venue.find(id: params[:id])
-				address = venue.addresses.find(id: params[:address_id]).first
-				address.destroy
+				if authorize! :destroy, Address
+					venue   = Venue.find(id: params[:id])
+					address = venue.addresses.find(id: params[:address_id]).first
+					address.destroy
+				end
 			end
 
 		end

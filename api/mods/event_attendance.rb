@@ -8,17 +8,23 @@ module Venuebook
 			end
 
 			post do
-				EventAttendance.create(params[:attendance])
+				if authorize! :create, EventAttendance
+					EventAttendance.create(params[:attendance])
+				end
 			end
 
 			put "/:id" do
-				attendance = EventAttendance.find(id: params[:id])
-				attendance.update(params[:attendance])
+				if authorize! :update, EventAttendance
+					attendance = EventAttendance.find(id: params[:id])
+					attendance.update(params[:attendance])
+				end
 			end
 
 			delete "/:id" do
-				attendance = EventAttendance.find(id: params[:id])
-				attendance.destroy
+				if authorize! :destroy, EventAttendance
+					attendance = EventAttendance.find(id: params[:id])
+					attendance.destroy
+				end
 			end
 
 		end
