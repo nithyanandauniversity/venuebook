@@ -4,6 +4,15 @@ class User < Sequel::Model
 	self.plugin :timestamps
 	include BCrypt
 
+	def center_code
+		if center_id
+			center = Center.find(id: center_id)
+			center.code
+		else
+			nil
+		end
+	end
+
 	def password
 		@password ||= Password.new(encrypted_password)
 	end

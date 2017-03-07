@@ -70,10 +70,11 @@ module Venuebook
 
       mount Venuebook::SessionAPI
       mount Venuebook::UserAPI
-      mount Venuebook::VenueAPI
-      mount Venuebook::CenterAPI
-      mount Venuebook::EventAPI
       mount Venuebook::ParticipantAPI
+      mount Venuebook::CenterAPI
+      mount Venuebook::ProgramAPI
+      mount Venuebook::VenueAPI
+      mount Venuebook::EventAPI
       mount Venuebook::EventAttendanceAPI
    end
 end

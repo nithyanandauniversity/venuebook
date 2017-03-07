@@ -2,17 +2,6 @@ require 'spec_helper'
 
 describe 'Participant' do
 
-	# before(:all) do
-	# 	curr_dir = Dir.pwd
-	# 	puts "Working Directory :: #{Dir.pwd}\n\n"
-	# 	exec 'cd ../parbook && RACK_ENV=test rackup -p 30011 -P partest.pid -D'
-	# 	exec "cd #{curr_dir}"
-	# end
-
-	# after(:all) do
-	# 	exec 'kill -9 $(cat ../parbook/partest.pid)'
-	# end
-
 	before(:all) do
 		User.dataset.all { |u| u.destroy }
 		user = User.create(first_name: "Saravana", last_name: "B", email: "sgsaravana@gmail.com", password: "123123", role: 1)
@@ -49,10 +38,10 @@ describe 'Participant' do
 		Participant.delete_all
 		sleep(1.5)
 
-		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
-		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male"}})
-		user3 = Participant.create({participant: {first_name: "Dinesh", last_name: "Gupta", email: "sri.sadhana@innerawakening.org", other_names: "Sri Nithya Sadhanananda", gender: "Male"}})
-		user4 = Participant.create({participant: {first_name: "Kamleshwari", last_name: "V", email: "leshlesh76@gmail.com", other_names: "Ma Nithya Nishpapananda", gender: "Female"}})
+		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male", center_code: "122"}})
+		user2 = Participant.create({participant: {first_name: "Senthuran", last_name: "Ponnampalam", email: "psenthu@gmail.com", gender: "Male", center_code: "122"}})
+		user3 = Participant.create({participant: {first_name: "Dinesh", last_name: "Gupta", email: "sri.sadhana@innerawakening.org", other_names: "Sri Nithya Sadhanananda", gender: "Male", center_code: "123"}})
+		user4 = Participant.create({participant: {first_name: "Kamleshwari", last_name: "V", email: "leshlesh76@gmail.com", other_names: "Ma Nithya Nishpapananda", gender: "Female", center_code: "123"}})
 
 		get "/api/v1/participants", {search: {
 			page: 1,
@@ -75,6 +64,27 @@ describe 'Participant' do
 
 		expect(response2.length).to eql 1
 		expect(response2[0]['email']).to eql "leshlesh76@gmail.com"
+
+		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
+		de1    = User.create(first_name: "Data entry1", email: "dataentry1@gmail.com", password: "123123", role: 6, center_id: center.id)
+
+		post "/api/v1/sessions/login", {auth: {
+			email: "dataentry1@gmail.com",
+			password: "123123"
+		}}
+
+		token = JSON.parse(last_response.body)['token']
+
+		get "/api/v1/participants", {search: {
+			page: 1,
+			limit: 10,
+			keyword: "gmail"
+		}}, {'HTTP_TOKEN' => token}
+
+		response3 = JSON.parse(last_response.body)[0]['participants']
+
+		expect(response3.length).to eql 1
+		expect(response3[0]['first_name']).to eql "Kamleshwari"
 	end
 
 	it "should be able to get participant by id" do
@@ -119,7 +129,8 @@ describe 'Participant' do
 	end
 
 	it "should not allow data entry user to create participant" do
-		de1 = User.create(first_name: "Data entry1", email: "dataentry1@gmail.com", password: "123123", role: 6)
+		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
+		de1    = User.create(first_name: "Data entry1", email: "dataentry1@gmail.com", password: "123123", role: 6, center_id: center.id)
 
 		post "/api/v1/sessions/login", {auth: {
 			email: "dataentry1@gmail.com",
