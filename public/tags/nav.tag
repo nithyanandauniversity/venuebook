@@ -16,21 +16,34 @@
 					</a>
 
 					<div class="right menu">
-						<div class="item">
-							<div
-								class = "ui inverted gray icon button"
-								onclick = "{ showSettings() }">
-								<i class = "icon setting"></i>
-							</div>
-						</div>
-						<div class="item">
-							<div
-								class   = "ui inverted red icon button"
-								onclick = "{ signout() }">
-								<i class = "icon power"></i>
+						<div
+							class = "menu-dropdown ui floating labeled icon inverted orange small dropdown button"
+							style = "height: 60%; margin-top: 16%;">
+							<i class = "icon user"></i>
+							<span>{ currentUser.first_name }</span>
+
+							<div class="menu">
+								<div
+									class   = "item"
+									show    = "{currentUser.role == 1}"
+									onclick = "{ showUserManagement() }">
+									<i class="icon green users"></i> Users
+								</div>
+								<div
+									class   = "item"
+									onclick = "{ showSettings() }">
+									<i class="icon blue setting"></i> Settings
+								</div>
+								<div class="divider"></div>
+								<div
+									class   = "item red"
+									onclick = "{ signout() }">
+									<i class="icon red power"></i> Signout
+								</div>
 							</div>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
@@ -71,17 +84,12 @@
 			{
 				name  : 'Programs',
 				route : 'PROGRAMS',
-				role  : [1, 2, 3, 4]
+				role  : [1, 2, 3]
 			},
 			{
 				name  : 'Events',
 				route : 'EVENTS',
 				role  : [1, 2, 3, 4, 5, 6]
-			},
-			{
-				name  : 'Users',
-				route : 'USERS',
-				role  : [1, 2, 3, 4]
 			}
 		];
 
@@ -90,6 +98,16 @@
 		this.on('update', (a,b) => {
 			this.activeRoute = this.opts.store.getState().routes.path;
 		});
+
+		setTimeout(() => {
+			$('.menu-dropdown').dropdown();
+		}, 10);
+
+		showUserManagement(e) {
+			return(e) => {
+				console.log("GO TO USER MANAGEMENT");
+			}
+		}
 
 		showSettings(e) {
 			return(e) => {

@@ -8,6 +8,8 @@ Sequel.migration do
       String :encrypted_password
       Integer :role
       Integer :center_id
+      DateTime :created_at
+      DateTime :updated_at
     end
   end
 
