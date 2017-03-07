@@ -21,10 +21,14 @@ import 'tags/centers/center-form.tag!';
 import 'tags/centers/center-view.tag!';
 
 import 'tags/programs.tag!'
+import 'tags/programs/program-form.tag!'
+import 'tags/programs/program-list.tag!'
+
 import 'tags/events.tag!'
 import 'tags/users.tag!'
 
 import 'tags/riot-pagination.tag!';
+
 
 const Services = new AllServices();
 
