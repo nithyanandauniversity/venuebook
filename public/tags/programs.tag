@@ -6,6 +6,15 @@
 	<!-- List Program Component -->
 	<program-list class="column"></program-list>
 
-	<script></script>
+	<script>
+
+		console.log("this.opts");
+		console.log(this.opts);
+
+		reloadList() {
+			this.tags['program-list'].trigger('reload');
+		}
+
+	</script>
 </programs>
 

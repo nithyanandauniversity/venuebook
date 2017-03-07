@@ -10,6 +10,7 @@ import { CenterCategories } from '../constants/CenterCategory.js';
 import Session from './session.service';
 import Participant from './participant.service';
 import Center from './center.service';
+import Program from './program.service';
 // import Event from './event.service';
 // import Program from './program.service';
 
@@ -22,6 +23,7 @@ export default class Services {
 		this.sessionService     = new Session(api);
 		this.participantService = new Participant(api);
 		this.centerService      = new Center(api);
+		this.programService     = new Program(api);
 		// this.eventService   = new Event(api);
 		// this.programService = new Program(api);
 

@@ -19,7 +19,10 @@
 	</centers>
 
 	<programs
-		if = "{opts.store.getState().routes.path == 'PROGRAMS'}">
+		if      = "{opts.store.getState().routes.path == 'PROGRAMS'}"
+		store   = "{opts.store}"
+		state   = "{opts.store.getState().programs}"
+		service = "{opts.services.programService}">
 	</programs>
 
 	<events

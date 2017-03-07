@@ -28,7 +28,7 @@ class Ability
 			can :read, Program, :center_id => nil
 			can [:create, :read, :update, :destroy], Program do |project|
 				center_id == user['center_id']
-			end #:center_id => user['center_id']
+			end
 		end
 
 		if user['role'] <= 2

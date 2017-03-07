@@ -8,11 +8,19 @@ module Venuebook
 
 			get do
 				if authorize! :read, Program
-					if current_user['center_id']
-						Program.where(center_id: current_user['center_id']).or(center_id: nil)
+					if params[:only_types]
+						programs = Program.select(:program_type).distinct
 					else
-						Program.where(center_id: nil)
+						programs = Program.order(:id)
 					end
+
+					if current_user['center_id']
+						programs = programs.where(center_id: current_user['center_id']).or(center_id: nil)
+					else
+						programs = programs.where(center_id: nil)
+					end
+
+					[{programs: programs}]
 				end
 			end
 

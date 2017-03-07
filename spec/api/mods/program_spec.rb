@@ -36,9 +36,21 @@ describe 'Program API' do
 
 		get "/api/v1/programs", nil, {'HTTP_TOKEN' => @token}
 
-		response = JSON.parse(last_response.body)
+		response = JSON.parse(last_response.body)[0]['programs']
 
 		expect(response.length).to eql 2
+	end
+
+	it "should be able to list only the program types" do
+		Program.create(program_name: "Yoga", program_type: "Weekly Event")
+		Program.create(program_name: "Kalpataru", program_type: "Bidadi Event")
+		Program.create(program_name: "Shivarathri", program_type: "Temple Activity")
+
+		get "/api/v1/programs", {only_types: true}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)[0]['programs']
+
+		expect(response.length).not_to eql 0
 	end
 
 	it "should be able to edit global programs" do
