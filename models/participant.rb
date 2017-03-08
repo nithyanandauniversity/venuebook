@@ -10,8 +10,11 @@ class Participant < Sequel::Model
 	end
 
 	def self.get(id)
-		response = RestClient.get PARBOOK_URL + "/#{id}"
-		JSON.parse(response.body)
+		response    = RestClient.get PARBOOK_URL + "/#{id}"
+		participant = JSON.parse(response.body)
+
+		participant['center'] = Center.find(code: participant['center_code'])
+		participant
 	end
 
 	def self.create(params)

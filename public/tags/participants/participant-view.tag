@@ -111,6 +111,13 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Participant Center Info -->
+				<participant-center
+					if     = "{participant.center}"
+					center = "{participant.center}">
+				</participant-center>
+
 			</div>
 			<div class="seven wide column">
 				<participant-comments comments = "{participant.comments}"></participant-comments>
