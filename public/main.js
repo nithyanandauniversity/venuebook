@@ -24,6 +24,10 @@ import 'tags/programs.tag!'
 import 'tags/programs/program-form.tag!'
 import 'tags/programs/program-list.tag!'
 
+import 'tags/venues.tag!'
+import 'tags/venues/venue-list.tag!'
+import 'tags/venues/venue-form.tag!'
+
 import 'tags/events.tag!'
 import 'tags/users.tag!'
 

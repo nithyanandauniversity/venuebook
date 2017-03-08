@@ -25,6 +25,14 @@
 		service = "{opts.services.programService}">
 	</programs>
 
+	<venues
+		if        = "{opts.store.getState().routes.path == 'VENUES'}"
+		store     = "{opts.store}"
+		countries = "{opts.services.countries}"
+		state     = "{opts.store.getState().programs}"
+		service   = "{opts.services.venueService}">
+	</venues>
+
 	<events
 		if = "{opts.store.getState().routes.path == 'EVENTS'}">
 	</events>
