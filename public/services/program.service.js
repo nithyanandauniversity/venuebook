@@ -22,6 +22,17 @@ export default class ProgramService {
 			});
 	}
 
+	get(id, callback) {
+		this.reloadApi();
+		this.api.one('programs', id).get()
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 	search(params, callback) {
 		this.reloadApi();
 		this.collection.getAll(params)
@@ -44,7 +55,16 @@ export default class ProgramService {
 			});
 	}
 
-	update() {}
+	update(id, params, callback) {
+		this.reloadApi();
+		this.collection.put(id, params)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
 
 }
 

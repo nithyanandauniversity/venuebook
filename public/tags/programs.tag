@@ -8,10 +8,17 @@
 
 	<script>
 
-		console.log("this.opts");
-		console.log(this.opts);
+		this.currentUser = this.opts.store.getState().routes.data;
+
+		editProgram(program) {
+			this.opts.store.dispatch({type: 'EDIT_PROGRAM', id: program.id});
+			this.update();
+			this.tags['program-form'].trigger('edit');
+		}
 
 		reloadList() {
+			this.opts.store.dispatch({type: 'ADD_PROGRAM'});
+			this.update();
 			this.tags['program-list'].trigger('reload');
 		}
 

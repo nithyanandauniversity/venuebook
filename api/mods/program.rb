@@ -24,8 +24,17 @@ module Venuebook
 				end
 			end
 
+			get '/:id' do
+				if authorize! :read, Program
+					program = Program.find(id: params[:id])
+
+					return { program: program }
+				end
+			end
+
 			post do
 				if authorize! :create, Program
+					params[:program][:center_id] ||= current_user['center_id'] if current_user['center_id']
 					program = Program.create(params[:program])
 					program
 				end

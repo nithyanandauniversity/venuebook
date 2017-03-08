@@ -18,7 +18,7 @@
 							<div class="right floated content">
 								<i class="icon write" onclick="{editProgram()}"></i>
 							</div>
-							<div class="content">
+							<div class="content" style="padding: 5px 0;">
 								<i class="icon caret right"></i>
 								{program.program_name}
 							</div>
@@ -41,8 +41,7 @@
 
 		editProgram(e) {
 			return(e) => {
-				console.log("e.item");
-				console.log(e.item);
+				this.parent.editProgram(e.item.program);
 			}
 		}
 
@@ -74,8 +73,6 @@
 				}
 
 				this.update();
-				console.log("this.programs");
-				console.log(this.programs);
 			});
 		}
 
