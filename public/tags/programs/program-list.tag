@@ -15,8 +15,10 @@
 						<div
 							class="item"
 							each = "{program in group.programs}">
-							<div class="right floated content">
-								<i class="icon write" onclick="{editProgram()}"></i>
+							<div
+								class = "right floated content"
+								style = "cursor: pointer;">
+								<i class="icon blue write" onclick="{editProgram()}"></i>
 							</div>
 							<div class="content" style="padding: 5px 0;">
 								<i class="icon caret right"></i>

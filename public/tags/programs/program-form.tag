@@ -1,6 +1,6 @@
 <program-form>
 	<div class="ui segment">
-		<h3>Create Progam</h3>
+		<h3>{!edit_id && 'Create' || 'Edit'} Progam</h3>
 
 		<div class="ui form">
 			<div class="field {validation && validation.emptyName && 'error'}">
