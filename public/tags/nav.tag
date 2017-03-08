@@ -31,6 +31,12 @@
 								</div>
 								<div
 									class   = "item"
+									show    = "{currentUser.role == 3}"
+									onclick = "{ showVenueManagement() }">
+									<i class="icon violet map"></i> Venues
+								</div>
+								<div
+									class   = "item"
 									onclick = "{ showSettings() }">
 									<i class="icon blue setting"></i> Settings
 								</div>
@@ -106,6 +112,15 @@
 		showUserManagement(e) {
 			return(e) => {
 				console.log("GO TO USER MANAGEMENT");
+			}
+		}
+
+		showVenueManagement(e) {
+			return(e) => {
+				this.parent.navigatePage({
+					type : 'VENUES',
+					data : this.currentUser
+				});
 			}
 		}
 

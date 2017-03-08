@@ -5,7 +5,7 @@ Sequel.migration do
       String :street
       String :city
       String :state
-      String :zip_postal
+      String :postal_code
       String :country
       Integer :venue_id
       DateTime :created_at
