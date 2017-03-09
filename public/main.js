@@ -30,6 +30,10 @@ import 'tags/venues/venue-list.tag!'
 import 'tags/venues/venue-form.tag!'
 
 import 'tags/events.tag!'
+import 'tags/events/event-upcoming.tag!'
+import 'tags/events/event-past.tag!'
+import 'tags/events/event-form.tag!'
+
 import 'tags/users.tag!'
 
 import 'tags/riot-pagination.tag!';

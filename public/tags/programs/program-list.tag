@@ -1,5 +1,5 @@
 <program-list>
-	<div class="ui segment">
+	<div class="ui container segment">
 		<h3>All Programs List</h3>
 
 		<div

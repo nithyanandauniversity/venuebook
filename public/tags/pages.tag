@@ -34,7 +34,10 @@
 	</venues>
 
 	<events
-		if = "{opts.store.getState().routes.path == 'EVENTS'}">
+		if      = "{opts.store.getState().routes.path == 'EVENTS'}"
+		store   = "{opts.store}"
+		state   = "{opts.store.getState().events}"
+		service = "{opts.services.eventService}">
 	</events>
 
 	<users

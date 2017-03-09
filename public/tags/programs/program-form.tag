@@ -1,5 +1,5 @@
 <program-form>
-	<div class="ui segment">
+	<div class="ui container segment">
 		<h3>{!edit_id && 'Create' || 'Edit'} Progam</h3>
 
 		<div class="ui form">

@@ -1,0 +1,5 @@
+export const ADD_EVENT      = 'ADD_EVENT'
+export const EDIT_EVENT     = 'EDIT_EVENT'
+export const UPCOMING_EVENT = 'UPCOMING_EVENT'
+export const PAST_EVENT     = 'PAST_EVENT'
+export const SEARCH_EVENT   = 'SEARCH_EVENT'

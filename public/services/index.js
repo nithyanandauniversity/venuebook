@@ -12,7 +12,7 @@ import Participant from './participant.service';
 import Center from './center.service';
 import Program from './program.service';
 import Venue from './venue.service';
-// import Event from './event.service';
+import Event from './event.service';
 
 
 export default class Services {
@@ -25,7 +25,7 @@ export default class Services {
 		this.centerService      = new Center(api);
 		this.programService     = new Program(api);
 		this.venueService       = new Venue(api);
-		// this.eventService   = new Event(api);
+		this.eventService       = new Event(api);
 
 		this.countries        = this.generateCountriesList();
 		this.dialcodes        = DIALCODES;

@@ -2,7 +2,7 @@
 	<div class="ui fixed">
 		<div class="ui inverted segment">
 			<div class="ui container">
-				<div class="ui inverted secondary pointing menu">
+				<div class="ui inverted secondary menu">
 					<div class="item">
 						<!-- <img src="assets/images/logo.png"> -->
 						<h2>{ opts.heading }</h2>
