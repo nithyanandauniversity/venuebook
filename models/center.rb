@@ -10,8 +10,6 @@ class Center < Sequel::Model
 		keyword    = params && params[:keyword] || nil
 		attributes = params && params[:attributes] || nil
 
-		puts "PAGE: #{page} || SIZE: #{size} || KEYWORD: #{keyword}\n\n"
-
 		if keyword || attributes
 			# SEARCH
 			if keyword

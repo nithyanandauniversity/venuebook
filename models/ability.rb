@@ -11,6 +11,7 @@ class Ability
 		end
 
 		if user['role'] <= 5
+			can :read, Event
 			can [:create, :update], Participant, :center_id => user['center_id']
 			can [:create, :update], EventVenue
 		end

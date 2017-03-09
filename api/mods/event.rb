@@ -1,9 +1,39 @@
 module Venuebook
 	class EventAPI<Grape::API
-		namespace "event" do
+		namespace "events" do
 
 			before do
 				authenticate!
+			end
+
+			get do
+				if authorize! :read, Event
+
+					if params[:upcoming]
+						return Event.where('start_date > ?', (Date.today - 1.day))
+					elsif params[:past]
+
+						page = params[:past] && params[:past][:page].to_i || 1
+						size = params[:past] && params[:past][:limit].to_i || 10
+
+						events = Event.filter('start_date < ?', (Date.today - 1.day))
+							.order(:start_date)
+							.paginate(page, size)
+
+						[{
+							events: events,
+							page_count: events.page_count,
+							page_size: events.page_size,
+							page_range: events.page_range,
+							current_page: events.current_page,
+							pagination_record_count: events.pagination_record_count,
+							current_page_record_count: events.current_page_record_count,
+							current_page_record_range: events.current_page_record_range,
+							first_page: events.first_page?,
+							last_page: events.last_page?
+						}]
+					end
+				end
 			end
 
 			post do
