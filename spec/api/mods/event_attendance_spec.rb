@@ -20,14 +20,14 @@ describe 'Event Attendance' do
 		# user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
 		# sleep(1.5)
-
+		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
-		venue = Venue.create(name: "Yogam")
+		venue = Venue.create(name: "Yogam", center_id: center.id)
 
-		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
-		expect(Event.find(id: event.id).event_venue[0].user_id).to eql 32
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[0].user_id).to eql 32
 
 		post "/api/v1/event_attendance/", {attendance: {
 			event_id: event.id,
@@ -53,10 +53,10 @@ describe 'Event Attendance' do
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue = Venue.create(name: "Yogam")
 
-		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
-		expect(Event.find(id: event.id).event_venue[0].user_id).to eql 32
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[0].user_id).to eql 32
 
 		post "/api/v1/event_attendance/", {attendance: {
 			event_id: event.id,
@@ -82,10 +82,10 @@ describe 'Event Attendance' do
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue = Venue.create(name: "Yogam")
 
-		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
-		expect(Event.find(id: event.id).event_venue[0].user_id).to eql 32
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[0].user_id).to eql 32
 
 		event_attendance = EventAttendance.create({
 			event_id: event.id,
@@ -114,11 +114,11 @@ describe 'Event Attendance' do
 		venue1 = Venue.create(name: "Yogam")
 		venue2 = Venue.create(name: "MGM")
 
-		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue1.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
-		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue2.id, user_id: 33}}, {'HTTP_TOKEN' => @token}
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue1.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue2.id, user_id: 33}}, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
-		expect(Event.find(id: event.id).event_venue[1].venue.name).to eql "MGM"
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[1].venue.name).to eql "MGM"
 
 		event_attendance = EventAttendance.create({
 			event_id: event.id,
@@ -147,11 +147,11 @@ describe 'Event Attendance' do
 		venue1 = Venue.create(name: "Yogam")
 		venue2 = Venue.create(name: "MGM")
 
-		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue1.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
-		post "/api/v1/event/#{event.id}/venue", {venue: {venue_id: venue2.id, user_id: 33}}, {'HTTP_TOKEN' => @token}
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue1.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue2.id, user_id: 33}}, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
-		expect(Event.find(id: event.id).event_venue[1].venue.name).to eql "MGM"
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[1].venue.name).to eql "MGM"
 
 		event_attendance = EventAttendance.create({
 			event_id: event.id,

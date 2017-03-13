@@ -38,7 +38,18 @@ module Venuebook
 
 			post do
 				if authorize! :create, Event
-					Event.create(params[:event])
+					event    = Event.create(params[:event])
+					reg_code = (event.id * 5 * 6 * 7 * 8).to_s(36)
+					uuid     = SecureRandom.uuid
+					event.update(uuid: uuid, registration_code: reg_code)
+
+					if params[:venues] && params[:venues].length > 0
+						params[:venues].each do |v|
+							event.add_event_venue(v)
+						end
+					end
+
+					event
 				end
 			end
 
@@ -46,21 +57,23 @@ module Venuebook
 				if authorize! :create, Venue
 					event = Event.find(id: params[:id])
 					event.add_event_venue(params[:venue])
+					event
 				end
 			end
 
 			put '/:id/venue/:venue_id' do
 				if authorize! :update, Venue
 					event = Event.find(id: params[:id])
-					event_venue = event.event_venue(id: params[:venue_id]).first
+					event_venue = event.event_venues(id: params[:venue_id]).first
 					event_venue.update(params[:venue])
+					event
 				end
 			end
 
 			delete '/:id/venue/:venue_id' do
 				if authorize! :destroy, Venue
 					event = Event.find(id: params[:id])
-					event_venue = event.event_venue(id: params[:venue_id]).first
+					event_venue = event.event_venues(id: params[:venue_id]).first
 					event_venue.destroy
 				end
 			end
@@ -69,6 +82,7 @@ module Venuebook
 				if authorize! :update, Event
 					event = Event.find(id: params[:id])
 					event.update(params[:event])
+					event
 				end
 			end
 

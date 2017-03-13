@@ -19,7 +19,8 @@ class Ability
 		if user['role'] <= 4
 			can [:create, :update], Event
 			can :read, Program, :center_id => user['center_id']
-			can :read, [Participant, Center]
+			can :read, User, :role => 4..6
+			can :read, [Participant, Center, Venue]
 		end
 
 		if user['role'] <= 3

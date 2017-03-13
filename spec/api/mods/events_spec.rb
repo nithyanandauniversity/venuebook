@@ -18,10 +18,12 @@ describe "Events" do
 	it "should be able to CRUD events" do
 		post '/api/v1/events', {event: {start_date: Date.today, end_date: Date.tomorrow}}, {'HTTP_TOKEN' => @token}
 
-		res = JSON.parse(last_response.body)
+		res   = JSON.parse(last_response.body)
+		event = Event.find(id: res['id'])
 
-		expect(Event.find(id:res["id"]).start_date).to eql Date.today
-		expect(Event.find(id:res["id"]).end_date).to eql Date.tomorrow
+		expect(event.start_date).to eql Date.today
+		expect(event.end_date).to eql Date.tomorrow
+		expect(event.uuid).not_to eql nil
 	end
 
 	it "should be able to get upcoming events" do
@@ -61,13 +63,29 @@ describe "Events" do
 	it "should be able to find past events" do
 	end
 
+	it "should be able to create event with multiple venues" do
+		post '/api/v1/events', {
+			event: {start_date: Date.today, end_date: Date.tomorrow},
+			venues: [
+				{venue_id: 12, user_id: 33},
+				{venue_id: 16, user_id: 34},
+			]
+		}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+
+		event = Event.find(id: response['id'])
+
+		expect(event.event_venues.length).to eql 2
+	end
+
 	it "should be able to add venue to events" do
 		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue = Venue.create(name: "Yogam")
 
 		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
 	end
 
 	it "should be able to edit venue to events" do
@@ -76,16 +94,16 @@ describe "Events" do
 
 		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue[0].venue.name).to eql "Yogam"
-		expect(Event.find(id: event.id).event_venue[0].user_id).to eql 32
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[0].user_id).to eql 32
 
-		venue_id = Event.find(id: event.id).event_venue[0].id
+		venue_id = Event.find(id: event.id).event_venues[0].id
 
 		put "/api/v1/events/#{event.id}/venue/#{venue_id}", {venue: {user_id: 34}}, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue[0].user_id).to eql 34
-		expect(Event.find(id: event.id).event_venue[0].event_id).to eql event.id
-		expect(Event.find(id: event.id).event_venue[0].venue_id).to eql venue.id
+		expect(Event.find(id: event.id).event_venues[0].user_id).to eql 34
+		expect(Event.find(id: event.id).event_venues[0].event_id).to eql event.id
+		expect(Event.find(id: event.id).event_venues[0].venue_id).to eql venue.id
 	end
 
 	it "should be able to remove venue from events" do
@@ -94,11 +112,11 @@ describe "Events" do
 
 		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue.length).to eql 1
+		expect(Event.find(id: event.id).event_venues.length).to eql 1
 
 		delete "api/v1/events/#{event.id}/venue/#{venue.id}", nil, {'HTTP_TOKEN' => @token}
 
-		expect(Event.find(id: event.id).event_venue.length).to eql 0
+		expect(Event.find(id: event.id).event_venues.length).to eql 0
 	end
 
 	it "should be able to edit events" do
