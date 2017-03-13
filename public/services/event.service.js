@@ -22,6 +22,16 @@ export default class EventService {
 			});
 	}
 
+	getUpcoming(callback) {
+		this.collection.getAll({upcoming: true})
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 	get(id, callback) {
 		this.reloadApi();
 		this.api.one('events', id).get()

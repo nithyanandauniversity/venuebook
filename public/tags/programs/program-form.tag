@@ -21,9 +21,12 @@
 						placeholder = "Program Type" />
 				</div>
 				<div
-					class="ui fluid input"
-					if="{[2,3].includes(parent.currentUser.role)}">
-					<select ref="program_type" show="{proTypes}">
+					class = "ui fluid input"
+					if    = "{[2,3].includes(parent.currentUser.role)}">
+					<select
+						class = "ui search dropdown"
+						ref   = "program_type"
+						show  = "{proTypes}">
 						<option value="">Select Program Type...</option>
 						<option value="{ value }" each="{ proTypes }">{ label }</option>
 					</select>

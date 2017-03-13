@@ -52,7 +52,7 @@
 			for (let i = 0; i < this.programs.length; i++) {
 				let program = this.programs[i];
 				if (!groups[program.program_type]) {
-					groups[program.program_type] = []
+					groups[program.program_type] = [];
 				}
 
 				groups[program.program_type].push(program);

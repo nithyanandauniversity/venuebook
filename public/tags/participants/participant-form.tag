@@ -422,18 +422,6 @@
 			});
 		}
 
-		// this.on('create', () => {
-
-			// $("#participant-dob").calendar({
-			// 	type: 'date'
-			// });
-
-			// self.insertContact(true);
-			// self.insertAddress(true);
-
-			// self.update();
-		// });
-
 		loadEditForm(participant, attr) {
 			console.log("participant, attr");
 			console.log(participant, attr);
@@ -464,25 +452,6 @@
 			this.assignAddresses(participant.addresses);
 			this.assignContacts(participant.contacts);
 		}
-
-		// this.on('edit', () => {
-			// let state = self.parent.opts.state;
-			// console.log(self.opts.state);
-
-			// this.edit_id = this.opts.state.id;
-			// this.parent.opts.service.get(this.edit_id, (err, response) => {
-			// 	if (!err) {
-			// 		this.participant = response.body().data();
-			// 		this.attributes  = JSON.parse(this.participant.participant_attributes);
-			// 		this.loadEditForm(this.participant, this.attributes);
-			// 	}
-			// 	else {
-			// 		this.participant = null;
-			// 		console.log("ERROR LOADING PARTICIPANT !");
-			// 	}
-			// });
-
-		// });
 
 		this.countries = this.parent.opts.countries();
 		this.dialcodes = this.parent.opts.dialcodes;

@@ -18,9 +18,9 @@
 					<div class="header">{venue.name}</div>
 					<div class="description">
 						<span>{venue.address.street}, {venue.address.city}</span><br />
-						<span show="venue.address.state != ''">{venue.address.state},</span>
-						<span show="venue.address.postal_code != ''">{venue.address.postal_code}.</span>
-						<span show="venue.address.country"><strong>{venue.address.country}.</strong></span>
+						<span show="{venue.address.state != ''}">{venue.address.state},</span>
+						<span show="{venue.address.postal_code != ''}">{venue.address.postal_code}.</span>
+						<span show="{venue.address.country}"><strong>{venue.address.country}.</strong></span>
 					</div>
 				</div>
 			</div>
