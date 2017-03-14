@@ -31,6 +31,12 @@
 								</div>
 								<div
 									class   = "item"
+									show    = "{[1,2,3].includes(currentUser.role)}"
+									onclick = "{ showPrograms() }">
+									<i class="icon brown tasks"></i> Programs
+								</div>
+								<div
+									class   = "item"
 									show    = "{currentUser.role == 3}"
 									onclick = "{ showVenueManagement() }">
 									<i class="icon violet map"></i> Venues
@@ -83,19 +89,14 @@
 				role  : [1, 2, 3, 4, 5]
 			},
 			{
-				name  : 'Centers',
-				route : 'CENTERS',
-				role  : [1, 2]
-			},
-			{
-				name  : 'Programs',
-				route : 'PROGRAMS',
-				role  : [1, 2, 3]
-			},
-			{
 				name  : 'Events',
 				route : 'EVENTS',
 				role  : [1, 2, 3, 4, 5, 6]
+			},
+			{
+				name  : 'Centers',
+				route : 'CENTERS',
+				role  : [1, 2]
 			}
 		];
 
@@ -112,6 +113,15 @@
 		showUserManagement(e) {
 			return(e) => {
 				console.log("GO TO USER MANAGEMENT");
+			}
+		}
+
+		showPrograms(e) {
+			return(e) => {
+				this.parent.navigatePage({
+					type : 'PROGRAMS',
+					data : this.currentUser
+				});
 			}
 		}
 

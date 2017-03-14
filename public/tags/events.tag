@@ -11,6 +11,13 @@
 				<i class="icon add to calendar"></i> Create New
 			</button>
 			<button
+				class   = "ui basic orange large button right floated"
+				style   = "margin: 2px;"
+				show    = "{opts.state.view == 'VIEW_EVENT'}"
+				onclick = "{ goEdit }">
+				<i class="write icon"></i> Edit
+			</button>
+			<button
 				class   = "ui basic primary large button right floated"
 				style   = "margin: 2px;"
 				show    = "{opts.state.view == 'ADD_EVENT' || opts.state.view == 'VIEW_EVENT'}"
@@ -77,6 +84,10 @@
 			this.prevState = this.opts.store.getState().events;
 			this.opts.store.dispatch({type: 'VIEW_EVENT', id: event.id});
 			this.update();
+		}
+
+		goEdit(e) {
+			this.editEvent({id: this.opts.store.getState().events.id});
 		}
 
 		editEvent(event) {
