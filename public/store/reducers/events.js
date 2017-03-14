@@ -1,10 +1,15 @@
-import { ADD_EVENT, EDIT_EVENT, UPCOMING_EVENT, PAST_EVENT, SEARCH_EVENT } from '../../constants/EventActions'
+import { ADD_EVENT, VIEW_EVENT, EDIT_EVENT, UPCOMING_EVENT, PAST_EVENT, SEARCH_EVENT } from '../../constants/EventActions'
 
 export default function events(state = {view: UPCOMING_EVENT}, action) {
 	switch (action.type) {
 		case ADD_EVENT:
 			return {
 				view: ADD_EVENT
+			}
+		case VIEW_EVENT:
+			return {
+				view: VIEW_EVENT,
+				id: action.id
 			}
 		case EDIT_EVENT:
 			return {

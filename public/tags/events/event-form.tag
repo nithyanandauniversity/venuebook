@@ -187,7 +187,6 @@
 		venueChanged(e) {
 			return(e) => {
 				this.updateEventVenue(e.item);
-				console.log("VENUE CHANGED", e.item, this.venues);
 				this.checkDupVenue(this.venues[e.item.i].venue_id);
 			}
 		}
@@ -195,7 +194,6 @@
 		userChanged(e) {
 			return(e) => {
 				this.updateEventVenue(e.item);
-				console.log("USER CHANGED", e.item, this.venues);
 				this.checkDupUser(this.venues[e.item.i].user_id);
 			}
 		}
@@ -271,7 +269,8 @@
 					start_date       : this.refs.start_date.value,
 					end_date         : this.refs.end_date.value,
 					program_donation : this.refs.program_donation.value,
-					notes            : this.refs.notes.value
+					notes            : this.refs.notes.value,
+					center_id        : this.parent.currentUser.center_id
 				},
 				venues : this.venues.reduce((data, record, i) => {
 					let venue = {
@@ -322,6 +321,7 @@
 			}
 			else {
 				// EDIT EVENT
+				this.edit(saveParams);
 			}
 		}
 
@@ -334,12 +334,11 @@
 		}
 
 		edit(data) {
-			// this.parent.opts.service.update(this.edit_id, data, (err, response) => {
-			// 	if (!err) {
-			// 		console.log(response.body().data(), response.statusCode());
-			// 		this.parent.showList();
-			// 	}
-			// });
+			this.parent.opts.service.update(this.edit_id, data, (err, response) => {
+				if (!err) {
+					this.parent.goPrev();
+				}
+			});
 		}
 
 		reset() {
@@ -354,6 +353,8 @@
 
 			this.insertVenue();
 			this.update();
+
+			$(".ui.search.event_venue.dropdown").dropdown();
 		}
 
 		cancel() {
@@ -423,9 +424,6 @@
 				}
 
 				this.update();
-
-				console.log("this.allCoordinators");
-				console.log(this.allCoordinators);
 			});
 		}
 
@@ -434,8 +432,55 @@
 		this.loadCoordinators();
 
 		this.edit_id = this.opts.state.id;
+
+		loadEditForm(event, venues) {
+			// console.log("event, venues");
+			// console.log(event, venues);
+
+			this.refs.name.value             = event.name;
+			this.refs.program_id.value       = event.program_id;
+			this.refs.start_date.value       = event.start_date;
+			this.refs.end_date.value         = event.end_date;
+			this.refs.program_donation.value = event.program_donation;
+			this.refs.notes.value            = event.notes;
+
+			$("#event-start-date").calendar({
+				type        : 'date',
+				initialDate : event.start_date
+			});
+
+			$("#event-end-date").calendar({
+				type        : 'date',
+				initialDate : event.end_date
+			});
+
+			venues.forEach((v) => { this.insertVenue(v.venue_id, v.user_id) });
+			this.update();
+
+			this.assignVenues(venues);
+			$(".ui.search.event_venue.dropdown").dropdown();
+		}
+
+		assignVenues(venues) {
+			venues.forEach((venue, i) => {
+				this.refs['venue_id_' + i].value = venue.venue_id;
+				this.refs['user_id_' + i].value  = venue.user_id;
+			});
+		}
+
 		if (this.edit_id) {
-			//
+			this.parent.opts.service.get(this.edit_id, (err, response) => {
+				if (!err) {
+					let data = response.body().data();
+					this.event        = data['event'];
+					this.event_venues = data['event_venues'];
+					this.loadEditForm(this.event, this.event_venues);
+				}
+				else {
+					this.event = null;
+					console.log("ERROR LOADING EVENT !");
+				}
+			});
 		}
 		else {
 			setTimeout(() => {

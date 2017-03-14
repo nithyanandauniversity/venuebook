@@ -36,7 +36,7 @@ describe "Events" do
 
 		get "/api/v1/events", {upcoming: true}, {'HTTP_TOKEN' => @token}
 
-		response = JSON.parse(last_response.body)
+		response = JSON.parse(last_response.body)[0]['events']
 
 		expect(response.length).to eql 2
 	end
@@ -58,6 +58,39 @@ describe "Events" do
 		response = JSON.parse(last_response.body)[0]['events']
 
 		expect(response.length).to eql 2
+	end
+
+	it "should be able to get event by id" do
+		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
+		ca1    = User.create(first_name: "Center admin1", email: "centeradmin1@gmail.com", password: "123123", role: 3, center_id: center.id)
+
+		post "/api/v1/sessions/login", {auth: {
+			email: "centeradmin1@gmail.com",
+			password: "123123"
+		}}
+
+		token = JSON.parse(last_response.body)['token']
+
+		venue1 = Venue.create(name: "Yogam")
+		venue2 = Venue.create(name: "Yogam2")
+
+		post '/api/v1/events', {
+			event: {start_date: Date.today, end_date: Date.tomorrow, center_id: center.id},
+			venues: [
+				{venue_id: venue1.id, user_id: 33},
+				{venue_id: venue2.id, user_id: 34},
+			]
+		}, {'HTTP_TOKEN' => token}
+
+		res   = JSON.parse(last_response.body)
+		event = Event.find(id: res['id'])
+
+		get "/api/v1/events/#{event.id}", nil, {'HTTP_TOKEN' => token}
+
+		response = JSON.parse(last_response.body)
+		puts response
+		expect(response['event']['id']).to eql event.id
+		expect(response['event_venues'].length).to eql 2
 	end
 
 	it "should be able to find past events" do

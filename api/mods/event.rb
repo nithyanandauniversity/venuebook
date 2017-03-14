@@ -10,7 +10,8 @@ module Venuebook
 				if authorize! :read, Event
 
 					if params[:upcoming]
-						return Event.where('start_date > ?', (Date.today - 1.day))
+						events = Event.where('start_date > ?', (Date.today - 1.day)).order(:start_date)
+						[{events: JSON.parse(events.to_json(:include => :program))}]
 					elsif params[:past]
 
 						page = params[:past] && params[:past][:page].to_i || 1
@@ -32,6 +33,31 @@ module Venuebook
 							first_page: events.first_page?,
 							last_page: events.last_page?
 						}]
+					end
+				end
+			end
+
+			get '/:id' do
+				if authorize! :read, Event
+					if current_user['role'] < 6
+						center_id = current_user['role'] == 2 ? params[:center_id] : current_user['center_id']
+						event  = Event.find(id: params[:id])
+
+						if current_user['role'] != 1 && event.center_id != center_id.to_i
+							error!({status: 401, message: "401 Unauthorized"}, 401)
+						else
+							program      = event.program
+							event_venues = JSON.parse(
+								EventVenue.where(event_id: event.id).to_json(:include => [:venue, :user])
+							)
+
+							{
+								event: JSON.parse(event.to_json()),
+								program: program,
+								event_venues: event_venues
+							}
+						end
+
 					end
 				end
 			end
@@ -82,6 +108,15 @@ module Venuebook
 				if authorize! :update, Event
 					event = Event.find(id: params[:id])
 					event.update(params[:event])
+
+					if params[:venues] && params[:venues].length > 0
+						event.event_venues.delete
+
+						params[:venues].each do |v|
+							event.add_event_venue(v)
+						end
+					end
+
 					event
 				end
 			end

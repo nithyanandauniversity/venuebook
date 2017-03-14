@@ -67,6 +67,18 @@
 			this.update();
 		}
 
+		viewEvent(event) {
+			this.prevState = this.opts.store.getState().events;
+			this.opts.store.dispatch({type: 'VIEW_EVENT', id: event.id});
+			this.update();
+		}
+
+		editEvent(event) {
+			this.prevState = this.opts.store.getState().events;
+			this.opts.store.dispatch({type: 'EDIT_EVENT', id: event.id});
+			this.update();
+		}
+
 		goPrev() {
 			if (this.prevState && this.prevState.view) {
 				if (this.prevState.view == 'PAST_EVENT') {
