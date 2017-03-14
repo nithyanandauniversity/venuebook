@@ -6,14 +6,14 @@
 			<button
 				class   = "ui basic primary large button right floated"
 				style   = "margin: 2px;"
-				show    = "{opts.state.view != 'ADD_EVENT' && opts.state.view != 'EDIT_EVENT'}"
+				show    = "{opts.state.view == 'UPCOMING_EVENT' || opts.state.view == 'PAST_EVENT'}"
 				onclick = "{ createEvent }">
 				<i class="icon add to calendar"></i> Create New
 			</button>
 			<button
 				class   = "ui basic primary large button right floated"
 				style   = "margin: 2px;"
-				show    = "{opts.state.view == 'ADD_EVENT'}"
+				show    = "{opts.state.view == 'ADD_EVENT' || opts.state.view == 'VIEW_EVENT'}"
 				onclick = "{ goPrev }">
 				<i class="chevron left icon"></i> Back
 			</button>
@@ -53,6 +53,12 @@
 		if    = "{opts.state.view == 'ADD_EVENT' || opts.state.view == 'EDIT_EVENT'}"
 		state = "{opts.state}">
 	</event-form>
+
+	<!-- Event View Component -->
+	<event-view
+		if    = "{opts.state.view == 'VIEW_EVENT'}"
+		state = "{opts.state}">
+	</event-view>
 
 
 	<script>

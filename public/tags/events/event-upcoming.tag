@@ -1,7 +1,7 @@
 <event-upcoming>
 
 	<div
-		class = "ui cards"
+		class = "ui three cards"
 		show  = "{upcoming.length > 0}">
 		<div
 			class = "card"

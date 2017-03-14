@@ -47,9 +47,13 @@ module Venuebook
 							error!({status: 401, message: "401 Unauthorized"}, 401)
 						else
 							program      = event.program
-							event_venues = JSON.parse(
-								EventVenue.where(event_id: event.id).to_json(:include => [:venue, :user])
-							)
+							event_venues = EventVenue.where(event_id: event.id).collect { |event_venue|
+								venue               = event_venue.venue
+								venue[:address]     = venue.address
+								event_venue[:venue] = venue
+								event_venue[:user]	= event_venue.user
+								event_venue
+							}
 
 							{
 								event: JSON.parse(event.to_json()),
