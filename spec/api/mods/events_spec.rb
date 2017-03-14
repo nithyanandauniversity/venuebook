@@ -88,7 +88,7 @@ describe "Events" do
 		get "/api/v1/events/#{event.id}", nil, {'HTTP_TOKEN' => token}
 
 		response = JSON.parse(last_response.body)
-		puts response
+
 		expect(response['event']['id']).to eql event.id
 		expect(response['event_venues'].length).to eql 2
 	end

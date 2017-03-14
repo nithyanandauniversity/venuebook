@@ -6,7 +6,7 @@
 			<button
 				class   = "ui basic primary large button right floated"
 				style   = "margin: 2px;"
-				show    = "{opts.state.view != 'ADD_EVENT'}"
+				show    = "{opts.state.view != 'ADD_EVENT' && opts.state.view != 'EDIT_EVENT'}"
 				onclick = "{ createEvent }">
 				<i class="icon add to calendar"></i> Create New
 			</button>

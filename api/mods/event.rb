@@ -18,11 +18,11 @@ module Venuebook
 						size = params[:past] && params[:past][:limit].to_i || 10
 
 						events = Event.filter('start_date < ?', (Date.today - 1.day))
-							.order(:start_date)
+							.reverse(:start_date)
 							.paginate(page, size)
 
 						[{
-							events: events,
+							events: JSON.parse(events.to_json(:include => :program)),
 							page_count: events.page_count,
 							page_size: events.page_size,
 							page_range: events.page_range,

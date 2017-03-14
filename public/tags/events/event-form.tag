@@ -362,7 +362,7 @@
 				this.reset();
 			}
 			else {
-				this.parent.showUpcoming();
+				this.parent.goPrev();
 			}
 		}
 

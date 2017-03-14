@@ -23,7 +23,19 @@ export default class EventService {
 	}
 
 	getUpcoming(callback) {
+		this.reloadApi();
 		this.collection.getAll({upcoming: true})
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
+	getPast(params, callback) {
+		this.reloadApi();
+		this.collection.getAll({past: params})
 			.then((response) => {
 				callback(null, response);
 			})
