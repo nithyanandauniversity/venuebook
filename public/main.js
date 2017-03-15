@@ -37,6 +37,8 @@ import 'tags/events/event-upcoming.tag!'
 import 'tags/events/event-past.tag!'
 import 'tags/events/event-form.tag!'
 import 'tags/events/event-view.tag!'
+import 'tags/events/event-registrations.tag!'
+import 'tags/events/event-attendances.tag!'
 
 import 'tags/users.tag!'
 

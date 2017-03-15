@@ -5,7 +5,6 @@
 	<div class="ui">
 
 		<div class="ui two column centered grid">
-
 			<div class="nine wide column">
 				<h3 class="ui dividing header">
 					<i class="icon browser"></i> Event Details
@@ -66,25 +65,78 @@
 					</div>
 				</div>
 			</div>
+		</div>
 
+		<!-- Attendances / Registrations Menu -->
+		<div class="ui secondary pointing menu">
+			<a
+				class   = "item orange {activeTab == 'REGISTRATION' && 'active'}"
+				onclick = "{ switchRegTab() }">
+				Registrations
+			</a>
+			<a
+				class   = "item green {activeTab == 'ATTENDANCE' && 'active'}"
+				onclick = "{ switchAttTab() }">
+				Attendances
+			</a>
+		</div>
+		<div class="ui segment" style="min-height: 250px;">
+			<event-registrations
+				show = "{activeTab == 'REGISTRATION'}">
+			</event-registrations>
+			<event-attendances
+				show = "{activeTab == 'ATTENDANCE'}">
+			</event-attendances>
 		</div>
 
 	</div>
 
+
 	<script>
 
-		this.event   = {};
-		this.program = {};
-		this.venues  = [];
-		this.view_id = this.opts.state.id;
+		this.event     = {};
+		this.program   = {};
+		this.venues    = [];
+		this.view_id   = this.opts.state.id;
+		this.activeTab = 'REGISTRATION';
+
+		switchRegTab(e) {
+			return(e) => {
+				this.activeTab = 'REGISTRATION';
+			}
+		}
+
+		switchAttTab(e) {
+			return(e) => {
+				this.activeTab = 'ATTENDANCE';
+			}
+		}
+
+		initTab() {
+			let event_date = new Date(this.event.start_date);
+			let today      = new Date();
+
+			this.activeTab         = event_date > today ? 'REGISTRATION' : 'ATTENDANCE';
+			this.allowAttendance   = event_date <= today;
+			this.allowRegistration = event_date >= today;
+		}
+
+		addToRegistration() {}
+
+		addToAttendance() {}
+
+		updateAttendance() {}
 
 		if (this.view_id) {
 			this.parent.opts.service.get(this.view_id, (err, response) => {
 				if (!err) {
 					let data = response.body().data();
-					this.event   = data.event;
-					this.program = data.program;
-					this.venues  = data.event_venues;
+					this.event         = data.event;
+					this.program       = data.program;
+					this.venues        = data.event_venues;
+					this.registrations = data.attendances.filter((a) => { return a.attendance < 3 })
+					this.attendances   = data.attendances.filter((a) => { return a.attendance > 1 })
+					this.initTab();
 					this.update();
 				}
 				else {
