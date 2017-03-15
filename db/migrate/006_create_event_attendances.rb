@@ -6,7 +6,7 @@ Sequel.migration do
       Integer :venue_id
       String :member_id
       Integer :attendance
-      DateTime :attendance_date
+      Date :attendance_date
       DateTime :created_at
       DateTime :updated_at
     end

@@ -115,7 +115,7 @@ module Venuebook
 					event.update(params[:event])
 
 					if params[:venues] && params[:venues].length > 0
-						event.event_venues.delete
+						event.event_venues.each { |e| e.destroy }
 
 						params[:venues].each do |v|
 							event.add_event_venue(v)
