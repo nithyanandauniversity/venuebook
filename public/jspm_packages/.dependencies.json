@@ -1265,5 +1265,6 @@
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   },
   "npm:object-assign@2.0.0": {},
-  "npm:whatwg-fetch@2.0.2": {}
+  "npm:whatwg-fetch@2.0.2": {},
+  "npm:riot-format@1.1.1": {}
 }

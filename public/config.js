@@ -23,6 +23,7 @@ System.config({
     "request": "npm:request@2.79.0",
     "restful": "npm:restful.js@0.9.6",
     "riot": "npm:riot@3.2.1",
+    "riot-format": "npm:riot-format@1.1.1",
     "tag": "npm:systemjs-riot@1.4.3",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"

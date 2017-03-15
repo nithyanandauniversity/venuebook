@@ -1,6 +1,9 @@
 import riot from 'riot';
+import format from 'riot-format'
 import store from 'store/main.store';
 import AllServices from './services/index';
+
+format(riot) //mixin globally
 
 import 'tags/login.tag!';
 import 'tags/app.tag!';

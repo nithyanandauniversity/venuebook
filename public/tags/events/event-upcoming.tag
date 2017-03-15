@@ -16,7 +16,8 @@
 				</div>
 				<div class="description">
 					<h5>
-						{event.start_date} <span show = "{event.end_date}"> - {event.end_date}</span>
+						{format(event.start_date, 'date', 'fullDate')}
+						<span show = "{event.end_date}"> - {format(event.end_date, 'date', 'fullDate')}</span>
 					</h5>
 				</div>
 			</div>

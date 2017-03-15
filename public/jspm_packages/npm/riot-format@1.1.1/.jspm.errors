@@ -1,0 +1,256 @@
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:2:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:2:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:2:16: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:2:21: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:3:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:3:14: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:3:19: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:4:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:4:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:4:16: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:4:21: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:5:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:5:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:5:16: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:5:21: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:13:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:13:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:13:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:13:16: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:15:11: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:15:11: Unexpected token :
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:15:13: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:16:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:16:15: Unexpected token :
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:16:17: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:17:13: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:17:13: Unexpected token :
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:17:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:18:9: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:18:9: Unexpected token :
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:18:11: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:19:12: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:19:12: Unexpected token :
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:19:14: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:20:14: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:20:14: Unexpected token :
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:20:16: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:21:11: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:21:11: Unexpected token :
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:22:12: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.js:22:12: Unexpected token :
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:1:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:1:20: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:2:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:2:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:2:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:2:20: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:10:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:10:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:10:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/rollup.config.minify.js:10:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:1:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:1:23: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:2:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:2:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:2:13: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:2:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:3:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:3:69: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:26:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:26:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:97:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/format.js:97:8: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:1:13: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:1:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:2:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:2:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:2:42: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:18:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:18:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:18:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatter.js:18:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/bytes.js:3:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/bytes.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/bytes.js:3:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/bytes.js:3:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/date.js:134:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/date.js:134:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/date.js:134:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/date.js:134:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/json.js:1:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/json.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/json.js:1:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/json.js:1:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/number.js:1:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/number.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/number.js:1:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/number.js:1:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/opts.js:1:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/opts.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/opts.js:3:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/opts.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/opts.js:3:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/opts.js:3:16: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/opts.js:13:14: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/opts.js:13:14: Unexpected token :
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/opts.js:13:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:3:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:7:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:7:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:11:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:11:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:15:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:15:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:19:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:19:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:23:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:23:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:27:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:27:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:38:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:38:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:42:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:42:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:44:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/util.js:44:8: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/version.js:1:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/version.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/version.js:1:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/version.js:1:16: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:1:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:1:20: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:2:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:2:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:2:13: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:2:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:3:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:3:13: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:3:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:4:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:4:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:4:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:4:20: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:5:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:5:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:5:14: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:5:19: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:6:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:6:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:7:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:7:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:7:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formattersTest.js:7:23: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:1:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:1:20: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:3:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:3:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:3:23: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:4:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:4:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:4:32: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:5:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:5:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:5:32: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatterTest.js:5:37: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:1:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:1:20: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:2:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:2:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:2:30: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:3:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:3:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/formatTest.js:3:23: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/indexTest.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/indexTest.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/indexTest.js:1:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/indexTest.js:1:20: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/indexTest.js:2:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/indexTest.js:2:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/indexTest.js:2:30: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/indexTest.js:2:35: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/utilTest.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/utilTest.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/utilTest.js:1:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/utilTest.js:1:20: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/utilTest.js:2:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/utilTest.js:2:13: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/utilTest.js:2:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/test/utilTest.js:2:23: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:1:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:1:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:1:24: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:3:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:3:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:3:13: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:3:19: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:4:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:4:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:4:15: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:4:20: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:5:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:5:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:5:14: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:5:19: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:6:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:6:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:6:13: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/formatters/index.js:6:18: Semi-colon expected
+
+MultipleErrors: /Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:6:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:6:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:6:32: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:7:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:7:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:7:31: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:10:1: Unexpected reserved word import
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:10:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:19:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:19:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:37:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:37:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:37:10: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:37:18: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:37:21: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:37:36: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:40:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:40:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:40:32: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:42:1: Unexpected reserved word export
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:42:8: Semi-colon expected
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:42:8: Unexpected reserved word default
+/Users/saravana/.jspm/packages/npm/riot-format@1.1.1/src/index.js:42:16: Semi-colon expected

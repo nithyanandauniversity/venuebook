@@ -1,0 +1,1 @@
+module.exports = require("npm:riot-format@1.1.1/dist/riot-format.js");
