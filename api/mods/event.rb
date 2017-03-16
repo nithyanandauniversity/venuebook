@@ -59,7 +59,7 @@ module Venuebook
 								event: JSON.parse(event.to_json()),
 								program: program,
 								event_venues: event_venues,
-								attendances: event.event_attendances
+								attendances: EventAttendance.all_attendances(event.id)
 							}
 						end
 

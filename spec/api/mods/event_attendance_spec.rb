@@ -17,12 +17,12 @@ describe 'Event Attendance' do
 
 	it "should be able to create event registration" do
 		# Participant.delete_all
-		# user = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+		participant = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
-		# sleep(1.5)
+		sleep(1.5)
 		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
-		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
-		venue = Venue.create(name: "Yogam", center_id: center.id)
+		event  = Event.create(start_date: Date.today, end_date: Date.tomorrow)
+		venue  = Venue.create(name: "Yogam", center_id: center.id)
 
 		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
@@ -32,7 +32,7 @@ describe 'Event Attendance' do
 		post "/api/v1/event_attendances/", {attendance: {
 			event_id: event.id,
 			venue_id: venue.id,
-			member_id: '20170201-2352hwed',
+			member_id: participant['member_id'],
 			attendance: 1
 		}}, {'HTTP_TOKEN' => @token}
 
@@ -41,14 +41,46 @@ describe 'Event Attendance' do
 		expect(response['event_id']).to eql event.id
 		expect(response['venue_id']).to eql venue.id
 		expect(response['attendance']).to eql EventAttendance::REGISTERED
-		expect(response['member_id']).to eql '20170201-2352hwed'
+		expect(response['member_id']).to eql participant['member_id']
+	end
+
+	it "should be able to create event registration and respond with all attendance data if needed" do
+		# Participant.delete_all
+		participant = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+
+		sleep(1.5)
+		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
+		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
+		venue = Venue.create(name: "Yogam", center_id: center.id)
+
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[0].user_id).to eql 32
+
+		post "/api/v1/event_attendances/", {
+			attendance: {
+				event_id: event.id,
+				venue_id: venue.id,
+				member_id: participant['member_id'],
+				attendance: 1
+			},
+			send_all: true
+		}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)['event_attendances']
+
+		expect(response.length).to eql 1
 	end
 
 	it "should mark attendance as REGISTERED_AND_ATTENDED if already registered" do
+		participant = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+
+		sleep(1.5)
 		center    = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
 		event     = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue     = Venue.create(name: "Yogam", center_id: center.id)
-		member_id = '20170201-2352hwed';
+		member_id = participant['member_id'];
 
 		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
@@ -85,10 +117,14 @@ describe 'Event Attendance' do
 	end
 
 	it "should mark attendance as REGISTERED_AND_ATTENDED if already registered for day 1 and attending day2" do
+		participant = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+
+		sleep(1.5)
+
 		center    = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
 		event     = Event.create(start_date: Date.today, end_date: Date.tomorrow)
 		venue     = Venue.create(name: "Yogam", center_id: center.id)
-		member_id = '20170201-2352hwed';
+		member_id = participant['member_id'];
 
 		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
 
@@ -117,11 +153,97 @@ describe 'Event Attendance' do
 			attendance: 3
 		}}, {'HTTP_TOKEN' => @token}
 
-		response   = JSON.parse(last_response.body)
+		response = JSON.parse(last_response.body)
 
 		event.reload
+		expect(event.event_attendances.length).to eql 1
+		expect(event.event_attendances[0].attendance).to eql 2
+	end
 
-		expect(event.event_attendances.length).to eql 2
+	it "should ignore duplicate entries for same date or same attendance type" do
+		participant = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+
+		sleep(1.5)
+
+		center    = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
+		event     = Event.create(start_date: Date.today, end_date: Date.tomorrow)
+		venue     = Venue.create(name: "Yogam", center_id: center.id)
+		member_id = participant['member_id'];
+
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[0].user_id).to eql 32
+
+		post "/api/v1/event_attendances/", {attendance: {
+			event_id: event.id,
+			venue_id: venue.id,
+			member_id: member_id,
+			attendance_date: event.start_date,
+			attendance: 1
+		}}, {'HTTP_TOKEN' => @token}
+
+		response   = JSON.parse(last_response.body)
+		attendance = EventAttendance.find(id: response['id'])
+
+		event.reload
+		expect(event.event_attendances.length).to eql 1
+
+		post "/api/v1/event_attendances/", {attendance: {
+			event_id: event.id,
+			venue_id: venue.id,
+			member_id: member_id,
+			attendance_date: event.start_date,
+			attendance: 1
+		}}, {'HTTP_TOKEN' => @token}
+
+		response   = JSON.parse(last_response.body)
+		attendance = EventAttendance.find(id: response['id'])
+
+		event.reload
+		expect(event.event_attendances.length).to eql 1
+	end
+
+	it "should mark record as registered attendee if he is a registered attendee on previous day" do
+		participant = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+
+		sleep(1.5)
+
+		center    = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
+		event     = Event.create(start_date: Date.today, end_date: Date.today + 2.day)
+		venue     = Venue.create(name: "Yogam", center_id: center.id)
+		member_id = participant['member_id'];
+
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[0].user_id).to eql 32
+
+		post "/api/v1/event_attendances/", {attendance: {
+			event_id: event.id,
+			venue_id: venue.id,
+			member_id: member_id,
+			attendance_date: event.start_date,
+			attendance: 1
+		}}, {'HTTP_TOKEN' => @token}
+
+		response   = JSON.parse(last_response.body)
+		attendance = EventAttendance.find(id: response['id'])
+
+		event.reload
+		expect(event.event_attendances.length).to eql 1
+
+		post "/api/v1/event_attendances/", {attendance: {
+			event_id: event.id,
+			venue_id: venue.id,
+			member_id: member_id,
+			attendance_date: Date.today + 1.day,
+			attendance: 3
+		}}, {'HTTP_TOKEN' => @token}
+
+		event.reload
+		expect(event.event_attendances.length).to eql 1
+		# expect(event.event_attendances.first.)
 	end
 
 	it "should be able to add an attendance without registering" do
