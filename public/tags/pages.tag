@@ -34,13 +34,15 @@
 	</venues>
 
 	<events
-		if              = "{opts.store.getState().routes.path == 'EVENTS'}"
-		store           = "{opts.store}"
-		state           = "{opts.store.getState().events}"
-		service         = "{opts.services.eventService}"
-		program-service = "{opts.services.programService}"
-		venue-service   = "{opts.services.venueService}"
-		user-service    = "{opts.services.userService}">
+		if                  = "{opts.store.getState().routes.path == 'EVENTS'}"
+		store               = "{opts.store}"
+		state               = "{opts.store.getState().events}"
+		service             = "{opts.services.eventService}"
+		attendance-service  = "{opts.services.attendanceService}"
+		program-service     = "{opts.services.programService}"
+		venue-service       = "{opts.services.venueService}"
+		participant-service = "{opts.services.participantService}"
+		user-service        = "{opts.services.userService}">
 	</events>
 
 	<users

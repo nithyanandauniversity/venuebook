@@ -56,7 +56,10 @@
 
 		showView(participant) {
 			// console.log('show view!', participant);
-			this.opts.store.dispatch({type: 'VIEW_PARTICIPANT', id: participant.id});
+			this.opts.store.dispatch({
+				type : 'VIEW_PARTICIPANT',
+				id   : participant.member_id
+			});
 			this.update();
 			// this.tags['participant-view'].trigger('view');
 		}

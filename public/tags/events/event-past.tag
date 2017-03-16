@@ -117,8 +117,7 @@
 			this.parent.opts.service.getPast(params, (err, response) => {
 				if (!err && response.body().length) {
 					let result = this.getData(response.body()[0]);
-					console.log("result");
-					console.log(result);
+
 					if (result.events && result.current_page_record_count > 0) {
 						this.events      = result.events;
 						this.currentPage = result.current_page;
