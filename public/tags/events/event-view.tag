@@ -30,7 +30,10 @@
 							<div class="description">
 								<h5>
 									{format(event.start_date, 'date', 'fullDate')}
-									<span show = "{event.end_date}"> - {format(event.end_date, 'date', 'fullDate')}</span>
+									<span
+										show = "{event.end_date && event.start_date != event.end_date}">
+										 - {format(event.end_date, 'date', 'fullDate')}
+									 </span>
 								</h5>
 							</div>
 						</div>
@@ -45,8 +48,9 @@
 				<div class="ui segment">
 					<div class="ui middle aligned celled list">
 						<div
-							each = "{venues}"
-							class = "item">
+							each  = "{venues}"
+							class = "item"
+							style = "position: relative;">
 							<div
 								class = "right floated content"
 								style = "position: absolute; top: 40%; right: 10px;">
@@ -80,12 +84,22 @@
 				Attendances
 			</a>
 		</div>
-		<div class="ui segment" style="min-height: 250px;">
+		<div
+			class = "ui segment"
+			style = "min-height: 250px; padding-bottom: 75px;">
 			<event-registrations
-				show = "{activeTab == 'REGISTRATION'}">
+				show         = "{activeTab == 'REGISTRATION'}"
+				current-user = "{currentUser}"
+				event        = "{event}"
+				venues       = "{venues}"
+				service      = "{parent.opts.participantService}">
 			</event-registrations>
 			<event-attendances
-				show = "{activeTab == 'ATTENDANCE'}">
+				show         = "{activeTab == 'ATTENDANCE'}"
+				current-user = "{currentUser}"
+				event        = "{event}"
+				venues       = "{venues}"
+				service      = "{parent.opts.participantService}">
 			</event-attendances>
 		</div>
 
@@ -94,11 +108,13 @@
 
 	<script>
 
-		this.event     = {};
-		this.program   = {};
-		this.venues    = [];
-		this.view_id   = this.opts.state.id;
-		this.activeTab = 'REGISTRATION';
+		this.event       = {};
+		this.program     = {};
+		this.venues      = [];
+		this.view_id     = this.opts.state.id;
+		this.activeTab   = 'REGISTRATION';
+
+		this.currentUser = this.parent.opts.store.getState().routes.data;
 
 		switchRegTab(e) {
 			return(e) => {
@@ -123,21 +139,49 @@
 
 		addToRegistration() {}
 
-		addToAttendance() {}
+		addToAttendance(participant, venue_id, attendance_date) {
+			console.log("participant, venue_id, attendance_date");
+			console.log(participant, venue_id, attendance_date);
+
+			let params = {
+				attendance : {
+					event_id        : this.view_id,
+					venue_id        : venue_id,
+					attendance_date : attendance_date,
+					member_id       : participant.member_id,
+					attendance      : 3
+				},
+				send_all : true
+			}
+
+			this.parent.opts.attendanceService.create(params, (err, response) => {
+				if (!err) {
+					let attendances = response.body().data().event_attendances;
+					this.reloadAttendanceData(attendances);
+					this.tags['event-attendances'].update();
+				}
+			});
+		}
 
 		updateAttendance() {}
+
+		reloadAttendanceData(data) {
+			this.registrations = data.filter((a) => { return a.attendance < 3 })
+			this.attendances   = data.filter((a) => { return a.attendance > 1 })
+		}
 
 		if (this.view_id) {
 			this.parent.opts.service.get(this.view_id, (err, response) => {
 				if (!err) {
 					let data = response.body().data();
-					this.event         = data.event;
-					this.program       = data.program;
-					this.venues        = data.event_venues;
-					this.registrations = data.attendances.filter((a) => { return a.attendance < 3 })
-					this.attendances   = data.attendances.filter((a) => { return a.attendance > 1 })
+					this.event   = data.event;
+					this.program = data.program;
+					this.venues  = data.event_venues;
+					this.reloadAttendanceData(data.attendances);
 					this.initTab();
 					this.update();
+					this.tags['event-attendances'].trigger('loaded');
+					this.tags['event-registrations'].trigger('loaded');
 				}
 				else {
 					this.event   = null;
