@@ -1,6 +1,6 @@
 <event-view
 	class = "ui container"
-	style = "margin: 25px 0;">
+	style = "margin: 25px 0 100px;">
 
 	<div class="ui">
 
@@ -163,7 +163,21 @@
 			});
 		}
 
-		updateAttendance() {}
+		updateAttendance(id, params) {
+			this.parent.opts.attendanceService.update(id, params, (err, response) => {});
+		}
+
+		removeAttendance(id) {
+			this.parent.opts.attendanceService.remove(id, (err, response) => {
+				if (!err) {
+					console.log(response.body());
+					console.log(response.body().data());
+					let attendances = response.body().data().event_attendances;
+					this.reloadAttendanceData(attendances);
+					this.tags['event-attendances'].update();
+				}
+			})
+		}
 
 		reloadAttendanceData(data) {
 			this.registrations = data.filter((a) => { return a.attendance < 3 })

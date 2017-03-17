@@ -45,13 +45,13 @@
 				<th>#</th>
 				<th show = "{activeVenue == 'ALL'}">Venue</th>
 				<th>Full Name</th>
-				<th></th>
+				<th style="width: 58px;"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr
 				each = "{attendance, i in parent.attendances}"
-				if   = "{activeVenue == 'ALL' || attendance.venue_id == activeVenue}">
+				if   = "{(activeVenue == 'ALL' || attendance.venue_id == activeVenue) && event_dates[date_index].toString() == new Date(attendance.attendance_date).toString()}">
 				<td>{i + 1}</td>
 				<td show = "{activeVenue == 'ALL'}">
 					{attendance.venue.name}
@@ -63,7 +63,14 @@
 						</strong> {attendance.participant.last_name}
 					</span>
 				</td>
-				<td></td>
+				<td>
+					<button
+						class   = "ui icon orange circular button"
+						style   = "margin: 0;"
+						onclick = "{ removeAttendance() }">
+						<i class="icon remove"></i>
+					</button>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -117,14 +124,16 @@
 						return (v.venue_id == this.activeVenue);
 					})[0];
 
-					console.log("venue");
-					console.log(venue);
-
 					if (venue) {
 						this.activeVenueName = venue.venue.name;
 					}
-
 				}
+			}
+		}
+
+		removeAttendance(e) {
+			return(e) => {
+				this.parent.removeAttendance(e.item.attendance.id);
 			}
 		}
 

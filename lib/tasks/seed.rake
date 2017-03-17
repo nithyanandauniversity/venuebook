@@ -8,7 +8,6 @@ namespace :seed do
 		# User.create(first_name: "Dinesh", last_name: "Gupta", email: "sri.sadhana@innerawakening.org", password: "123123", role: 1)
 
 	end
-
 	desc "Insert Other Users"
 	task :users, [:center_id] => :environment do |t, args|
 

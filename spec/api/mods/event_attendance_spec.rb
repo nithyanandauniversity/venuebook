@@ -369,7 +369,10 @@ describe 'Event Attendance' do
 
 		delete "/api/v1/event_attendances/#{event_attendance.id}", nil, {'HTTP_TOKEN' => @token}
 
+		response = JSON.parse(last_response.body)
+		puts response
 		expect(EventAttendance.find(id: event_attendance.id)).to eql nil
+		expect(response['event_attendances'].length).to eql 0
 	end
 
 end
