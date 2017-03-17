@@ -87,14 +87,14 @@ describe 'Participant' do
 		expect(response3[0]['first_name']).to eql "Kamleshwari"
 	end
 
-	it "should be able to get participant by id" do
+	it "should be able to get participant by member_id" do
 		user1 = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
-		get "/api/v1/participants/#{user1['id']}", nil, {'HTTP_TOKEN' => @token}
+		get "/api/v1/participants/#{user1['member_id']}", nil, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
-		expect(response['id']).to eql user1['id']
+		expect(response['member_id']).to eql user1['member_id']
 		expect(response['first_name']).to eql "Saravana"
 	end
 
@@ -114,7 +114,7 @@ describe 'Participant' do
 
 		response = JSON.parse(last_response.body)
 
-		participant = Participant.get(response['id'])
+		participant = Participant.get(response['member_id'])
 
 		expect(response['first_name']).to eql "Saravana"
 		expect(response['last_name']).to eql "Balaraj"
@@ -174,7 +174,7 @@ describe 'Participant' do
 
 		response = JSON.parse(last_response.body)
 
-		participant    = Participant.get(response['id'])
+		participant    = Participant.get(response['member_id'])
 		participant_id = participant['id']
 
 		expect(participant['addresses'].length).to eql 2
@@ -184,7 +184,7 @@ describe 'Participant' do
 
 		delete "/api/v1/participants/#{participant_id}/contact/#{contact_id}", nil, {'HTTP_TOKEN' => @token}
 
-		new_participant = Participant.get(response['id'])
+		new_participant = Participant.get(response['member_id'])
 
 		expect(new_participant['addresses'].length).to eql 2
 		expect(new_participant['contacts'].length).to eql 1
@@ -193,7 +193,7 @@ describe 'Participant' do
 
 		delete "/api/v1/participants/#{participant_id}/address/#{address_id}", nil, {'HTTP_TOKEN' => @token}
 
-		new_participant = Participant.get(response['id'])
+		new_participant = Participant.get(response['member_id'])
 
 		expect(new_participant['addresses'].length).to eql 1
 		expect(new_participant['contacts'].length).to eql 1

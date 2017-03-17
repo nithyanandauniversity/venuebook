@@ -1,22 +1,33 @@
 <!doctype html>
-<head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="dist/semantic.min.css" />
-	<link rel="stylesheet" href="dist/calendar.min.css" />
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="dist/semantic.min.css" />
+		<link rel="stylesheet" href="dist/calendar.min.css" />
 
-	<script src="/jspm_packages/system.js"></script>
-	<script src="/config.js"></script>
-	<script src="dist/jquery.min.js"></script>
-	<!-- <script src="node_modules/riot/riot.min.js"></script> -->
-	<!-- <script src="node_modules/riot-redux/dist/riot-redux.js"></script> -->
-	<script src="dist/semantic.min.js"></script>
-	<script src="dist/calendar.min.js"></script>
-</head>
+		<script src="/jspm_packages/system.js"></script>
+		<script src="/config.js"></script>
+		<script src="dist/jquery.min.js"></script>
+		<!-- <script src="node_modules/riot/riot.min.js"></script> -->
+		<!-- <script src="node_modules/riot-redux/dist/riot-redux.js"></script> -->
+		<script src="dist/semantic.min.js"></script>
+		<script src="dist/calendar.min.js"></script>
+		<script src="dist/jquery.autocomplete.min.js"></script>
 
-<body>
-	<app></app>
+		<style>
+			.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+			.autocomplete-suggestion { padding: 5px; white-space: nowrap; overflow: hidden; cursor: pointer; }
+			.autocomplete-selected { background: #F0F0F0; }
+			.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+			.autocomplete-group { padding: 2px 5px; }
+			.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+		</style>
+	</head>
 
-	<script>
-		SystemJS.import("main");
-	</script>
-</body>
+	<body>
+		<app></app>
+
+		<script>
+			SystemJS.import("main");
+		</script>
+	</body>
+</html>

@@ -58,11 +58,18 @@ module Venuebook
 							{
 								event: JSON.parse(event.to_json()),
 								program: program,
-								event_venues: event_venues
+								event_venues: event_venues,
+								attendances: EventAttendance.all_attendances(event.id)
 							}
 						end
 
 					end
+				end
+			end
+
+			get '/:id/event_attendances' do
+				if authorize! :read, EventAttendance
+					[{event_attendances: EventAttendance.all_attendances(params[:id])}]
 				end
 			end
 
@@ -114,7 +121,7 @@ module Venuebook
 					event.update(params[:event])
 
 					if params[:venues] && params[:venues].length > 0
-						event.event_venues.delete
+						event.event_venues.each { |e| e.destroy }
 
 						params[:venues].each do |v|
 							event.add_event_venue(v)

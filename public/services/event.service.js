@@ -55,6 +55,19 @@ export default class EventService {
 			});
 	}
 
+	getAttendances(id, callback) {
+		this.reloadApi();
+		this.api.one('events', id)
+			.all('event_attendances')
+			.getAll()
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 	create(params, callback) {
 		this.reloadApi();
 		this.collection.post(params)
