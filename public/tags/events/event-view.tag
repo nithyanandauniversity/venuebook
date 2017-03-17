@@ -6,9 +6,6 @@
 
 		<div class="ui two column centered grid">
 			<div class="nine wide column">
-				<h3 class="ui dividing header">
-					<i class="icon browser"></i> Event Details
-				</h3>
 				<div class="ui">
 					<div class="ui fluid card">
 						<div class="content">
@@ -42,10 +39,10 @@
 			</div>
 
 			<div class="seven wide column">
-				<h3 class="ui dividing header">
-					<i class="icon map outline"></i> Event Venues and Coordinators
-				</h3>
 				<div class="ui segment">
+					<h4 class="ui dividing header">
+						<i class="icon map outline"></i> Event Venues and Coordinators
+					</h4>
 					<div class="ui middle aligned celled list">
 						<div
 							each  = "{venues}"
@@ -72,7 +69,7 @@
 		</div>
 
 		<!-- Attendances / Registrations Menu -->
-		<div class="ui secondary pointing menu">
+		<div class="ui top attached huge tabular menu">
 			<a
 				class   = "item orange {activeTab == 'REGISTRATION' && 'active'}"
 				onclick = "{ switchRegTab() }">
@@ -85,7 +82,7 @@
 			</a>
 		</div>
 		<div
-			class = "ui segment"
+			class = "ui bottom attached segment"
 			style = "min-height: 250px; padding-bottom: 75px;">
 			<event-registrations
 				show         = "{activeTab == 'REGISTRATION'}"
@@ -137,11 +134,19 @@
 			this.allowRegistration = event_date >= today;
 		}
 
+		getAllAttendances() {
+			this.parent.opts.service.getAttendances(this.view_id, (err, response) => {
+				if (!err) {
+					let attendances = response.body()[0].data()['event_attendances'];
+					this.reloadAttendanceData(attendances);
+					this.tags['event-attendances'].update();
+				}
+			});
+		}
+
 		addToRegistration() {}
 
 		addToAttendance(participant, venue_id, attendance_date) {
-			console.log("participant, venue_id, attendance_date");
-			console.log(participant, venue_id, attendance_date);
 
 			let params = {
 				attendance : {
@@ -170,8 +175,7 @@
 		removeAttendance(id) {
 			this.parent.opts.attendanceService.remove(id, (err, response) => {
 				if (!err) {
-					console.log(response.body());
-					console.log(response.body().data());
+					this.getAllAttendances();
 					let attendances = response.body().data().event_attendances;
 					this.reloadAttendanceData(attendances);
 					this.tags['event-attendances'].update();

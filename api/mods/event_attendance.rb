@@ -160,7 +160,7 @@ module Venuebook
 					attendance = EventAttendance.find(id: params[:id])
 					event_id = attendance[:event_id]
 					attendance.destroy
-					puts "\nevent_id :: #{event_id}\n"
+
 					return {event_attendances: EventAttendance.all_attendances(event_id)}.to_json()
 				end
 			end

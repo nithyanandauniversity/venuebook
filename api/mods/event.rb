@@ -67,6 +67,12 @@ module Venuebook
 				end
 			end
 
+			get '/:id/event_attendances' do
+				if authorize! :read, EventAttendance
+					[{event_attendances: EventAttendance.all_attendances(params[:id])}]
+				end
+			end
+
 			post do
 				if authorize! :create, Event
 					event    = Event.create(params[:event])

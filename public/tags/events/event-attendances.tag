@@ -42,7 +42,7 @@
 		show  = "{parent.attendances && parent.attendances.length > 0}">
 		<thead>
 			<tr>
-				<th>#</th>
+				<th style="width: 100px;">#</th>
 				<th show = "{activeVenue == 'ALL'}">Venue</th>
 				<th>Full Name</th>
 				<th style="width: 58px;"></th>
@@ -118,8 +118,6 @@
 					this.activeVenueName = "ALL";
 				}
 				else {
-					console.log("this.activeVenue, this.opts.venues");
-					console.log(this.activeVenue, this.opts.venues);
 					let venue = this.opts.venues.filter((v) => {
 						return (v.venue_id == this.activeVenue);
 					})[0];
@@ -196,10 +194,7 @@
 					this.event_dates.push( new Date(start_date.getTime() + (1000*60*60*24) * (i+1)) );
 				}
 			}
-
 			this.date_index = 0;
-			console.log("this.event_dates");
-			console.log(this.event_dates);
 		}
 
 		this.on('loaded', () => {

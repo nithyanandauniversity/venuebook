@@ -73,6 +73,36 @@ describe 'Event Attendance' do
 		expect(response.length).to eql 1
 	end
 
+	it "should be able to get all attendances for the event" do
+		participant = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
+
+		sleep(1.5)
+		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
+		event = Event.create(start_date: Date.today, end_date: Date.tomorrow)
+		venue = Venue.create(name: "Yogam", center_id: center.id)
+
+		post "/api/v1/events/#{event.id}/venue", {venue: {venue_id: venue.id, user_id: 32}}, {'HTTP_TOKEN' => @token}
+
+		expect(Event.find(id: event.id).event_venues[0].venue.name).to eql "Yogam"
+		expect(Event.find(id: event.id).event_venues[0].user_id).to eql 32
+
+		post "/api/v1/event_attendances/", {
+			attendance: {
+				event_id: event.id,
+				venue_id: venue.id,
+				member_id: participant['member_id'],
+				attendance: 1
+			},
+			send_all: true
+		}, {'HTTP_TOKEN' => @token}
+
+		get "/api/v1/events/#{event.id}/event_attendances", nil, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)[0]['event_attendances']
+
+		expect(response.length).to eql 1
+	end
+
 	it "should mark attendance as REGISTERED_AND_ATTENDED if already registered" do
 		participant = Participant.create({participant: {first_name: "Saravana", last_name: "Balaraj", email: "sgsaravana@gmail.com", gender: "Male"}})
 
