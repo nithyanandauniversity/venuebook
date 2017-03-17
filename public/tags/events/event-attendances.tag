@@ -208,7 +208,7 @@
 
 		setTimeout( () => {
 			this.loadSearchInput();
-		}, 100)
+		}, 100);
 
 	</script>
 

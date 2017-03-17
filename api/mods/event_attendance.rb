@@ -48,10 +48,6 @@ module Venuebook
 
 						if record.count > 0
 
-							# Find records with attendance value with REGISTERED / REGISTERED_AND_ATTENDED
-							# If there's any records, the user has registered in advance.
-							# registered = record.exclude(attendance: EventAttendance::NOT_REGISTERED_AND_ATTENDED).count > 0
-
 							# Find if records exist for same day
 							same_day_attendance = record.where(attendance_date: data[:attendance_date])
 
@@ -104,32 +100,7 @@ module Venuebook
 								end
 							end
 
-
 						end
-
-
-						# attendance = record.where(attendance: EventAttendance::NOT_REGISTERED_AND_ATTENDED)
-
-						# registration = record.exclude(attendance: EventAttendance::NOT_REGISTERED_AND_ATTENDED)
-
-						# if registration.count > 0
-						# 	same_day = registration.where(attendance_date: data[:attendance_date])
-
-						# 	if same_day.count > 0
-						# 		event_attendance = same_day.first
-						# 		event_attendance.update(attendance: EventAttendance::REGISTERED_AND_ATTENDED)
-
-						# 		if params[:send_all]
-						# 			return {event_attendances: EventAttendance.all_attendances(data[:event_id])}
-						# 		else
-						# 			return event_attendance
-						# 		end
-						# 	else
-						# 		data[:attendance] = EventAttendance::REGISTERED_AND_ATTENDED
-						# 	end
-
-						# end
-
 					end
 
 					event_attendance = EventAttendance.create(data)

@@ -140,11 +140,43 @@
 					let attendances = response.body()[0].data()['event_attendances'];
 					this.reloadAttendanceData(attendances);
 					this.tags['event-attendances'].update();
+					this.tags['event-registrations'].update();
 				}
 			});
 		}
 
-		addToRegistration() {}
+		addToRegistration(participant, venue_id) {
+
+			let params = {
+				attendance : {
+					event_id        : this.view_id,
+					venue_id        : venue_id,
+					attendance_date : this.event.start_date,
+					member_id       : participant.member_id,
+					attendance      : 1
+				},
+				send_all : true
+			};
+
+			this.parent.opts.attendanceService.create(params, (err, response) => {
+				if (!err) {
+					let registrations = response.body().data().event_attendances;
+					this.reloadAttendanceData(registrations);
+					this.tags['event-registrations'].update();
+				}
+			});
+		}
+
+		removeRegistration(id) {
+			this.parent.opts.attendanceService.remove(id, (err, response) => {
+				if (!err) {
+					this.getAllAttendances();
+					// let registrations = response.body().data().event_attendances;
+					// this.reloadAttendanceData(registrations);
+					// this.tags['event-registrations'].update();
+				}
+			});
+		}
 
 		addToAttendance(participant, venue_id, attendance_date) {
 
@@ -157,7 +189,7 @@
 					attendance      : 3
 				},
 				send_all : true
-			}
+			};
 
 			this.parent.opts.attendanceService.create(params, (err, response) => {
 				if (!err) {
@@ -176,11 +208,11 @@
 			this.parent.opts.attendanceService.remove(id, (err, response) => {
 				if (!err) {
 					this.getAllAttendances();
-					let attendances = response.body().data().event_attendances;
-					this.reloadAttendanceData(attendances);
-					this.tags['event-attendances'].update();
+					// let attendances = response.body().data().event_attendances;
+					// this.reloadAttendanceData(attendances);
+					// this.tags['event-attendances'].update();
 				}
-			})
+			});
 		}
 
 		reloadAttendanceData(data) {
