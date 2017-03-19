@@ -66,7 +66,7 @@
 
 		showForm(participant) {
 			// console.log('show form!', participant);
-			this.opts.store.dispatch({type: 'EDIT_PARTICIPANT', id: participant.id});
+			this.opts.store.dispatch({type: 'EDIT_PARTICIPANT', id: participant.member_id});
 			this.update();
 			// this.tags['participant-form'].trigger('edit');
 		}

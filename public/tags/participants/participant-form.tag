@@ -509,7 +509,7 @@
 		}
 
 		validateForm(params) {
-			let emailRegex = new RegExp(/^[a-z0-9](\.?[a-z0-9_-]){0,}@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/);
+			let emailRegex  = new RegExp(/^[a-z0-9](\.?[a-z0-9_-]){0,}@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/);
 			this.validation = {};
 
 			if (!params.participant.first_name || params.participant.first_name == '') {
