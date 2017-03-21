@@ -45,6 +45,9 @@
 				<th style="width: 100px;">#</th>
 				<th show = "{activeVenue == 'ALL'}">Venue</th>
 				<th>Full Name</th>
+				<th>Payment</th>
+				<th>Method</th>
+				<th>Amount</th>
 				<th style="width: 58px;"></th>
 			</tr>
 		</thead>
@@ -62,6 +65,35 @@
 							{attendance.participant.first_name}
 						</strong> {attendance.participant.last_name}
 					</span>
+				</td>
+				<td>
+					<select
+						class    = "search ui dropdown small"
+						onchange = "{ attendanceChanged() }"
+						ref      = "{'payment_status_' + i}">
+						<option value="">Payment Status</option>
+						<option each="{paymentStatusOptions}" value="{value}">
+							{label}
+						</option>
+					</select>
+				</td>
+				<td>
+					<select
+						class    = "search ui dropdown small { !attendance.payment_status && 'disabled' }"
+						onchange = "{ attendanceChanged() }"
+						ref      = "{'payment_method_' + i}">
+						<option value="">Payment Method</option>
+						<option each="{paymentMethodOptions}" value="{value}">
+							{label}
+						</option>
+					</select>
+				</td>
+				<td>
+					<div
+						onchange = "{ attendanceChanged() }"
+						class    = "ui input small { !attendance.payment_status && 'disabled' }">
+						<input ref="{'amount_' + i}" type="text" placeholder="Payment Amount" />
+					</div>
 				</td>
 				<td>
 					<button
@@ -97,16 +129,41 @@
 
 		this.activeVenueName = '';
 
+		this.registrationConfirmationOptions = [
+			{ label : "Not Coming", value : 0 },
+			{ label : "Tentative", value : 1 },
+			{ label : "Confirmed", value : 2 },
+			{ label : "To Be Confirmed", value : 3 },
+		];
+
+		this.paymentStatusOptions = [
+			{ label : "Full Paid", value : 2 },
+			{ label : "Partial", value : 1 },
+			{ label : "Not Paid", value : 0 }
+		];
+
+		this.paymentMethodOptions = [
+			{ label : "Cash", value : 0 },
+			{ label : "Cheque", value : 1 },
+			{ label : "Bank", value : 2 },
+			{ label : "Online", value : 3 },
+			{ label : "Coupon", value : 4 }
+		];
+
 		selectVenue(e) {
 			return(e) => {
 				this.activeVenue = e.item ? e.item.venue_id : 'ALL';
 				this.setActiveVenueName();
+				this.update();
+				this.setAttValues();
 			}
 		}
 
 		selectEventDate(e) {
 			return(e) => {
 				this.date_index = e.item.i;
+				this.update();
+				this.setAttValues();
 			}
 		}
 
@@ -126,6 +183,39 @@
 						this.activeVenueName = venue.venue.name;
 					}
 				}
+			}
+		}
+
+		getAttendanceParams(att, i, param = {}) {
+
+			if (att.payment_status >= 0 && att.payment_status.toString() != this.refs['payment_status_' + i].value) {
+				param.payment_status = this.refs['payment_status_' + i].value;
+			}
+
+			if (this.refs['payment_method_' + i].value && att.payment_method != parseInt(this.refs['payment_method_' + i].value)) {
+				param.payment_method = this.refs['payment_method_' + i].value;
+			}
+
+			if (this.refs['amount_' + i].value && att.amount != this.refs['amount_' + i].value) {
+				param.amount = this.refs['amount_' + i].value;
+			}
+
+			return param;
+		}
+
+		attendanceChanged(e) {
+			return(e) => {
+				let unsubscribe;
+
+				if (unsubscribe) {
+					clearTimeout(unsubscribe);
+				}
+
+				unsubscribe = setTimeout( () => {
+					let params = this.getAttendanceParams(e.item.attendance, e.item.i);
+
+					this.parent.updateAttendance(e.item.attendance.id, params);
+				}, 500);
 			}
 		}
 
@@ -196,14 +286,42 @@
 			}
 		}
 
+		setAttValues() {
+
+			let attendances = this.parent.attendances.filter((attendance) => {
+				return (attendance.venue_id == this.activeVenue && new Date(attendance.attendance_date).toString() == this.parent.event_dates[this.date_index].toString());
+			});
+
+			for (let i = 0; i < attendances.length; i++) {
+				let att = attendances[i];
+
+				this.refs['payment_status_' + i].value      = att.payment_status;
+				this.refs['payment_method_' + i].value      = att.payment_method;
+				this.refs['amount_' + i].value              = att.amount;
+			}
+
+			$(".search.ui.dropdown").dropdown();
+		}
+
 		this.on('loaded', () => {
 			if (this.opts.venues && this.opts.venues.length) {
-				this.activeVenue = this.opts.venues[0].venue_id;
-				this.date_index  = 0;
+
+				if (this.activeVenue == undefined) {
+					this.activeVenue = this.opts.venues[0].venue_id;
+				}
+
+				if (this.date_index == undefined) {
+					this.date_index  = 0;
+				}
+
 
 				this.loadDates();
 				this.setActiveVenueName();
 				this.update();
+
+				setTimeout( () => {
+					this.setAttValues();
+				}, 20);
 			}
 		});
 

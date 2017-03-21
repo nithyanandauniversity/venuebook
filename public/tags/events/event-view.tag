@@ -216,8 +216,19 @@
 			});
 		}
 
-		updateAttendance(id, params) {
-			this.parent.opts.attendanceService.update(id, params, (err, response) => {});
+		updateAttendance(id, data) {
+			let params = {
+				attendance : data,
+				send_all   : true
+			};
+
+			this.parent.opts.attendanceService.update(id, params, (err, response) => {
+				if (!err) {
+					let attendances = response.body().data().event_attendances;
+					this.reloadAttendanceData(attendances);
+					this.tags['event-attendances'].trigger('loaded');
+				}
+			});
 		}
 
 		removeAttendance(id) {
