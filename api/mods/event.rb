@@ -17,7 +17,7 @@ module Venuebook
 						page = params[:past] && params[:past][:page].to_i || 1
 						size = params[:past] && params[:past][:limit].to_i || 10
 
-						events = Event.filter('start_date < ?', (Date.today - 1.day))
+						events = Event.filter('start_date <= ?', (Date.today - 1.day))
 							.reverse(:start_date)
 							.paginate(page, size)
 

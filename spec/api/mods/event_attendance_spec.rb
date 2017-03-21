@@ -152,7 +152,7 @@ describe 'Event Attendance' do
 		sleep(1.5)
 
 		center    = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
-		event     = Event.create(start_date: Date.today, end_date: Date.tomorrow)
+		event     = Event.create(start_date: Date.today, end_date: Date.today + 3.day)
 		venue     = Venue.create(name: "Yogam", center_id: center.id)
 		member_id = participant['member_id'];
 
@@ -165,7 +165,11 @@ describe 'Event Attendance' do
 			event_id: event.id,
 			venue_id: venue.id,
 			member_id: member_id,
-			attendance_date: event.start_date,
+			attendance_date: Date.today,
+			confirmation_status: 3,
+			payment_status: 2,
+			payment_method: 2,
+			amount: "200",
 			attendance: 1
 		}}, {'HTTP_TOKEN' => @token}
 
@@ -179,7 +183,7 @@ describe 'Event Attendance' do
 			event_id: event.id,
 			venue_id: venue.id,
 			member_id: member_id,
-			attendance_date: event.end_date,
+			attendance_date: Date.today + 1.day,
 			attendance: 3
 		}}, {'HTTP_TOKEN' => @token}
 
@@ -188,6 +192,24 @@ describe 'Event Attendance' do
 		event.reload
 		expect(event.event_attendances.length).to eql 1
 		expect(event.event_attendances[0].attendance).to eql 2
+		expect(event.event_attendances[0].confirmation_status).to eql 3
+		expect(event.event_attendances[0].payment_status).to eql 2
+
+
+		post "/api/v1/event_attendances/", {attendance: {
+			event_id: event.id,
+			venue_id: venue.id,
+			member_id: member_id,
+			attendance_date: Date.today + 2.day,
+			attendance: 3
+		}}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+
+		event.reload
+		expect(event.event_attendances.length).to eql 2
+		expect(event.event_attendances[1].confirmation_status).to eql 3
+		expect(event.event_attendances[0].payment_status).to eql 2
 	end
 
 	it "should ignore duplicate entries for same date or same attendance type" do
@@ -254,6 +276,10 @@ describe 'Event Attendance' do
 			venue_id: venue.id,
 			member_id: member_id,
 			attendance_date: event.start_date,
+			confirmation_status: 3,
+			payment_status: 2,
+			payment_method: 2,
+			amount: "200",
 			attendance: 1
 		}}, {'HTTP_TOKEN' => @token}
 
@@ -273,7 +299,8 @@ describe 'Event Attendance' do
 
 		event.reload
 		expect(event.event_attendances.length).to eql 1
-		# expect(event.event_attendances.first.)
+		expect(event.event_attendances.first.confirmation_status).to eql 3
+		expect(event.event_attendances.first.payment_status).to eql 2
 	end
 
 	it "should be able to add an attendance without registering" do

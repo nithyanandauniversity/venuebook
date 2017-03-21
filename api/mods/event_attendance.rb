@@ -96,7 +96,11 @@ module Venuebook
 										return registration
 									end
 								else
-									data[:attendance] = EventAttendance::REGISTERED_AND_ATTENDED
+									data[:confirmation_status] = other_reg.first.confirmation_status
+									data[:payment_status]      = other_reg.first.payment_status
+									data[:payment_method]      = other_reg.first.payment_method
+									data[:amount]              = other_reg.first.amount
+									data[:attendance]          = EventAttendance::REGISTERED_AND_ATTENDED
 								end
 							end
 
