@@ -83,7 +83,7 @@
 		</div>
 		<div
 			class = "ui bottom attached segment"
-			style = "min-height: 250px; padding-bottom: 75px;">
+			style = "min-height: 250px; padding-bottom: 100px;">
 			<event-registrations
 				show         = "{activeTab == 'REGISTRATION'}"
 				current-user = "{currentUser}"
@@ -139,8 +139,8 @@
 				if (!err) {
 					let attendances = response.body()[0].data()['event_attendances'];
 					this.reloadAttendanceData(attendances);
-					this.tags['event-attendances'].update();
-					this.tags['event-registrations'].update();
+					this.tags['event-attendances'].trigger('loaded');
+					this.tags['event-registrations'].trigger('loaded');
 				}
 			});
 		}
@@ -149,11 +149,13 @@
 
 			let params = {
 				attendance : {
-					event_id        : this.view_id,
-					venue_id        : venue_id,
-					attendance_date : this.event.start_date,
-					member_id       : participant.member_id,
-					attendance      : 1
+					event_id            : this.view_id,
+					venue_id            : venue_id,
+					attendance_date     : this.event.start_date,
+					member_id           : participant.member_id,
+					confirmation_status : 3,
+					payment_status      : 0,
+					attendance          : 1
 				},
 				send_all : true
 			};
@@ -162,18 +164,30 @@
 				if (!err) {
 					let registrations = response.body().data().event_attendances;
 					this.reloadAttendanceData(registrations);
-					this.tags['event-registrations'].update();
+					this.tags['event-registrations'].trigger('loaded');
 				}
 			});
+		}
+
+		updateRegistration(id, data) {
+			let params = {
+				attendance : data,
+				send_all   : true
+			};
+
+			this.parent.opts.attendanceService.update(id, params, (err, response) => {
+				if (!err) {
+					let registrations = response.body().data().event_attendances;
+					this.reloadAttendanceData(registrations);
+					this.tags['event-registrations'].trigger('loaded');
+				}
+			})
 		}
 
 		removeRegistration(id) {
 			this.parent.opts.attendanceService.remove(id, (err, response) => {
 				if (!err) {
 					this.getAllAttendances();
-					// let registrations = response.body().data().event_attendances;
-					// this.reloadAttendanceData(registrations);
-					// this.tags['event-registrations'].update();
 				}
 			});
 		}
@@ -195,7 +209,9 @@
 				if (!err) {
 					let attendances = response.body().data().event_attendances;
 					this.reloadAttendanceData(attendances);
-					this.tags['event-attendances'].update();
+
+					this.tags['event-attendances'].trigger('loaded');
+					this.tags['event-registrations'].trigger('loaded');
 				}
 			});
 		}
@@ -208,16 +224,60 @@
 			this.parent.opts.attendanceService.remove(id, (err, response) => {
 				if (!err) {
 					this.getAllAttendances();
-					// let attendances = response.body().data().event_attendances;
-					// this.reloadAttendanceData(attendances);
-					// this.tags['event-attendances'].update();
 				}
 			});
 		}
 
+		groupRegistrations(registrations) {
+			let groups = {};
+			for (let i = 0; i < registrations.length; i++) {
+				let registration = registrations[i];
+				if (!groups[registration.member_id]) {
+					groups[registration.member_id] = [];
+				}
+
+				groups[registration.member_id].push(registration);
+			}
+
+			this.registrations = [];
+
+			for (let id in groups) {
+				let registration = groups[id][0];
+				let participant  = registration.participant;
+				let venue        = registration.venue;
+
+				this.registrations.push(groups[id][0]);
+			}
+		}
+
 		reloadAttendanceData(data) {
-			this.registrations = data.filter((a) => { return a.attendance < 3 })
-			this.attendances   = data.filter((a) => { return a.attendance > 1 })
+			if (this.event_dates.length > 1) {
+				let registrations = data.filter((a) => { return a.attendance < 3 });
+				console.log("registrations");
+				console.log(registrations);
+				this.groupRegistrations(registrations);
+			}
+			else {
+				this.registrations = data.filter((a) => { return a.attendance < 3 });
+			}
+			this.attendances   = data.filter((a) => { return a.attendance > 1 });
+
+			// console.log("this.registrations");
+			// console.log(this.registrations);
+		}
+
+		loadDates() {
+			let start_date = new Date(this.event.start_date);
+			let end_date   = new Date(this.event.end_date);
+			let diff       = (end_date - start_date) / 1000 / 60 / 60 / 24;
+
+			this.event_dates = [start_date];
+
+			if (diff > 0) {
+				for (let i = 0; i < diff; i++) {
+					this.event_dates.push( new Date(start_date.getTime() + (1000*60*60*24) * (i+1)) );
+				}
+			}
 		}
 
 		if (this.view_id) {
@@ -227,9 +287,11 @@
 					this.event   = data.event;
 					this.program = data.program;
 					this.venues  = data.event_venues;
-					this.reloadAttendanceData(data.attendances);
 					this.initTab();
+					this.loadDates();
+					this.reloadAttendanceData(data.attendances);
 					this.update();
+
 					this.tags['event-attendances'].trigger('loaded');
 					this.tags['event-registrations'].trigger('loaded');
 				}

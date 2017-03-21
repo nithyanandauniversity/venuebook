@@ -4,7 +4,7 @@
 		<div class="header item">Venue : </div>
 		<a
 			class   = "item ui horizontal large label {activeVenue == 'ALL' ? 'green' : 'grey'}"
-			show    = "opts.venues && opts.venues.length > 1"
+			show    = "{opts.venues && opts.venues.length > 1}"
 			style   = "margin-right: 8px;"
 			onclick = "{ selectVenue() }">
 			ALL
@@ -26,6 +26,10 @@
 				<th style="width: 100px;">#</th>
 				<th show = "{activeVenue == 'ALL'}">Venue</th>
 				<th>Full Name</th>
+				<th>Confirmation</th>
+				<th>Payment</th>
+				<th>Method</th>
+				<th>Amount</th>
 				<th style="width: 58px;"></th>
 			</tr>
 		</thead>
@@ -45,9 +49,59 @@
 					</span>
 				</td>
 				<td>
+					<select
+						class    = "search ui dropdown small {registration.attendance == 2 && 'disabled'}"
+						onchange = "{ registryChanged() }"
+						ref      = "{'confirmation_status_' + i}">
+						<option value="">Confirmation Status</option>
+						<option each="{registrationConfirmationOptions}" value="{value}">
+							{label}
+						</option>
+					</select>
+				</td>
+				<td>
+					<select
+						class    = "search ui dropdown small {registration.attendance == 2 && 'disabled'}"
+						onchange = "{ registryChanged() }"
+						ref      = "{'payment_status_' + i}">
+						<option value="">Payment Status</option>
+						<option each="{paymentStatusOptions}" value="{value}">
+							{label}
+						</option>
+					</select>
+				</td>
+				<td>
+					<select
+						class    = "search ui dropdown small { (!registration.payment_status || registration.attendance == 2) && 'disabled' }"
+						onchange = "{ registryChanged() }"
+						ref      = "{'payment_method_' + i}">
+						<option value="">Payment Method</option>
+						<option each="{paymentMethodOptions}" value="{value}">
+							{label}
+						</option>
+					</select>
+				</td>
+				<td>
+					<div
+						onchange = "{ registryChanged() }"
+						class    = "ui input small { (!registration.payment_status || registration.attendance == 2) && 'disabled' }">
+						<input ref="{'amount_' + i}" type="text" placeholder="Payment Amount" />
+					</div>
+				</td>
+				<td>
+					<div show = "{ parent.allowAttendance }">
+						<button
+							class   = "ui icon olive button small { registration.attendance == 2 && 'disabled' }"
+							style   = "color: rgba(0,0,0,.6);"
+							onclick = "{ addRegToAttendance() }"
+							show    = "{ parent.event_dates && parent.event_dates.length == 1 }">
+							<i class="icon checkmark box"></i> Add
+						</button>
+					</div>
 					<button
 						class   = "ui icon orange circular button"
 						style   = "margin: 0;"
+						show    = "{ !parent.allowAttendance }"
 						onclick = "{ removeRegistration() }">
 						<i class="icon remove"></i>
 					</button>
@@ -63,7 +117,7 @@
 	</div>
 
 	<div
-		class = "ui fluid input huge"
+		class = "ui fluid input huge warning message"
 		style = "position: absolute; bottom: 10px; left: 10px; right: 10px;"
 		show  = "{parent.allowRegistration && activeVenue != 'ALL'}">
 		<input
@@ -75,6 +129,27 @@
 	<script>
 
 		this.activeVenueName = '';
+
+		this.registrationConfirmationOptions = [
+			{ label : "Not Coming", value : 0 },
+			{ label : "Tentative", value : 1 },
+			{ label : "Confirmed", value : 2 },
+			{ label : "To Be Confirmed", value : 3 },
+		];
+
+		this.paymentStatusOptions = [
+			{ label : "Full Paid", value : 2 },
+			{ label : "Partial", value : 1 },
+			{ label : "Not Paid", value : 0 }
+		];
+
+		this.paymentMethodOptions = [
+			{ label : "Cash", value : 0 },
+			{ label : "Cheque", value : 1 },
+			{ label : "Bank", value : 2 },
+			{ label : "Online", value : 3 },
+			{ label : "Coupon", value : 4 }
+		];
 
 		selectVenue(e) {
 			return(e) => {
@@ -98,6 +173,61 @@
 					if (venue) {
 						this.activeVenueName = venue.venue.name;
 					}
+				}
+			}
+		}
+
+		getRegistryParams(reg, i, param = {}) {
+
+			if (reg.confirmation_status >= 0 && reg.confirmation_status.toString() != this.refs['confirmation_status_' + i].value) {
+				param.confirmation_status = this.refs['confirmation_status_' + i].value;
+			}
+
+			if (reg.payment_status >= 0 && reg.payment_status.toString() != this.refs['payment_status_' + i].value) {
+				param.payment_status = this.refs['payment_status_' + i].value;
+			}
+
+			if (this.refs['payment_method_' + i].value && reg.payment_method != parseInt(this.refs['payment_method_' + i].value)) {
+				param.payment_method = this.refs['payment_method_' + i].value;
+			}
+
+			if (this.refs['amount_' + i].value && reg.amount != this.refs['amount_' + i].value) {
+				param.amount = this.refs['amount_' + i].value;
+			}
+
+			return param;
+		}
+
+		registryChanged(e) {
+			return(e) => {
+				let unsubscribe;
+
+				if (unsubscribe) {
+					clearTimeout(unsubscribe);
+				}
+
+				unsubscribe = setTimeout( () => {
+					let params = this.getRegistryParams(e.item.registration, e.item.i);
+
+					this.parent.updateRegistration(e.item.registration.id, params);
+				}, 500);
+			}
+		}
+
+		addRegToAttendance(e) {
+			return(e) => {
+				console.log("e");
+				console.log(e);
+				if (this.parent.event_dates.length > 1) {
+					// Multiple dates. Get date clicked
+					console.log("e.target");
+					console.log(e.target);
+				}
+				else {
+					let reg = e.item.registration;
+					let event_date = new Date(this.parent.event.start_date);
+
+					this.parent.addToAttendance({member_id: reg.participant.member_id}, reg.venue_id,event_date);
 				}
 			}
 		}
@@ -156,16 +286,37 @@
 			});
 		}
 
+		setRegValues() {
+			for (let i = 0; i < this.parent.registrations.length; i++) {
+				let reg = this.parent.registrations[i];
+
+				this.refs['confirmation_status_' + i].value = reg.confirmation_status;
+				this.refs['payment_status_' + i].value      = reg.payment_status;
+				this.refs['payment_method_' + i].value      = reg.payment_method;
+				this.refs['amount_' + i].value              = reg.amount;
+			}
+		}
 
 		this.on('loaded', () => {
 			if (this.opts.venues && this.opts.venues.length) {
 				this.activeVenue = this.opts.venues[0].venue_id;
+
+				this.allowAttendance   = this.parent.allowAttendance;
+				this.allowRegistration = this.parent.allowRegistration;
+				this.event_dates       = this.parent.event_dates;
+
 				this.setActiveVenueName();
-				console.log("this.parent.registrations");
-				console.log(this.parent.registrations);
 				this.update();
+
+				setTimeout( () => {
+					this.setRegValues();
+					$(".search.ui.dropdown").dropdown();
+				}, 20);
 			}
 		});
+
+		// this.on('update', () => {
+		// });
 
 		setTimeout( () => {
 			this.loadSearchInput();

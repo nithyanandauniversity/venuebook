@@ -18,7 +18,7 @@
 		<tbody>
 			<tr each = { events } scope = { this }>
 				<td>{format(start_date, 'date', 'fullDate')}</td>
-				<td>{format(end_date, 'date', 'fullDate') || '-'}</td>
+				<td>{end_date ? format(end_date, 'date', 'fullDate') : '-'}</td>
 				<td>{name || '-'}</td>
 				<td>
 					{program.program_name}

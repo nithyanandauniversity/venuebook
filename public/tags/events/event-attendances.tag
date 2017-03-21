@@ -4,7 +4,7 @@
 		<div class="header item">Venue : </div>
 		<a
 			class   = "item ui horizontal large label {activeVenue == 'ALL' ? 'green' : 'grey'}"
-			show    = "opts.venues && opts.venues.length > 1"
+			show    = "{opts.venues && opts.venues.length > 1}"
 			style   = "margin-right: 8px;"
 			onclick = "{ selectVenue() }">
 			ALL
@@ -20,11 +20,11 @@
 
 	<div
 		class = "ui text menu"
-		show  = "{event_dates && event_dates.length > 1}">
+		show  = "{parent.event_dates && parent.event_dates.length > 1}">
 		<div class="header item">Event Dates : </div>
 		<a
-			each    = "{event_date, i in event_dates}"
-			class   = "item ui horizontal large label {date_index == i ? 'brown' : 'grey'}"
+			each    = "{event_date, i in parent.event_dates}"
+			class   = "item ui horizontal large label {parseInt(date_index) == i ? 'brown' : 'grey'}"
 			style   = "margin-right: 8px;"
 			onclick = "{ selectEventDate() }">
 			{format(event_date, 'date', 'longDate')}
@@ -33,8 +33,8 @@
 
 	<h3
 		class = "ui dividing header"
-		if    = "{event_dates && event_dates.length > 0 && activeVenueName && date_index >= 0}">
-		Attendance details on {format(event_dates[date_index], 'date', 'longDate')} at location: { activeVenueName }
+		if    = "{parent.event_dates && parent.event_dates.length > 0 && activeVenueName && date_index >= 0}">
+		Attendance details on {format(parent.event_dates[date_index], 'date', 'longDate')} at location: { activeVenueName }
 	</h3>
 
 	<table
@@ -51,7 +51,7 @@
 		<tbody>
 			<tr
 				each = "{attendance, i in parent.attendances}"
-				if   = "{(activeVenue == 'ALL' || attendance.venue_id == activeVenue) && event_dates[date_index].toString() == new Date(attendance.attendance_date).toString()}">
+				if   = "{(activeVenue == 'ALL' || attendance.venue_id == activeVenue) && parent.event_dates[date_index].toString() == new Date(attendance.attendance_date).toString()}">
 				<td>{i + 1}</td>
 				<td show = "{activeVenue == 'ALL'}">
 					{attendance.venue.name}
@@ -82,7 +82,7 @@
 	</div>
 
 	<div
-		class = "ui fluid input huge"
+		class = "ui fluid input huge success message"
 		style = "position: absolute; bottom: 10px; left: 10px; right: 10px;"
 		show  = "{parent.allowAttendance && activeVenue != 'ALL'}">
 		<input
@@ -177,7 +177,7 @@
 				},
 				onSelect : (item) => {
 					$("#search-attendance")[0].value = '';
-					self.parent.addToAttendance(item.data, this.activeVenue, this.event_dates[this.date_index]);
+					self.parent.addToAttendance(item.data, this.activeVenue, this.parent.event_dates[this.date_index]);
 				}
 			});
 		}
@@ -191,15 +191,19 @@
 
 			if (diff > 0) {
 				for (let i = 0; i < diff; i++) {
-					this.event_dates.push( new Date(start_date.getTime() + (1000*60*60*24) * (i+1)) );
+					this.event_dates.push(new Date(start_date.getTime() + (1000 * 60 * 60 * 24) * (i + 1)));
 				}
 			}
-			this.date_index = 0;
 		}
 
 		this.on('loaded', () => {
 			if (this.opts.venues && this.opts.venues.length) {
 				this.activeVenue = this.opts.venues[0].venue_id;
+				this.date_index  = 0;
+
+				console.log("this.parent.attendances, this.parent.event_dates");
+				console.log(this.parent.attendances, this.parent.event_dates);
+
 				this.loadDates();
 				this.setActiveVenueName();
 				this.update();
