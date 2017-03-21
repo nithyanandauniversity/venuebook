@@ -201,9 +201,6 @@
 				this.activeVenue = this.opts.venues[0].venue_id;
 				this.date_index  = 0;
 
-				console.log("this.parent.attendances, this.parent.event_dates");
-				console.log(this.parent.attendances, this.parent.event_dates);
-
 				this.loadDates();
 				this.setActiveVenueName();
 				this.update();

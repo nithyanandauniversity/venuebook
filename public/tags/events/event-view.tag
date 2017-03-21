@@ -246,24 +246,27 @@
 				let participant  = registration.participant;
 				let venue        = registration.venue;
 
-				this.registrations.push(groups[id][0]);
+				let attended_dates = groups[id].reduce( (arr = [], reg, idx) => {
+					if (reg.attendance > 1) { arr.push(reg.attendance_date); }
+					return arr;
+				}, []);
+
+				registration.attended_dates = attended_dates;
+
+				this.registrations.push(registration);
 			}
 		}
 
 		reloadAttendanceData(data) {
 			if (this.event_dates.length > 1) {
 				let registrations = data.filter((a) => { return a.attendance < 3 });
-				console.log("registrations");
-				console.log(registrations);
 				this.groupRegistrations(registrations);
 			}
 			else {
 				this.registrations = data.filter((a) => { return a.attendance < 3 });
 			}
-			this.attendances   = data.filter((a) => { return a.attendance > 1 });
 
-			// console.log("this.registrations");
-			// console.log(this.registrations);
+			this.attendances = data.filter((a) => { return a.attendance > 1 });
 		}
 
 		loadDates() {

@@ -35,8 +35,9 @@
 		</thead>
 		<tbody>
 			<tr
-				each = "{registration, i in parent.registrations}"
-				if   = "{activeVenue == 'ALL' || registration.venue_id == activeVenue}">
+				each  = "{registration, i in parent.registrations}"
+				class = "{registration.attendance > 1 && 'success'}"
+				if    = "{activeVenue == 'ALL' || registration.venue_id == activeVenue}">
 				<td>{i + 1}</td>
 				<td show = "{activeVenue == 'ALL'}">
 					{registration.venue.name}
@@ -90,6 +91,27 @@
 				</td>
 				<td>
 					<div show = "{ parent.allowAttendance }">
+						<div
+							class = "ui compact menu small olive buttons"
+							show  = "{ parent.event_dates && parent.event_dates.length > 1 }">
+							<div
+								class = "ui simple dropdown item olive button {parent.event_dates.length == registration.attended_dates.length && 'disabled'}"
+								style = "color: rgba(0,0,0,.6);">
+								<i class="icon checkmark box"></i> Add
+								<i class="dropdown icon"></i>
+								<div class="menu">
+									<div
+										each        = "{event_date in parent.event_dates}"
+										data-member = "{registration.participant.member_id}"
+										if          = "{!registration.attended_dates.includes(format(event_date, 'date', 'isoDate').toString())}"
+										data-venue  = "{registration.venue_id}"
+										onclick     = "{ addRegToAttendance() }"
+										class       = "item">
+										{format(event_date, 'date', 'longDate')}
+									</div>
+								</div>
+							</div>
+						</div>
 						<button
 							class   = "ui icon olive button small { registration.attendance == 2 && 'disabled' }"
 							style   = "color: rgba(0,0,0,.6);"
@@ -216,18 +238,17 @@
 
 		addRegToAttendance(e) {
 			return(e) => {
-				console.log("e");
-				console.log(e);
 				if (this.parent.event_dates.length > 1) {
 					// Multiple dates. Get date clicked
-					console.log("e.target");
-					console.log(e.target);
+					let dataset = e.target.dataset;
+
+					this.parent.addToAttendance({member_id: dataset.member}, dataset.venue, e.item.event_date);
 				}
 				else {
-					let reg = e.item.registration;
+					let reg        = e.item.registration;
 					let event_date = new Date(this.parent.event.start_date);
 
-					this.parent.addToAttendance({member_id: reg.participant.member_id}, reg.venue_id,event_date);
+					this.parent.addToAttendance({member_id: reg.participant.member_id}, reg.venue_id, event_date);
 				}
 			}
 		}
