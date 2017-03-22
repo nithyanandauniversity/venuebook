@@ -18,7 +18,7 @@ class Ability
 
 		if user['role'] <= 4
 			can [:create, :update], Event
-			can :read, Program, :center_id => user['center_id']
+			can :read, Program#, :center_id => user['center_id']
 			can :read, User, :role => 4..6
 			can :read, [Participant, Center, Venue]
 		end
@@ -27,10 +27,10 @@ class Ability
 			can :destroy, Event
 			can :manage, [Venue, Address]
 
-			can :read, Program, :center_id => nil
-			can [:create, :read, :update, :destroy], Program do |project|
-				center_id == user['center_id']
-			end
+			#can :read, Program, :center_id => nil
+			# can [:create, :read, :update, :destroy], Program do |project|
+			# 	center_id == user['center_id']
+			# end
 		end
 
 		if user['role'] <= 2

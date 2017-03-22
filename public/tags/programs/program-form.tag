@@ -11,16 +11,14 @@
 			</div>
 			<div class="field {validation && validation.emptyType && 'error'}">
 				<label>Program Type</label>
-				<div
-					class = "ui search fluid input"
-					if    = "{parent.currentUser.role == 1}">
+				<div class = "ui search fluid input">
 					<input
 						type        = "text"
 						ref         = "program_type"
 						class       = "prompt"
 						placeholder = "Program Type" />
 				</div>
-				<div
+				<!-- <div
 					class = "ui fluid input"
 					if    = "{[2,3].includes(parent.currentUser.role)}">
 					<select
@@ -30,7 +28,7 @@
 						<option value="">Select Program Type...</option>
 						<option value="{ value }" each="{ proTypes }">{ label }</option>
 					</select>
-				</div>
+				</div> -->
 			</div>
 			<div class="field">
 				<div style="text-align: right;">

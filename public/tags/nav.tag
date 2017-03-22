@@ -31,7 +31,7 @@
 								</div>
 								<div
 									class   = "item"
-									show    = "{[1,2,3].includes(currentUser.role)}"
+									show    = "{currentUser.role == 1}"
 									onclick = "{ showPrograms() }">
 									<i class="icon brown tasks"></i> Programs
 								</div>
@@ -41,11 +41,11 @@
 									onclick = "{ showVenueManagement() }">
 									<i class="icon violet map"></i> Venues
 								</div>
-								<div
+								<!-- <div
 									class   = "item"
 									onclick = "{ showSettings() }">
 									<i class="icon blue setting"></i> Settings
-								</div>
+								</div> -->
 								<div class="divider"></div>
 								<div
 									class   = "item red"
