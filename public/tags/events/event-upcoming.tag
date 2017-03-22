@@ -32,7 +32,7 @@
 				<span
 					class   = "right floated edit"
 					onclick = "{ editEvent() }"
-					show    = "{[1,2,3,4,5].includes(currentUser.role)}">
+					show    = "{currentUser.role <= 4}">
 					<button class = "ui orange basic button">
 						<i class = "icon write"></i> Edit
 					</button>

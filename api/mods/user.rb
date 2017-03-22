@@ -13,7 +13,7 @@ module Venuebook
 			get do
 				if params[:search_coordinators] && current_user['role'] < 5
 					if authorize! :read, User
-						users = User.where('role < 6').where('role >= 3')
+						users = User.where('role < 5').where('role >= 3')
 						users = users.where('center_id = ?', current_user['center_id'] || params[:center_id])
 
 						users = users.or('role = 1') if current_user['role'] == 1

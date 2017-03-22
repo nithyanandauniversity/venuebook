@@ -2,7 +2,7 @@ import 'fetch';
 import restful, { fetchBackend } from 'restful';
 
 // CONSTANTS
-import { ROOT, LEAD, CENTER_ADMIN, CENTER_MANAGEMENT, PROGRAM_COORDINATOR, DATA_ENTRY } from '../constants/UserRole.js';
+import { ROOT, LEAD, CENTER_ADMIN, PROGRAM_COORDINATOR, DATA_ENTRY } from '../constants/UserRole.js';
 import { COUNTRIES, DIALCODES } from '../constants/countries';
 import { CenterCategories } from '../constants/CenterCategory.js';
 
@@ -60,7 +60,7 @@ export default class Services {
 			'ROOT'                : ROOT,
 			'LEAD'                : LEAD,
 			'CENTER_ADMIN'        : CENTER_ADMIN,
-			'CENTER_MANAGEMENT'   : CENTER_MANAGEMENT,
+			// 'CENTER_MANAGEMENT'   : CENTER_MANAGEMENT,
 			'PROGRAM_COORDINATOR' : PROGRAM_COORDINATOR,
 			'DATA_ENTRY'          : DATA_ENTRY
 		}

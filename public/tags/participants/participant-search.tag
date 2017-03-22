@@ -30,10 +30,9 @@
 		}
 
 		let state = this.parent.opts.store.getState().participants;
-		console.log("state");
-		console.log(state);
+		// console.log("state");
+		// console.log(state);
 		if (state.view == "SEARCH_PARTICIPANT" && state.query) {
-			// this.update();
 			setTimeout(()=>{
 				this.refs.searchQ.value = state.query.keyword ? state.query.keyword : '';
 			}, 10);

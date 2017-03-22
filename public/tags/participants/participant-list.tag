@@ -19,7 +19,7 @@
 					<div
 						class = "ui violet label"
 						if    = "{itmAttr(participant_attributes).role > 1}">
-						{userRoles[itmAttr(participant_attributes).role]}
+						{participantRoles[itmAttr(participant_attributes).role]}
 					</div>
 					<label>
 						<strong>{first_name}</strong> {last_name}
@@ -165,7 +165,7 @@
 		this.participants = [];
 		this.perPage      = 10;
 
-		this.userRoles = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
+		this.participantRoles = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
 
 		itmAttr(p) {
 			return JSON.parse(p || {})

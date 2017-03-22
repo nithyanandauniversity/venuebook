@@ -14,12 +14,12 @@ namespace :seed do
 
 		center_id = args[:center_id]
 
-		User.create(first_name: "Kamlesh", email: "kamlesh@gmail.com", password: "123123", role: 5, center_id: center_id)
-		User.create(first_name: "Premteertha", email: "premteertha@gmail.com", password: "123123", role: 5, center_id: center_id)
-		User.create(first_name: "Pradeep", email: "shradda@gmail.com", password: "123123", role: 5, center_id: center_id)
-		User.create(first_name: "Garima", email: "garima@gmail.com", password: "123123", role: 5, center_id: center_id)
-		User.create(first_name: "Durga", email: "durgananda@gmail.com", password: "123123", role: 5, center_id: center_id)
-		User.create(first_name: "Phyllis", email: "weemeeai@gmail.com", password: "123123", role: 6, center_id: center_id)
+		User.create(first_name: "Kamlesh", email: "kamlesh@gmail.com", password: "123123", role: 4, center_id: center_id)
+		User.create(first_name: "Premteertha", email: "premteertha@gmail.com", password: "123123", role: 4, center_id: center_id)
+		User.create(first_name: "Pradeep", email: "shradda@gmail.com", password: "123123", role: 4, center_id: center_id)
+		User.create(first_name: "Garima", email: "garima@gmail.com", password: "123123", role: 4, center_id: center_id)
+		User.create(first_name: "Durga", email: "durgananda@gmail.com", password: "123123", role: 4, center_id: center_id)
+		User.create(first_name: "Phyllis", email: "weemeeai@gmail.com", password: "123123", role: 5, center_id: center_id)
 
 	end
 end

@@ -37,7 +37,7 @@
 					<div
 						class    = "ui action-btn vertical yellow animated button"
 						tabindex = "0"
-						show     = "{[1,2,3,4].includes(currentUser.role)}"
+						show     = "{currentUser.role <= 4}"
 						onclick  = "{ showForm() }">
 						<div class = "hidden content">Edit</div>
 						<div class = "visible content">
@@ -47,7 +47,7 @@
 					<div
 						class    = "ui action-btn vertical red animated button"
 						tabindex = "0"
-						show     = "{[1,2,3].includes(currentUser.role)}"
+						show     = "{currentUser.role <= 3}"
 						onclick  = "{ remove() }">
 						<div class = "hidden content">Delete</div>
 						<div class = "visible content">

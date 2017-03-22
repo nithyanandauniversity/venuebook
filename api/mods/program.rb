@@ -14,12 +14,6 @@ module Venuebook
 						programs = Program.order(:id)
 					end
 
-					if current_user['center_id']
-						programs = programs.where(center_id: current_user['center_id']).or(center_id: nil)
-					else
-						programs = programs.where(center_id: nil)
-					end
-
 					[{programs: programs}]
 				end
 			end
@@ -34,9 +28,7 @@ module Venuebook
 
 			post do
 				if authorize! :create, Program
-					params[:program][:center_id] ||= current_user['center_id'] if current_user['center_id']
-					program = Program.create(params[:program])
-					program
+					Program.create(params[:program])
 				end
 			end
 
@@ -44,32 +36,32 @@ module Venuebook
 			put '/:id' do
 				if authorize! :update, Program
 					program = Program.find(id: params[:id])
-					if current_user['center_id']
-						if program[:center_id] && current_user['center_id'] == program[:center_id]
-							program.update(params[:program])
-							program
-						else
-							error!({status: 403, message: "Access Denied"}, 403)
-						end
-					else
-						program.update(params[:program])
-						program
-					end
+					# if current_user['center_id']
+					# 	if program[:center_id] && current_user['center_id'] == program[:center_id]
+					# 		program.update(params[:program])
+					# 		program
+					# 	else
+					# 		error!({status: 403, message: "Access Denied"}, 403)
+					# 	end
+					# else
+					# end
+					program.update(params[:program])
+					program
 				end
 			end
 
 			delete '/:id' do
 				if authorize! :destroy, Program
 					program = Program.find(id: params[:id])
-					if current_user['center_id']
-						if program[:center_id] && current_user['center_id'] == program[:center_id]
-							program.destroy
-						else
-							error!({status: 403, message: "Access Denied"}, 403)
-						end
-					else
-						program.destroy
-					end
+					# if current_user['center_id']
+					# 	if program[:center_id] && current_user['center_id'] == program[:center_id]
+					# 		program.destroy
+					# 	else
+					# 		error!({status: 403, message: "Access Denied"}, 403)
+					# 	end
+					# else
+					# end
+					program.destroy
 				end
 			end
 
