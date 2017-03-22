@@ -6,8 +6,8 @@
 		<thead>
 			<tr>
 				<th>Full Name</th>
-				<th>Email</th>
-				<th>Contact</th>
+				<th>Email Address</th>
+				<th>Contact #</th>
 				<th style="min-width: 160px; width: 240px; max-width: 240px; text-align: center;">
 					<i class="options icon"></i> Actions
 				</th>
