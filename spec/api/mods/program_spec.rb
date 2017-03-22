@@ -77,28 +77,28 @@ describe 'Program API' do
 	end
 
 
-	it "should be able to create center programs" do
-		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
-		ca1    = User.create(first_name: "Center admin1", email: "centeradmin1@gmail.com", password: "123123", role: 3, center_id: center.id)
+	# it "should be able to create center programs" do
+	# 	center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
+	# 	ca1    = User.create(first_name: "Center admin1", email: "centeradmin1@gmail.com", password: "123123", role: 3, center_id: center.id)
 
-		post "/api/v1/sessions/login", {auth: {
-			email: "centeradmin1@gmail.com",
-			password: "123123"
-		}}
+	# 	post "/api/v1/sessions/login", {auth: {
+	# 		email: "centeradmin1@gmail.com",
+	# 		password: "123123"
+	# 	}}
 
-		token = JSON.parse(last_response.body)['token']
+	# 	token = JSON.parse(last_response.body)['token']
 
-		post "/api/v1/programs", {program: {
-			program_name: "Nithya Yoga",
-			program_type: "Weekly Event",
-			center_id: center.id
-		}}, {'HTTP_TOKEN' => token}
+	# 	post "/api/v1/programs", {program: {
+	# 		program_name: "Nithya Yoga",
+	# 		program_type: "Weekly Event",
+	# 		center_id: center.id
+	# 	}}, {'HTTP_TOKEN' => token}
 
-		response = JSON.parse(last_response.body)
+	# 	response = JSON.parse(last_response.body)
 
-		expect(response['program_name']).to eql "Nithya Yoga"
-		expect(response['center_id']).not_to eql nil
-	end
+	# 	expect(response['program_name']).to eql "Nithya Yoga"
+	# 	expect(response['center_id']).not_to eql nil
+	# end
 
 	it "should be able to list global and center programs" do
 
@@ -119,26 +119,26 @@ describe 'Program API' do
 		expect(response.length).not_to eql 0
 	end
 
-	it "should be able to edit center programs" do
-		center  = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
-		ca2     = User.create(first_name: "Center admin1", email: "centeradmin2@gmail.com", password: "123123", role: 3, center_id: center.id)
+	# it "should be able to edit center programs" do
+	# 	center  = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
+	# 	ca2     = User.create(first_name: "Center admin1", email: "centeradmin2@gmail.com", password: "123123", role: 3, center_id: center.id)
 
-		post "/api/v1/sessions/login", {auth: {
-			email: "centeradmin2@gmail.com",
-			password: "123123"
-		}}
+	# 	post "/api/v1/sessions/login", {auth: {
+	# 		email: "centeradmin2@gmail.com",
+	# 		password: "123123"
+	# 	}}
 
-		token   = JSON.parse(last_response.body)['token']
-		program = Program.create(program_name: "webinar", program_type: "Bidadi Program", center_id: center.id)
+	# 	token   = JSON.parse(last_response.body)['token']
+	# 	program = Program.create(program_name: "webinar", program_type: "Bidadi Program", center_id: center.id)
 
-		put "/api/v1/programs/#{program.id}", {program: {
-			program_name: "Live Webinar"
-		}}, {'HTTP_TOKEN' => token}
+	# 	put "/api/v1/programs/#{program.id}", {program: {
+	# 		program_name: "Live Webinar"
+	# 	}}, {'HTTP_TOKEN' => token}
 
-		response = JSON.parse(last_response.body)
+	# 	response = JSON.parse(last_response.body)
 
-		expect(response['program_name']).to eql "Live Webinar"
-	end
+	# 	expect(response['program_name']).to eql "Live Webinar"
+	# end
 
 	it "should not allow to edit global programs" do
 		center  = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
@@ -162,25 +162,25 @@ describe 'Program API' do
 		expect(response['message']).to eql "Access Denied"
 	end
 
-	it "should be able to delete center programs" do
-		center  = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
-		ca4     = User.create(first_name: "Center admin1", email: "centeradmin4@gmail.com", password: "123123", role: 3, center_id: center.id)
+	# it "should be able to delete center programs" do
+	# 	center  = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
+	# 	ca4     = User.create(first_name: "Center admin1", email: "centeradmin4@gmail.com", password: "123123", role: 3, center_id: center.id)
 
-		post "/api/v1/sessions/login", {auth: {
-			email: "centeradmin4@gmail.com",
-			password: "123123"
-		}}
+	# 	post "/api/v1/sessions/login", {auth: {
+	# 		email: "centeradmin4@gmail.com",
+	# 		password: "123123"
+	# 	}}
 
-		token   = JSON.parse(last_response.body)['token']
-		program = Program.create(program_name: "webinar", program_type: "Bidadi Program", center_id: center.id)
+	# 	token   = JSON.parse(last_response.body)['token']
+	# 	program = Program.create(program_name: "webinar", program_type: "Bidadi Program", center_id: center.id)
 
-		count = Program.count
+	# 	count = Program.count
 
-		delete "/api/v1/programs/#{program.id}", nil, {'HTTP_TOKEN' => token}
+	# 	delete "/api/v1/programs/#{program.id}", nil, {'HTTP_TOKEN' => token}
 
-		expect(Program.find(id: program.id)).to eql nil
-		expect(Program.count).to eql count - 1
-	end
+	# 	expect(Program.find(id: program.id)).to eql nil
+	# 	expect(Program.count).to eql count - 1
+	# end
 
 	it "should not allow center admin to delete global program" do
 		center  = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")

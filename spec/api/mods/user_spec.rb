@@ -15,10 +15,11 @@ describe 'User API' do
 	end
 
 	it "should be able to search for users" do
-		User.create(first_name: "centeradmin1", email: "centeradmin1@gmail.com", password: "123123", role: 3)
-		User.create(first_name: "centermanager1", email: "centermanager1@gmail.com", password: "123123", role: 4)
-		User.create(first_name: "coordinator1", email: "coordinator1@gmail.com", password: "123123", role: 5)
-		User.create(first_name: "dataentry", email: "dataentry@gmail.com", password: "123123", role: 6)
+		center = Center.create(name: "Singapore Aadheenam")
+		User.create(first_name: "centeradmin1", email: "centeradmin1@gmail.com", password: "123123", role: 3, center_id: center.id)
+		User.create(first_name: "centermanager1", email: "centermanager1@gmail.com", password: "123123", role: 4, center_id: center.id)
+		User.create(first_name: "coordinator1", email: "coordinator1@gmail.com", password: "123123", role: 5, center_id: center.id)
+		User.create(first_name: "dataentry", email: "dataentry@gmail.com", password: "123123", role: 6, center_id: center.id)
 
 		post "/api/v1/sessions/login", auth: {
 			email: "centermanager1@gmail.com",
@@ -32,7 +33,7 @@ describe 'User API' do
 
 		response = JSON.parse(last_response.body)[0]['users']
 
-		expect(response.length).to eql 2
+		expect(response.length).to eql 3
 	end
 
 	it "should be able to get the current user" do
