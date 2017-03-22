@@ -10,10 +10,12 @@ class Center < Sequel::Model
 		keyword    = params && params[:keyword] || nil
 		attributes = params && params[:attributes] || nil
 
-		if keyword || attributes
+		# puts "KEYWORD :: #{keyword} || ATTRIBUTES :: #{attributes}\n\n\n"
+
+		if (keyword && !keyword.blank?) || (attributes && !attributes.blank?)
 			# SEARCH
-			if keyword
-				if attributes
+			if !keyword.blank?
+				if attributes && !attributes.blank?
 					centers = Center.order(:id)
 					centers = centers.where(region: attributes.region) if attributes.region
 					centers = centers.where(area: attributes.area) if attributes.area
@@ -21,9 +23,17 @@ class Center < Sequel::Model
 					centers = centers.where(city: attributes.city) if attributes.city
 					centers = centers.where(state: attributes.state) if attributes.state
 					centers = centers.where(category: attributes.category) if attributes.category
-					centers = centers.where((Sequel.like(:name, "%#{keyword}%"))).paginate(page, size)
+					centers = centers.where((Sequel.ilike(:name, "%#{keyword}%"))).paginate(page, size)
 				else
-					centers = Center.where((Sequel.like(:name, "%#{keyword}%"))).paginate(page, size)
+					centers = Center.where(
+						(Sequel.ilike(:name, "%#{keyword}%")) |
+						(Sequel.ilike(:region, "%#{keyword}%")) |
+						(Sequel.ilike(:area, "%#{keyword}%")) |
+						(Sequel.ilike(:country, "%#{keyword}%")) |
+						(Sequel.ilike(:city, "%#{keyword}%")) |
+						(Sequel.ilike(:state, "%#{keyword}%")) |
+						(Sequel.ilike(:category, "%#{keyword}%"))
+					).paginate(page, size)
 				end
 			else
 				centers = Center.order(:id)
@@ -38,7 +48,7 @@ class Center < Sequel::Model
 			end
 		else
 			# ALL
-			centers = Center.dataset.paginate(page, size)
+			centers = Center.order(:id).paginate(page, size)
 		end
 
 		[{

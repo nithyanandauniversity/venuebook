@@ -52,8 +52,8 @@
 				attributes : this.searchFilters || {}
 			}});
 			this.update();
-			console.log("this.opts.store.getState()");
-			console.log(this.opts.store.getState());
+			// console.log("this.opts.store.getState()");
+			// console.log(this.opts.store.getState());
 			this.tags['center-list'].trigger('search');
 		}
 

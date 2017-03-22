@@ -9,7 +9,7 @@
 			type         = "text"
 			ref          = "searchQ"
 			placeholder  = "Search for centers..."
-			onkeypress   = { triggerSearch() }
+			onkeypress   = "{ triggerSearch() }"
 			autocomplete = "off" />
 		<!-- <div class="ui icon input"> -->
 		<!-- </div> -->
@@ -74,7 +74,7 @@
 			<div class="column">
 				<button
 					class   = "ui button basic primary"
-					onclick = "{ doSearch() }">
+					onclick = "{ doSearch }">
 					Search
 				</button>
 			</div>
@@ -135,12 +135,10 @@
 			return filters;
 		}
 
-		doSearch(e) {
-			return(e) => {
-				this.parent.searchFilters = this.showFilters ? this.generateFilters() : null;
-				this.parent.searchQ       = this.refs.searchQ.value;
-				this.parent.performSearch(1);
-			}
+		doSearch() {
+			this.parent.searchFilters = this.showFilters ? this.generateFilters() : null;
+			this.parent.searchQ       = this.refs.searchQ.value;
+			this.parent.performSearch(1);
 		}
 
 		triggerSearch(e) {
