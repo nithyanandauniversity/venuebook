@@ -30,6 +30,17 @@ module Venuebook
 				end
 			end
 
+			put '/change_password/:id' do
+				user = User.find(id: params[:id])
+
+				if User.authenticate({email: user.email, password: params[:user][:old_password]})
+					user.update(password: params[:user][:password])
+					user
+				else
+					error!({status: 401, message: "401 Unauthorized"}, 401)
+				end
+			end
+
 		end
 	end
 end

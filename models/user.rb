@@ -23,8 +23,8 @@ class User < Sequel::Model
 	end
 
 	def self.authenticate(params)
-		user = self.find(email: params.email)
-		user && user.password == params.password
+		user = self.find(email: params[:email])
+		user && user.password == params[:password]
 	end
 
 end

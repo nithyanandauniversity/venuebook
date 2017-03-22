@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'User API' do
 	before(:all) do
 		User.dataset.all { |u| u.destroy }
-		user = User.create(first_name: "Saravana", last_name: "B", email: "sgsaravana@gmail.com", password: "123123", role: 1)
+		@user = User.create(first_name: "Saravana", last_name: "B", email: "sgsaravana@gmail.com", password: "123123", role: 1)
 
 		post "/api/v1/sessions/login", auth: {
 			email: "sgsaravana@gmail.com",
@@ -60,6 +60,33 @@ describe 'User API' do
 		expect(response['id']).not_to eql nil
 		expect(response['email']).to eql "ma.jnanatma@nithyananda.org"
 		expect(response['role']).to eql 1
+	end
+
+	it "should respond with 401 if the current password is wrong" do
+		put "/api/v1/users/change_password/#{@user.id}", {
+			user: {
+				old_password: "1231233",
+				password: "112233"
+			}
+		}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+
+		expect(response['status']).to eql 401
+	end
+
+	it "should be able to change password" do
+
+		put "/api/v1/users/change_password/#{@user.id}", {
+			user: {
+				old_password: "123123",
+				password: "112233"
+			}
+		}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+
+		expect(response['id']).to eql @user.id
 	end
 
 	it "should be able to create a new lead user with specific access" do
