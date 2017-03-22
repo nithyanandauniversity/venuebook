@@ -25,6 +25,10 @@
 		console.log("sessionStorage");
 		console.log(sessionStorage);
 
+		triggerProfile() {
+			this.tags['pages'].trigger('showProfile');
+		}
+
 		authenticate() {
 
 			this.opts.services.sessionService.authenticate((err, result) => {

@@ -41,6 +41,7 @@ import 'tags/events/event-registrations.tag!'
 import 'tags/events/event-attendances.tag!'
 
 import 'tags/users.tag!'
+import 'tags/profile.tag!'
 
 import 'tags/riot-pagination.tag!';
 

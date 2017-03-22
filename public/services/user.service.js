@@ -22,4 +22,16 @@ export default class UserService {
 			});
 	}
 
+	changePassword(id, params, callback) {
+		this.reloadApi();
+		this.api.all('users/change_password')
+			.put(id, params)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 }

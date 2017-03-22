@@ -49,7 +49,36 @@
 		if = "{opts.store.getState().routes.path == 'USERS'}">
 	</users>
 
+	<profile
+		store        = "{opts.store}"
+		user-service = "{opts.services.userService}">
+	</profile>
+
+
 	<script>
+
+		this.on('showProfile', () => {
+			$("profile").modal({
+					transition : 'vertical flip',
+					onShow     : () => {
+						console.log("SHOWING, DESTROY ELEMENT !");
+						if ($(".ui.dimmer.modals > profile").length > 1) {
+							console.log($(".ui.dimmer.modals > profile"));
+							$(".ui.dimmer.modals > profile")[0].remove();
+						}
+					},
+					onVisible  : () => {
+						this.tags['profile'].trigger('loaded');
+					}
+				})
+				.modal('show');
+
+		});
+
+		hideModal() {
+			$("profile").modal('hide');
+		}
+
 		console.log("this.opts");
 		console.log(this.opts);
 

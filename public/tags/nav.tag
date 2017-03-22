@@ -48,7 +48,12 @@
 								</div> -->
 								<div class="divider"></div>
 								<div
-									class   = "item red"
+									class   = "item"
+									onclick = "{ showProfile() }">
+									<i class="icon blue user"></i> Profile
+								</div>
+								<div
+									class   = "item"
 									onclick = "{ signout() }">
 									<i class="icon red power"></i> Signout
 								</div>
@@ -137,6 +142,14 @@
 		showSettings(e) {
 			return(e) => {
 				console.log("GO TO SETTINGS");
+			}
+		}
+
+		showProfile(e) {
+			return(e) => {
+				console.log("SHOW PROFILE !");
+				this.parent.triggerProfile();
+				// $("#profile").modal('show');
 			}
 		}
 
