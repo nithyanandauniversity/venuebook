@@ -66,7 +66,7 @@ describe 'Participant' do
 		expect(response2[0]['email']).to eql "leshlesh76@gmail.com"
 
 		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
-		de1    = User.create(first_name: "Data entry1", email: "dataentry1@gmail.com", password: "123123", role: 6, center_id: center.id)
+		de1    = User.create(first_name: "Data entry1", email: "dataentry1@gmail.com", password: "123123", role: 5, center_id: center.id)
 
 		post "/api/v1/sessions/login", {auth: {
 			email: "dataentry1@gmail.com",
@@ -130,7 +130,7 @@ describe 'Participant' do
 
 	it "should not allow data entry user to create participant" do
 		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore", code: "123")
-		de1    = User.create(first_name: "Data entry1", email: "dataentry1@gmail.com", password: "123123", role: 6, center_id: center.id)
+		de1    = User.create(first_name: "Data entry1", email: "dataentry1@gmail.com", password: "123123", role: 5, center_id: center.id)
 
 		post "/api/v1/sessions/login", {auth: {
 			email: "dataentry1@gmail.com",

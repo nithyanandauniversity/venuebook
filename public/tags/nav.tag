@@ -91,12 +91,12 @@
 			{
 				name  : 'Participants',
 				route : 'PARTICIPANTS',
-				role  : [1, 2, 3, 4, 5]
+				role  : [1, 2, 3, 4]
 			},
 			{
 				name  : 'Events',
 				route : 'EVENTS',
-				role  : [1, 2, 3, 4, 5, 6]
+				role  : [1, 2, 3, 4, 5]
 			},
 			{
 				name  : 'Centers',
@@ -107,7 +107,7 @@
 
 		this.activeRoute = 'PARTICIPANTS';
 
-		this.on('update', (a,b) => {
+		this.on('update', (a, b) => {
 			this.activeRoute = this.opts.store.getState().routes.path;
 		});
 

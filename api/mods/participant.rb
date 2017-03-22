@@ -9,10 +9,10 @@ module Venuebook
 
 			get do
 				if authorize! :read, Participant
-					if current_user['role'] >= 4
+					if current_user['role'] >= 3
 						params[:search][:center_code] ||= current_user['center_code']
-					elsif current_user['role'] == 3
-						params[:search][:center_code] ||= current_user['center_code']
+					# elsif current_user['role'] == 3
+						# params[:search][:center_code] ||= current_user['center_code']
 					end
 
 					return Participant.search(params)

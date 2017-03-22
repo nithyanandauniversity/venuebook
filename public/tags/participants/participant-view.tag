@@ -26,7 +26,7 @@
 							class = "ui violet ribbon label"
 							style = "left: -48px; bottom: 5px; font-size: 0.6em;"
 							if    = "{attributes.role > 1}">
-							{userRoles[attributes.role]}
+							{participantRoles[attributes.role]}
 						</div>
 						<span
 							class          = "right floated"
@@ -139,8 +139,8 @@
 		this.participant = {};
 		this.attributes  = {};
 
-		this.userRoles   = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
-		this.view_id     = this.opts.state.id;
+		this.participantRoles = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
+		this.view_id          = this.opts.state.id;
 
 		if (this.view_id) {
 			this.parent.opts.service.get(this.view_id, (err, response) => {

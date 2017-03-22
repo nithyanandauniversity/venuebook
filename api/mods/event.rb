@@ -39,30 +39,29 @@ module Venuebook
 
 			get '/:id' do
 				if authorize! :read, Event
-					if current_user['role'] < 6
-						center_id = current_user['role'] == 2 ? params[:center_id] : current_user['center_id']
-						event  = Event.find(id: params[:id])
 
-						if current_user['role'] != 1 && event.center_id != center_id.to_i
-							error!({status: 401, message: "401 Unauthorized"}, 401)
-						else
-							program      = event.program
-							event_venues = EventVenue.where(event_id: event.id).collect { |event_venue|
-								venue               = event_venue.venue
-								venue[:address]     = venue.address
-								event_venue[:venue] = venue
-								event_venue[:user]	= event_venue.user
-								event_venue
-							}
+					center_id = current_user['role'] < 3 ? params[:center_id] : current_user['center_id']
+					event     = Event.find(id: params[:id])
 
-							{
-								event: JSON.parse(event.to_json()),
-								program: program,
-								event_venues: event_venues,
-								attendances: EventAttendance.all_attendances(event.id)
-							}
-						end
+					if current_user['role'] != 1 && event.center_id != center_id.to_i
+						# error!({status: 401, message: "401 Unauthorized"}, 401)
+						error!({status: 403, message: "Access Denied"}, 403)
+					else
+						program      = event.program
+						event_venues = EventVenue.where(event_id: event.id).collect { |event_venue|
+							venue               = event_venue.venue
+							venue[:address]     = venue.address
+							event_venue[:venue] = venue
+							event_venue[:user]	= event_venue.user
+							event_venue
+						}
 
+						{
+							event: JSON.parse(event.to_json()),
+							program: program,
+							event_venues: event_venues,
+							attendances: EventAttendance.all_attendances(event.id)
+						}
 					end
 				end
 			end

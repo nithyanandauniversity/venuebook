@@ -18,8 +18,8 @@ describe 'User API' do
 		center = Center.create(name: "Singapore Aadheenam")
 		User.create(first_name: "centeradmin1", email: "centeradmin1@gmail.com", password: "123123", role: 3, center_id: center.id)
 		User.create(first_name: "centermanager1", email: "centermanager1@gmail.com", password: "123123", role: 4, center_id: center.id)
-		User.create(first_name: "coordinator1", email: "coordinator1@gmail.com", password: "123123", role: 5, center_id: center.id)
-		User.create(first_name: "dataentry", email: "dataentry@gmail.com", password: "123123", role: 6, center_id: center.id)
+		User.create(first_name: "coordinator1", email: "coordinator1@gmail.com", password: "123123", role: 4, center_id: center.id)
+		User.create(first_name: "dataentry", email: "dataentry@gmail.com", password: "123123", role: 5, center_id: center.id)
 
 		post "/api/v1/sessions/login", auth: {
 			email: "centermanager1@gmail.com",
