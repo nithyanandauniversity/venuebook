@@ -27,4 +27,59 @@ class User < Sequel::Model
 		user && user.password == params[:password]
 	end
 
+	def center
+		Center.find(id: center_id) if center_id
+	end
+
+	def self.search(params)
+		# puts params.inspect
+		size       = params && params[:limit].to_i || 10
+		page       = params && params[:page].to_i || 1
+		keyword    = params && params[:keyword] || nil
+		attributes = params && params[:attributes] || nil
+
+		if (keyword && !keyword.blank?) || (attributes && !attributes.blank?)
+			# SEARCH
+			if !keyword.blank?
+				if attributes && !attributes.blank?
+					users = User.order(:id)
+					users = users.where(center_id: attributes.center_id) if attributes.center_id
+					users = users.where(role: attributes.role) if attributes.role
+					users = users.where(
+						(Sequel.ilike(:first_name, "%#{keyword}%")) |
+						(Sequel.ilike(:last_name, "%#{keyword}%")) |
+						(Sequel.ilike(:email, "%#{keyword}%"))
+					).paginate(page, size)
+				else
+					users = User.where(
+						(Sequel.ilike(:first_name, "%#{keyword}%")) |
+						(Sequel.ilike(:last_name, "%#{keyword}%")) |
+						(Sequel.ilike(:email, "%#{keyword}%"))
+					).paginate(page, size)
+				end
+			else
+				users = User.order(:id)
+				users = users.where(center_id: attributes.center_id) if attributes.center_id
+				users = users.where(role: attributes.role) if attributes.role
+				users = users.paginate(page, size)
+			end
+		else
+			# ALL
+			users = User.order(:id).paginate(page, size)
+		end
+
+		[{
+			users: JSON.parse(users.to_json(:include => [:center])),
+			page_count: users.page_count,
+			page_size: users.page_size,
+			page_range: users.page_range,
+			current_page: users.current_page,
+			pagination_record_count: users.pagination_record_count,
+			current_page_record_count: users.current_page_record_count,
+			current_page_record_range: users.current_page_record_range,
+			first_page: users.first_page?,
+			last_page: users.last_page?
+		}]
+	end
+
 end

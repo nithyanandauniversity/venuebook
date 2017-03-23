@@ -20,6 +20,8 @@ module Venuebook
 
 						[{users: users}]
 					end
+				elsif params[:search]
+					return User.search(params[:search])
 				end
 			end
 
