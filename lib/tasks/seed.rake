@@ -22,4 +22,15 @@ namespace :seed do
 		User.create(first_name: "Phyllis", email: "weemeeai@gmail.com", password: "123123", role: 5, center_id: center_id)
 
 	end
+
+	desc "Insert Settings - Area"
+	task :settings_area => :environment do
+		areas = ['ANZ', 'Europe-Africa', 'Asia', 'India', 'North America']
+
+		Setting.create(
+			name: 'center_areas',
+			label: 'Center Areas',
+			value: areas.sort.to_json()
+		)
+	end
 end
