@@ -5,6 +5,7 @@ import centers from './centers';
 import programs from './programs';
 import venues from './venues';
 import events from './events';
+import users from './users';
 import routes from './routes';
 
 const rootReducer = combineReducers({
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   programs,
   venues,
   events,
+  users,
   routes
 });
 

@@ -11,6 +11,17 @@ export default class UserService {
 		this.collection = this.api.all('users');
 	}
 
+	search(params, callback) {
+		this.reloadApi();
+		this.collection.getAll({search: params})
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 	find(params, callback){
 		this.reloadApi();
 		this.collection.getAll(params)

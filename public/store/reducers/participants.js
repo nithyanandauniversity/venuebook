@@ -4,33 +4,33 @@ export default function participants(state = {view: LIST_PARTICIPANT, page: 1}, 
 	switch (action.type) {
 		case LIST_PARTICIPANT:
 			return {
-				view: LIST_PARTICIPANT,
-				page: action.page,
-				query: action.query
+				view  : LIST_PARTICIPANT,
+				page  : action.page,
+				query : action.query
 			}
 		case ADD_PARTICIPANT:
 			return {
-				view: ADD_PARTICIPANT
+				view : ADD_PARTICIPANT
 			}
 		case VIEW_PARTICIPANT:
 			return {
-				view: VIEW_PARTICIPANT,
-				id: action.id
+				view : VIEW_PARTICIPANT,
+				id   : action.id
 			}
 		case EDIT_PARTICIPANT:
 			return {
-				view: EDIT_PARTICIPANT,
-				id: action.id
+				view : EDIT_PARTICIPANT,
+				id   : action.id
 			}
 		case SEARCH_PARTICIPANT:
 			return	{
-				view: SEARCH_PARTICIPANT,
-				query: action.query
+				view  : SEARCH_PARTICIPANT,
+				query : action.query
 			}
 		case DELETE_PARTICIPANT:
 			return {
-				view: DELETE_PARTICIPANT,
-				id: action.id
+				view : DELETE_PARTICIPANT,
+				id   : action.id
 			}
 		default:
 			return state;

@@ -44,7 +44,7 @@ class User < Sequel::Model
 				if attributes && !attributes.blank?
 					users = User.order(:id)
 					users = users.where(center_id: attributes.center_id) if attributes.center_id
-					users = users.where(role: attributes.role) if attributes.role
+					users = users.where(role: attributes.roles) if attributes.roles
 					users = users.where(
 						(Sequel.ilike(:first_name, "%#{keyword}%")) |
 						(Sequel.ilike(:last_name, "%#{keyword}%")) |
@@ -60,7 +60,7 @@ class User < Sequel::Model
 			else
 				users = User.order(:id)
 				users = users.where(center_id: attributes.center_id) if attributes.center_id
-				users = users.where(role: attributes.role) if attributes.role
+				users = users.where(role: attributes.roles) if attributes.roles
 				users = users.paginate(page, size)
 			end
 		else

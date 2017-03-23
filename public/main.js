@@ -41,6 +41,10 @@ import 'tags/events/event-registrations.tag!'
 import 'tags/events/event-attendances.tag!'
 
 import 'tags/users.tag!'
+import 'tags/users/user-search.tag!'
+import 'tags/users/user-list.tag!'
+import 'tags/users/user-form.tag!'
+
 import 'tags/profile.tag!'
 
 import 'tags/riot-pagination.tag!';

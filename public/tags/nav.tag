@@ -118,6 +118,10 @@
 		showUserManagement(e) {
 			return(e) => {
 				console.log("GO TO USER MANAGEMENT");
+				this.parent.navigatePage({
+					type : 'USERS',
+					data : this.currentUser
+				});
 			}
 		}
 
@@ -147,9 +151,7 @@
 
 		showProfile(e) {
 			return(e) => {
-				console.log("SHOW PROFILE !");
 				this.parent.triggerProfile();
-				// $("#profile").modal('show');
 			}
 		}
 

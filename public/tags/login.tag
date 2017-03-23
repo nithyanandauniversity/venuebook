@@ -14,7 +14,7 @@
 						<input
 							type        = "text"
 							ref         = "email"
-							onkeypress  = "{keyPressed()}"
+							onkeypress  = "{ keyPressed() }"
 							placeholder = "E-mail address">
 					</div>
 				</div>
@@ -25,7 +25,7 @@
 						<input
 							type        = "password"
 							ref         = "password"
-							onkeypress  = "{keyPressed()}"
+							onkeypress  = "{ keyPressed() }"
 							placeholder = "Password">
 					</div>
 				</div>
@@ -68,8 +68,8 @@
 		}
 
 		doLogin() {
-			console.log("this.opts");
-			console.log(this.opts);
+			// console.log("this.opts");
+			// console.log(this.opts);
 			this.opts.service.doLogin({
 				auth: {
 					email: this.refs.email.value,

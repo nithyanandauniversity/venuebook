@@ -4,12 +4,12 @@ export default function programs(state = {view: ADD_PROGRAM}, action) {
 	switch (action.type) {
 		case ADD_PROGRAM:
 			return {
-				view: ADD_PROGRAM
+				view : ADD_PROGRAM
 			}
 		case EDIT_PROGRAM:
 			return {
-				view: EDIT_PROGRAM,
-				id: action.id
+				view : EDIT_PROGRAM,
+				id   : action.id
 			}
 		default:
 			return state;

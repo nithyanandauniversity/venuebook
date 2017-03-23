@@ -46,7 +46,12 @@
 	</events>
 
 	<users
-		if = "{opts.store.getState().routes.path == 'USERS'}">
+		if             = "{opts.store.getState().routes.path == 'USERS'}"
+		store          = "{opts.store}"
+		state          = "{opts.store.getState().users}"
+		service        = "{opts.services.userService}"
+		center-service = "{opts.services.centerService}"
+		user-roles     = "{opts.services.userRoles}">
 	</users>
 
 	<profile
@@ -61,9 +66,7 @@
 			$("profile").modal({
 					transition : 'vertical flip',
 					onShow     : () => {
-						console.log("SHOWING, DESTROY ELEMENT !");
 						if ($(".ui.dimmer.modals > profile").length > 1) {
-							console.log($(".ui.dimmer.modals > profile"));
 							$(".ui.dimmer.modals > profile")[0].remove();
 						}
 					},
