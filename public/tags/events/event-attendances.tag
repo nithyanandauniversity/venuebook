@@ -188,7 +188,7 @@
 
 		getAttendanceParams(att, i, param = {}) {
 
-			if (att.payment_status >= 0 && att.payment_status.toString() != this.refs['payment_status_' + i].value) {
+			if (att.payment_status >= 0 && att.payment_status != this.refs['payment_status_' + i].value) {
 				param.payment_status = this.refs['payment_status_' + i].value;
 			}
 
