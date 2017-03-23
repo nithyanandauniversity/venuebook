@@ -20,6 +20,10 @@ module Venuebook
 
 						[{users: users}]
 					end
+				elsif params[:email]
+					if authorize! :read, User
+						[{user: User.find_by_email(params[:email])}]
+					end
 				elsif params[:search]
 					return User.search(params[:search])
 				end

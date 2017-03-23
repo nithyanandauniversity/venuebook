@@ -95,11 +95,9 @@ describe 'Settings API' do
 		response = JSON.parse(last_response.body)
 		count    = Setting.count
 
-
 		delete "/api/v1/settings/#{response['id']}", nil, {'HTTP_TOKEN' => @token}
 
 		expect(Setting.count).to eql count - 1
-
 	end
 
 end

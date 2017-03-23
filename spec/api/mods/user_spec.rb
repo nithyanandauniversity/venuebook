@@ -36,6 +36,21 @@ describe 'User API' do
 		expect(response.length).to eql 3
 	end
 
+	it "should be albe to find user by email address" do
+
+		get "/api/v1/users", {email: "centeradmin1@gmail.com"}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)[0]['user']
+
+		expect(response['email']).to eql "centeradmin1@gmail.com"
+
+		get "/api/v1/users", {email: "sfdgvasregvrfg@gmail.com"}, {'HTTP_TOKEN' => @token}
+
+		response = JSON(last_response.body)[0]['user']
+
+		expect(response).to eql nil
+	end
+
 	it "should be able to get the current user" do
 
 		get "/api/v1/users/current_user", nil, {'HTTP_TOKEN' => @token}

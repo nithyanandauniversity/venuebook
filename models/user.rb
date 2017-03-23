@@ -31,6 +31,10 @@ class User < Sequel::Model
 		Center.find(id: center_id) if center_id
 	end
 
+	def self.find_by_email(email)
+		User.find(email: email)
+	end
+
 	def self.search(params)
 		# puts params.inspect
 		size       = params && params[:limit].to_i || 10
