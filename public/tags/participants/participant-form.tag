@@ -1,6 +1,6 @@
 <participant-form
-	class="ui container"
-	style="margin: 25px 0;">
+	class = "ui container"
+	style = "margin: 25px 0;">
 
 	<div class="ui">
 		<div class="row" style="margin-bottom: 35px;">

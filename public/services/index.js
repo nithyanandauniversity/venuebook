@@ -15,6 +15,7 @@ import Venue from './venue.service';
 import Event from './event.service';
 import Attendance from './attendance.service';
 import User from './user.service';
+import Setting from './setting.service';
 
 export default class Services {
 
@@ -29,6 +30,7 @@ export default class Services {
 		this.eventService       = new Event(api);
 		this.attendanceService  = new Attendance(api);
 		this.userService        = new User(api);
+		this.settingService     = new Setting(api);
 
 		this.countries        = this.generateCountriesList();
 		this.dialcodes        = DIALCODES;

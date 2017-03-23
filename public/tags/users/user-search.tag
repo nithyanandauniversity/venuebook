@@ -26,11 +26,11 @@
 					<div
 						if    = "{ parent.selectedCenter }"
 						class = "ui icon large buttons">
-						<button class = "ui basic orange button">
+						<button class = "ui basic green button">
 							{parent.selectedCenter.name}
 						</button>
 						<button
-							class   = "ui basic orange icon button"
+							class   = "ui basic green icon button"
 							onclick = "{ clearCenterSelection() }">
 							<i class = "icon remove"></i>
 						</button>
@@ -41,7 +41,6 @@
 						<input
 							type        = "text"
 							placeholder = "Search for Center..."
-							class       = "large"
 							id          = "search-center" />
 					</div>
 				</div>
@@ -63,15 +62,6 @@
 						<strong>{role.label}</strong>
 					</a>
 				</div>
-				<!-- <div
-					if    = "{userRoles && userRoles.length}"
-					class = "ui buttons">
-					<button
-						each  = "{ role in userRoles }"
-						class = "ui { role.active && 'olive' || 'basic green'} button">
-						<span>{role.label}</span>
-					</button>
-				</div> -->
 			</div>
 		</div>
 	</div>
@@ -79,9 +69,6 @@
 	<script>
 
 		this.showFilters = false;
-
-		console.log("this.parent.opts");
-		console.log(this.parent.opts);
 
 		toggleFilter() {
 			return(e) => {
@@ -91,8 +78,6 @@
 
 		generateFilters() {
 			let filters = {};
-			console.log("this.parent.selectedCenter");
-			console.log(this.parent.selectedCenter);
 			if (this.parent.selectedCenter) {
 				filters['center_id'] = this.parent.selectedCenter.id;
 			}
@@ -106,8 +91,6 @@
 				}, []);
 			}
 
-			console.log("filters");
-			console.log(filters);
 			return filters;
 		}
 
@@ -199,7 +182,7 @@
 		setTimeout(() => {
 			this.loadSearchInput();
 			this.generateUserRoleList();
-		}, 100)
+		}, 100);
 
 
 	</script>
