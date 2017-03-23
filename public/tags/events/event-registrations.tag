@@ -95,7 +95,7 @@
 							class = "ui compact menu small olive buttons"
 							show  = "{ parent.event_dates && parent.event_dates.length > 1 }">
 							<div
-								class = "ui simple dropdown item olive button {parent.event_dates.length == registration.attended_dates.length && 'disabled'}"
+								class = "ui simple dropdown item olive button {registration.attended_dates && parent.event_dates.length == registration.attended_dates.length && 'disabled'}"
 								style = "color: rgba(0,0,0,.6);">
 								<i class="icon checkmark box"></i> Add
 								<i class="dropdown icon"></i>
@@ -103,7 +103,7 @@
 									<div
 										each        = "{event_date in parent.event_dates}"
 										data-member = "{registration.participant.member_id}"
-										if          = "{!registration.attended_dates.includes(format(event_date, 'date', 'isoDate').toString())}"
+										if          = "{registration.attended_dates && !registration.attended_dates.includes(format(event_date, 'date', 'isoDate').toString())}"
 										data-venue  = "{registration.venue_id}"
 										onclick     = "{ addRegToAttendance() }"
 										class       = "item">
@@ -134,7 +134,7 @@
 
 	<div
 		class = "ui message red"
-		show  = "{parent.registrations && parent.registrations.length == 0}">
+		show  = "{ parent.registrations && parent.registrations.length == 0 }">
 		<h3>No Registrations !</h3>
 	</div>
 
