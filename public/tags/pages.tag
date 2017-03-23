@@ -46,12 +46,14 @@
 	</events>
 
 	<users
-		if             = "{opts.store.getState().routes.path == 'USERS'}"
-		store          = "{opts.store}"
-		state          = "{opts.store.getState().users}"
-		service        = "{opts.services.userService}"
-		center-service = "{opts.services.centerService}"
-		user-roles     = "{opts.services.userRoles}">
+		if              = "{opts.store.getState().routes.path == 'USERS'}"
+		store           = "{opts.store}"
+		state           = "{opts.store.getState().users}"
+		countries       = "{opts.services.countries}"
+		service         = "{opts.services.userService}"
+		center-service  = "{opts.services.centerService}"
+		setting-service = "{opts.services.settingService}"
+		user-roles      = "{opts.services.userRoles}">
 	</users>
 
 	<profile

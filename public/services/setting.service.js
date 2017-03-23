@@ -22,4 +22,15 @@ export default class SettingService {
 			});
 	}
 
+	getByName(name, callback) {
+		this.reloadApi();
+		this.collection.getAll({name: name})
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 }
