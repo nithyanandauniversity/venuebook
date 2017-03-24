@@ -17,10 +17,10 @@
 	</user-form>
 
 	<!-- User View Component -->
-	<!-- <user-view
+	<user-view
 		if    = "{opts.state.view == 'VIEW_USER'}"
 		state = "{opts.state}">
-	</user-view> -->
+	</user-view>
 
 	<script>
 		let state = this.parent.opts.store.getState().routes;
@@ -48,8 +48,8 @@
 
 		showView(user) {
 			console.log('show view!', user);
-			// this.opts.store.dispatch({type: 'VIEW_USER', id: user.id});
-			// this.update();
+			this.opts.store.dispatch({type: 'VIEW_USER', id: user.id});
+			this.update();
 			// this.tags['user-view'].trigger('view');
 		}
 

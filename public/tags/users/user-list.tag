@@ -23,14 +23,14 @@
 				<td>
 					<div if = "{ user.role == 1 }"><strong>ALL CENTERS</strong></div>
 					<div if = "{ user.role == 2 }">
-						<span show="{user.user_permissions['areas']}">
+						<span show = "{user.user_permissions['areas']}">
 							<strong>Areas: </strong> {user.user_permissions['areas']}
 						</span>
-						<span show="{user.user_permissions['countries']}">
+						<span show = "{user.user_permissions['countries']}">
 							<strong>Countries: </strong> {user.user_permissions['countries']}
 						</span>
-						<span show="{user.user_permissions['centers']}">
-							<strong>Centers: </strong> {user.user_permissions['centers'].length} Centers
+						<span show = "{user.user_permissions['centers']}">
+							<strong>Centers: </strong> {user.user_permissions['centers'] ? user.user_permissions['centers'].length : '0'} Centers
 						</span>
 					</div>
 					<div if = "{ user.center && user.center.id }">
@@ -117,13 +117,13 @@
 
 		showView(e) {
 			return (e) => {
-				this.parent.showView(e.item);
+				this.parent.showView(e.item.user);
 			}
 		}
 
 		showForm(e) {
 			return (e) => {
-				// self.parent.showForm(e.item);
+				self.parent.showForm(e.item.user);
 			}
 		}
 

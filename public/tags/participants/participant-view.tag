@@ -8,10 +8,10 @@
 				<span>
 					View Participant [{participant.member_id}]
 				</span>
-				<div class="ui green basic button right floated" onclick = { edit }>
+				<div class="ui green basic button right floated" onclick = "{ edit }">
 					<i class="write left icon"></i> Edit
 				</div>
-				<div class="ui primary basic button right floated" onclick = { parent.showList }>
+				<div class="ui primary basic button right floated" onclick = "{ parent.showList }">
 					<i class="chevron left icon"></i> Back
 				</div>
 			</h2>

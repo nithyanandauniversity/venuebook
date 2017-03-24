@@ -22,7 +22,18 @@ export default class UserService {
 			});
 	}
 
-	find(params, callback){
+	get(id, callback) {
+		this.reloadApi();
+		this.api.one('users', id).get()
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
+	find(params, callback) {
 		this.reloadApi();
 		this.collection.getAll(params)
 			.then((response) => {
