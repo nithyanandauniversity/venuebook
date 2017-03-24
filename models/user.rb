@@ -67,8 +67,8 @@ class User < Sequel::Model
 		if (keyword && !keyword.blank?) || (attributes && !attributes.blank?)
 			# SEARCH
 			if !keyword.blank?
+				users = User.order(:role)
 				if attributes && !attributes.blank?
-					users = User.order(:id)
 					users = users.where(center_id: attributes.center_id) if attributes.center_id
 					users = users.where(role: attributes.roles) if attributes.roles
 					users = users.where(
@@ -77,25 +77,28 @@ class User < Sequel::Model
 						(Sequel.ilike(:email, "%#{keyword}%"))
 					).paginate(page, size)
 				else
-					users = User.where(
+					users = users.where(
 						(Sequel.ilike(:first_name, "%#{keyword}%")) |
 						(Sequel.ilike(:last_name, "%#{keyword}%")) |
 						(Sequel.ilike(:email, "%#{keyword}%"))
 					).paginate(page, size)
 				end
 			else
-				users = User.order(:id)
+				users = User.order(:role)
 				users = users.where(center_id: attributes.center_id) if attributes.center_id
 				users = users.where(role: attributes.roles) if attributes.roles
 				users = users.paginate(page, size)
 			end
 		else
 			# ALL
-			users = User.order(:id).paginate(page, size)
+			users = User.order(:role).paginate(page, size)
 		end
 
 		[{
-			users: JSON.parse(users.to_json(:include => [:center, :user_permissions])),
+			users: JSON.parse(users.to_json({
+				:include => [:center, :user_permissions],
+				:except => [:encrypted_password]
+			})),
 			page_count: users.page_count,
 			page_size: users.page_size,
 			page_range: users.page_range,

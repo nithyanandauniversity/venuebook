@@ -10,6 +10,16 @@ module Venuebook
 				current_user
 			end
 
+			get '/:id' do
+				if authorize! :read, User
+					user = User.find(id: params[:id])
+					JSON.parse(user.to_json({
+						:include => [:center, :user_permissions, :allowed_centers],
+						:except => [:encrypted_password]
+					}))
+				end
+			end
+
 			get do
 				if params[:search_coordinators] && current_user['role'] < 5
 					if authorize! :read, User
@@ -18,7 +28,7 @@ module Venuebook
 
 						users = users.or('role = 1') if current_user['role'] == 1
 
-						[{users: users}]
+						[{users: JSON.parse(users.to_json(:except => [:encrypted_password]))}]
 					end
 				elsif params[:email]
 					if authorize! :read, User
@@ -32,7 +42,7 @@ module Venuebook
 			post do
 				if authorize! :create, User
 					user = User.create(params[:user])
-					JSON.parse(user.to_json(:include => [:user_permissions]))
+					JSON.parse(user.to_json({:include => [:user_permissions]}))
 				end
 			end
 
