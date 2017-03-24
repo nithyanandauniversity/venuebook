@@ -6,6 +6,7 @@ Sequel.migration do
       Date :start_date
       Date :end_date
       Integer :center_id
+      Integer :program_id
       String :program_donation
       Text :notes
       String :uuid

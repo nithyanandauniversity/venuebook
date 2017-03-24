@@ -32,7 +32,7 @@ module Venuebook
 			post do
 				if authorize! :create, User
 					user = User.create(params[:user])
-					user
+					JSON.parse(user.to_json(:include => [:user_permissions]))
 				end
 			end
 

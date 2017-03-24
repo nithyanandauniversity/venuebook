@@ -35,6 +35,28 @@ class User < Sequel::Model
 		User.find(email: email)
 	end
 
+	def user_permissions
+		JSON.parse(permissions) if role == 2 && permissions
+	end
+
+	def is_allowed(center_id)
+		allowed_centers.include? center_id
+	end
+
+	def allowed_centers
+		if role == 2 && permissions
+			if user_permissions['areas']
+				centers = Center.where(area: user_permissions['areas'])
+			elsif user_permissions['coutries']
+				centers = Center.where(country: user_permissions['coutries'])
+			elsif user_permissions['centers']
+				centers = Center.where(id: user_permissions['centers'])
+			end
+
+			centers.all
+		end
+	end
+
 	def self.search(params)
 		# puts params.inspect
 		size       = params && params[:limit].to_i || 10
@@ -73,7 +95,7 @@ class User < Sequel::Model
 		end
 
 		[{
-			users: JSON.parse(users.to_json(:include => [:center])),
+			users: JSON.parse(users.to_json(:include => [:center, :user_permissions])),
 			page_count: users.page_count,
 			page_size: users.page_size,
 			page_range: users.page_range,

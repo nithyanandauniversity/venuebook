@@ -77,6 +77,73 @@ describe 'User API' do
 		expect(response['role']).to eql 1
 	end
 
+	it "should be able to create a PROGRAM COORDINATOR or DATA ENTRY level user with a center_id" do
+
+		post "/api/v1/users", {
+			user: {
+				first_name: "Program coordinator1",
+				email: "programcoordinator111@gmail.com",
+				role: 4,
+				password: "123123122"
+			}
+		}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+
+		expect(response['id']).not_to eql nil
+		expect(response['role']).to eql 4
+		expect(response['email']).to eql "programcoordinator111@gmail.com"
+
+		post "/api/v1/users", {
+			user: {
+				first_name: "Data Entry1",
+				email: "dataentry111@gmail.com",
+				role: 5,
+				password: "123123122"
+			}
+		}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+
+		expect(response['id']).not_to eql nil
+		expect(response['role']).to eql 5
+		expect(response['email']).to eql "dataentry111@gmail.com"
+	end
+
+	it "should be able to create a LEAD level user with permissions" do
+		Center.dataset.all { |c| c.destroy }
+
+		post "/api/v1/users", {
+			user: {
+				first_name: "Lead1",
+				email: "leaduser111@gmail.com",
+				role: 2,
+				permissions: {
+					areas: ['ANZ', 'Asia']
+				}.to_json(),
+				password: "123123122"
+			}
+		}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+
+		user = User.find(id: response['id'])
+
+		expect(response['id']).not_to eql nil
+		expect(response['user_permissions']).not_to eql nil
+		expect(response['user_permissions']['areas'].length).to eql 2
+		expect(user.allowed_centers.length).to eql 0
+
+		center1 = Center.create(area: 'ANZ', name: 'Melbourne Aadheenam')
+		center2 = Center.create(area: 'SEA', name: 'Singapore Aadheenam')
+
+		user.reload
+		expect(user.allowed_centers.length).to eql 1
+
+		expect(center1.leads).not_to eql nil
+		expect(center1.leads[:area].length).to eql 1
+	end
+
 	it "should respond with 401 if the current password is wrong" do
 		put "/api/v1/users/change_password/#{@user.id}", {
 			user: {

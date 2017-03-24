@@ -3,6 +3,17 @@ class Center < Sequel::Model
 	one_to_many :venues
 	one_to_one :user
 
+	def leads
+		all_leads  = User.where(role: 2)
+
+		return {
+			area: JSON.parse(all_leads.where((Sequel.ilike(:permissions, "%areas%#{area}%"))).to_json(:only => [:id, :first_name, :last_name, :email])),
+			country: JSON.parse(all_leads.where((Sequel.ilike(:permissions, "%countries%#{country}%"))).to_json(:only => [:id, :first_name, :last_name, :email])),
+			center: JSON.parse(all_leads.where((Sequel.ilike(:permissions, "%centers%#{id}%"))).to_json(:only => [:id, :first_name, :last_name, :email]))
+		}
+
+	end
+
 	def self.search(params)
 		# puts params.inspect
 		size       = params && params[:limit].to_i || 10

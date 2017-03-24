@@ -9,6 +9,11 @@ Sequel.migration do
       Date :attendance_date
       DateTime :created_at
       DateTime :updated_at
+      Integer :confirmation_status
+      Integer :payment_status
+      Integer :payment_method
+      String :amount
+      String :payment_note
     end
   end
 

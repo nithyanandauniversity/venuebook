@@ -5,6 +5,8 @@ Sequel.migration do
       String :name
       String :label
       Text :value
+      DateTime :created_at
+      DateTime :updated_at
     end
   end
 
