@@ -17,7 +17,11 @@
 			<tr each = "{ user in users }">
 				<td>
 					<label><strong>{user.first_name}</strong> {user.last_name}</label> <br />
-					<em style="font-size: 0.9em;" class="meta">{user.email}</em>
+					<em
+						class = "meta"
+						style = "font-size: 0.9em; color: rgba(0,0,0,0.7);">
+						{user.email}
+					</em>
 				</td>
 				<td>{ userRoles[user.role] }</td>
 				<td>
