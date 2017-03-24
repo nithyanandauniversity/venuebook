@@ -5,26 +5,37 @@
 		style = "margin-bottom: 25px;">
 		<thead>
 			<tr>
-				<th>Full Name</th>
-				<th>Email</th>
+				<th>Name / Email</th>
 				<th>Role</th>
 				<th>Center</th>
-				<th style="min-width: 160px; width: 240px; max-width: 240px; text-align: center;">
-					<i class="options icon"></i> Actions
+				<th style = "min-width: 160px; width: 240px; max-width: 240px; text-align: center;">
+					<i class = "options icon"></i> Actions
 				</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr each = "{ user in users }">
 				<td>
-					<strong>{user.first_name}</strong> {user.last_name}
+					<label><strong>{user.first_name}</strong> {user.last_name}</label> <br />
+					<em style="font-size: 0.9em;" class="meta">{user.email}</em>
 				</td>
-				<td>{user.email}</td>
 				<td>{ userRoles[user.role] }</td>
 				<td>
+					<div if = "{ user.role == 1 }"><strong>ALL CENTERS</strong></div>
+					<div if = "{ user.role == 2 }">
+						<span show="{user.user_permissions['areas']}">
+							<strong>Areas: </strong> {user.user_permissions['areas']}
+						</span>
+						<span show="{user.user_permissions['countries']}">
+							<strong>Countries: </strong> {user.user_permissions['countries']}
+						</span>
+						<span show="{user.user_permissions['centers']}">
+							<strong>Centers: </strong> {user.user_permissions['centers'].length} Centers
+						</span>
+					</div>
 					<div if = "{ user.center && user.center.id }">
 						<strong>{user.center.name}</strong><br />
-						<span style = "line-height: 1.5em;">
+						<span style = "line-height: 1em; font-size: 0.8em;">
 							{user.center.area}, {user.center.country}, {user.center.region}
 						</span>
 					</div>
@@ -34,27 +45,27 @@
 						class    = "ui action-btn vertical olive animated button"
 						tabindex = "0"
 						onclick  = { showView() }>
-						<div class="hidden content">View</div>
-						<div class="visible content">
-							<i class="action info icon"></i>
+						<div class = "hidden content">View</div>
+						<div class = "visible content">
+							<i class = "action info icon"></i>
 						</div>
 					</button>
 					<div
 						class    = "ui action-btn vertical yellow animated button"
 						tabindex = "0"
 						onclick  = { showForm() }>
-						<div class="hidden content">Edit</div>
-						<div class="visible content">
-							<i class="action write icon"></i>
+						<div class = "hidden content">Edit</div>
+						<div class = "visible content">
+							<i class = "action write icon"></i>
 						</div>
 					</div>
 					<div
 						class    = "ui action-btn vertical red animated button"
 						tabindex = "0"
 						onclick  = { remove() }>
-						<div class="hidden content">Block</div>
-						<div class="visible content">
-							<i class="action remove icon"></i>
+						<div class = "hidden content">Block</div>
+						<div class = "visible content">
+							<i class = "action remove icon"></i>
 						</div>
 					</div>
 				</td>
@@ -65,8 +76,8 @@
 				<td
 					colspan = "6"
 					style   = "border-top: 1px solid rgba(34,36,38,.1);">
-					<div class="ui centered column grid">
-						<div class="row">
+					<div class = "ui centered column grid">
+						<div class = "row">
 							<riot-pagination
 								show         = "{ users.length }"
 								current-page = "{ currentPage }"
@@ -81,8 +92,8 @@
 								show-prev    = "true">
 							</riot-pagination>
 						</div>
-						<div class="row">
-							<span class="ui label">
+						<div class = "row">
+							<span class = "ui label">
 								Showing { recordRange } / { recordCount } records in { pageCount } pages
 							</span>
 						</div>

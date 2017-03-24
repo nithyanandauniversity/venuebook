@@ -45,4 +45,26 @@ export default class UserService {
 			});
 	}
 
+	create(params, callback) {
+		this.reloadApi();
+		this.collection.post(params)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
+	update(id, params, callback) {
+		this.reloadApi();
+		this.collection.put(id, params)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 }

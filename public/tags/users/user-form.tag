@@ -19,7 +19,7 @@
 		<div class="ui form">
 
 			<div style="margin-bottom: 1.5em;">
-				<h4 class="ui horizontal divider header">
+				<h4 class="ui horizontal divider header {validation && validation.emptyRole && 'red'}">
 					<i class="icon legal"></i>
 					Select User Role
 				</h4>
@@ -59,6 +59,14 @@
 						</div>
 						<div show = "{ activeRole > 3 }">
 							<h3>Select Primary Center :</h3>
+						</div>
+
+						<div
+							show  = "{validation && validation.emptyLeadType}"
+							class = "column center aligned">
+							<div class = "ui pointing above red label">
+								Select Lead Type
+							</div>
 						</div>
 					</div>
 
@@ -158,6 +166,17 @@
 									placeholder = "Search for centers..." />
 							</div>
 						</div>
+
+						<div
+							show  = "{leadType && validation && validation.emptyLeadParams}"
+							class = "ui pointing above red label">
+							Select {leadType}(s) to assign user to...
+						</div>
+						<div
+							show  = "{validation && validation.emptyCenter}"
+							class = "ui pointing above red label">
+							Select primary center...
+						</div>
 					</div>
 				</div>
 			</div>
@@ -169,7 +188,7 @@
 				</h4>
 
 				<div class="four fields">
-					<div class="field">
+					<div class="field {validation && validation.emptyName && 'error'}">
 						<label>First Name</label>
 						<input type="text" ref="first_name" placeholder="First Name" />
 					</div>
@@ -177,11 +196,11 @@
 						<label>Last Name</label>
 						<input type="text" ref="last_name" placeholder="Last Name" />
 					</div>
-					<div class="field">
+					<div class="field {validation && validation.emptyEmail && 'error'}">
 						<label>Email</label>
 						<input type="text" ref="email" placeholder="Email Address" />
 					</div>
-					<div class="field">
+					<div class="field {validation && validation.emptyPassword && 'error'}">
 						<label>Password</label>
 						<input type="password" ref="password" placeholder="Password" />
 					</div>
@@ -317,7 +336,7 @@
 						params.permissions.countries = this.leadTypeValue.countries;
 					}
 					else if (this.leadType == 'center') {
-						params.permissions.centers = this.leadTypeValue.centers.map((c) => { return c.id; });
+						params.permissions.centers = this.leadTypeValue.centers && this.leadTypeValue.centers.length ? this.leadTypeValue.centers.map((c) => { return c.id; }) : null;
 					}
 				}
 				else if (this.activeRole > 3) {
@@ -325,48 +344,56 @@
 				}
 			}
 
-			return params;
+			return {user: params};
 		}
 
-		validateForm(user) {
+		validateForm(params) {
 			let emailRegex  = new RegExp(/^[a-z0-9](\.?[a-z0-9_-]){0,}@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/);
 			this.validation = {};
 
-			if (!user.first_name || user.first_name == '') {
+			if (!params.user.first_name || params.user.first_name == '') {
 				this.validation.emptyName = true;
 			}
 
-			if (user.email && user.email != '') {
+			if (params.user.email && params.user.email != '') {
 				this.validation.emptyEmail = false;
-				this.validation.validEmail = emailRegex.test(user.email);
+				this.validation.validEmail = emailRegex.test(params.user.email);
 			}
 			else {
 				this.validation.emptyEmail = true;
 			}
 
-			if (user.role > 3 && (!user.center_id || user.center_id == '')) {
+			if (!params.user.password || params.user.password == '') {
+				this.validation.emptyPassword = true;
+			}
+
+			if (!params.user.role || params.user.role < 1) {
+				this.validation.emptyRole = true;
+			}
+
+			if (params.user.role > 3 && (!params.user.center_id || params.user.center_id == '')) {
 				this.validation.emptyCenter = true;
 			}
 
-			if (user.role == 2) {
+			if (params.user.role == 2) {
+				if (!this.leadType || ['area', 'country', 'center'].indexOf(this.leadType) < 0) {
+					this.validation.emptyLeadType = true;
+				}
+
 				if (
-					(user.permissions.areas && !user.permissions.areas.length) ||
-					(user.permissions.countries && !user.permissions.countries.length)||
-					(user.permissions.centers && !user.permissions.centers.length)
+					(!params.user.permissions.areas || !params.user.permissions.areas.length) &&
+					(!params.user.permissions.countries || !params.user.permissions.countries.length) &&
+					(!params.user.permissions.centers || !params.user.permissions.centers.length)
 				) {
 					this.validation.emptyLeadParams = true;
 				}
 			}
 
-			let is_valid = !this.validation.emptyName
+			return !this.validation.emptyName
 				&& (this.validation.validEmail && !this.validation.emptyEmail)
+				&& !this.validation.emptyRole
 				&& !this.validation.emptyCenter
 				&& !this.validation.emptyLeadParams;
-
-			console.log("is_valid");
-			console.log(is_valid);
-
-			return is_valid;
 		}
 
 		save() {
@@ -376,19 +403,31 @@
 			console.log(saveParams);
 
 			if (!this.validateForm(saveParams)) {
-				console.log("this.validation");
-				console.log(this.validation);
 				return false;
+			}
+
+			if (saveParams.user.role == 2 && saveParams.user.permissions) {
+				console.log('setting json text');
+				saveParams.user.permissions = JSON.stringify(saveParams.user.permissions);
 			}
 
 			console.log("SAVE !!!");
 
 			if (!this.edit_id) {
 				// CREATE RECORD
+				this.create(saveParams);
 			}
 			else {
 				// UPDATE RECORD
 			}
+		}
+
+		create(data) {
+			this.parent.opts.service.create(data, (err, response) => {
+				if (!err) {
+					this.parent.showList();
+				}
+			});
 		}
 
 		generateUserRoleList() {
