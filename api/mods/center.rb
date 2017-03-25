@@ -27,15 +27,19 @@ module Venuebook
 
 			post do
 				if authorize! :create, Center
-					center = Center.create(params[:center])
-					center.update({code: SecureRandom.hex(6)})
+					unless User.find_by_email(params[:admin].email)
+						center = Center.create(params[:center])
+						center.update({code: SecureRandom.hex(6)})
 
-					admin           = User.new(params[:admin])
-					admin.center_id = center.id
-					admin.role      = 3
-					admin.save
+						admin           = User.new(params[:admin])
+						admin.center_id = center.id
+						admin.role      = 3
+						admin.save
 
-					center
+						center
+					else
+						error!({status: 409, message: "409 Email Conflict"}, 409)
+					end
 				end
 			end
 

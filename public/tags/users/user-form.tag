@@ -43,7 +43,7 @@
 				</h4>
 
 				<div class="ui two column grid">
-					<div class="{activeRole > 3 && 'right aligned middle aligned content'} six wide column">
+					<div class="{activeRole >= 3 && 'right aligned middle aligned content'} six wide column">
 						<div
 							show  = "{ activeRole == 2 }"
 							class = "field">
@@ -57,7 +57,7 @@
 								</a>
 							</div>
 						</div>
-						<div show = "{ activeRole > 3 }">
+						<div show = "{ activeRole >= 3 }">
 							<h3>Select Primary Center :</h3>
 						</div>
 
@@ -140,9 +140,9 @@
 						<!-- SELECT CENTER IF USER IS PROGRAM_COORDINATOR OR DATA_ENTRY -->
 						<div
 							class = "field"
-							show  = "{ activeRole > 3 || (activeRole == 2 && leadType == 'center')}">
-							<label show = "{ activeRole == 2 }">Select Centers :</label>
-							<div style = "{ activeRole == 2 && 'margin-bottom: 1rem;'}">
+							show  = "{ activeRole >= 3 || (activeRole == 2 && leadType == 'center')}">
+							<label show = "{ activeRole == 2 || activeRole == 3 }">Select Centers :</label>
+							<div style = "{ (activeRole == 2 || activeRole == 3) && 'margin-bottom: 1rem;'}">
 								<div
 									each  = "{ center in leadTypeValue.centers }"
 									style = "margin-right: 8px;"
@@ -151,7 +151,7 @@
 										{ center.name }
 									</button>
 									<button
-										class   = "ui icon button"
+										class   = "ui icon button { activeRole == 3 && 'disabled' }"
 										onclick = "{ removeCenterFromList() }">
 										<i class = "icon remove"></i>
 									</button>
@@ -200,6 +200,11 @@
 						<label>Email</label>
 						<div class = "ui {edit_id && 'disabled'} input">
 							<input type = "text" ref = "email" placeholder = "Email Address" />
+						</div>
+						<div
+							show  = "{ emailConflictError }"
+							class = "ui pointing above red label">
+							Email Conflict Error!
 						</div>
 					</div>
 					<div class = "field {validation && validation.emptyPassword && 'error'}">
@@ -311,6 +316,7 @@
 
 		removeCenterFromList(e) {
 			return(e) => {
+				if (this.activeRole == 3) { return false; }
 				this.leadTypeValue.centers = this.leadTypeValue.centers.filter((center) => {
 					return e.item.center.id != center.id;
 				});
@@ -322,9 +328,12 @@
 				role       : this.activeRole,
 				first_name : this.refs['first_name'].value,
 				last_name  : this.refs['last_name'].value,
-				email      : this.refs['email'].value,
-				password   : this.refs['password'].value
+				email      : this.refs['email'].value
 			};
+
+			if (!this.edit_id || (this.refs['password'].value && this.refs['password'].value != '')) {
+				params.password = this.refs['password'].value;
+			}
 
 			if (this.activeRole) {
 
@@ -370,6 +379,9 @@
 					this.leadType = 'center';
 				}
 			}
+			else if (this.activeRole == 3) {
+				this.leadTypeValue = { centers : [user.center] }
+			}
 
 			$(".ui.search.dropdown").dropdown({
 				forceSelection  : false,
@@ -394,7 +406,7 @@
 				this.validation.emptyEmail = true;
 			}
 
-			if (!params.user.password || params.user.password == '') {
+			if (!this.edit_id && (!params.user.password || params.user.password == '')) {
 				this.validation.emptyPassword = true;
 			}
 
@@ -422,6 +434,7 @@
 
 			return !this.validation.emptyName
 				&& (this.validation.validEmail && !this.validation.emptyEmail)
+				&& !this.validation.emptyPassword
 				&& !this.validation.emptyRole
 				&& !this.validation.emptyCenter
 				&& !this.validation.emptyLeadParams;
@@ -438,7 +451,6 @@
 			}
 
 			if (saveParams.user.role == 2 && saveParams.user.permissions) {
-				console.log('setting json text');
 				saveParams.user.permissions = JSON.stringify(saveParams.user.permissions);
 			}
 
@@ -450,11 +462,28 @@
 			}
 			else {
 				// UPDATE RECORD
+				this.edit(saveParams);
 			}
 		}
 
 		create(data) {
 			this.parent.opts.service.create(data, (err, response) => {
+				if (!err) {
+					this.parent.showList();
+				}
+				else {
+					console.log("err");
+					console.log(err, err.status, err.message);
+					if (err.message == "Conflict") {
+						this.emailConflictError = true;
+						this.update();
+					}
+				}
+			});
+		}
+
+		edit(data) {
+			this.parent.opts.service.update(this.edit_id, data, (err, response) => {
 				if (!err) {
 					this.parent.showList();
 				}

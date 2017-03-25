@@ -41,7 +41,19 @@ module Venuebook
 
 			post do
 				if authorize! :create, User
-					user = User.create(params[:user])
+					unless User.find_by_email(params[:user].email)
+						user = User.create(params[:user])
+						JSON.parse(user.to_json({:include => [:user_permissions]}))
+					else
+						error!({status: 409, message: "409 Email Conflict"}, 409)
+					end
+				end
+			end
+
+			put '/:id' do
+				if authorize! :update, User
+					user = User.find(id: params[:id])
+					user.update(params[:user])
 					JSON.parse(user.to_json({:include => [:user_permissions]}))
 				end
 			end
