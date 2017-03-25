@@ -98,7 +98,7 @@
 				</div>
 				<div class="field {validation && validation.emptyPassword && 'error'}">
 					<label for="password">Password</label>
-					<input type="text" ref="password" placeholder="Password" />
+					<input type="password" ref="password" placeholder="Password" />
 				</div>
 			</div>
 		</div>
@@ -218,31 +218,36 @@
 		}
 
 		generateCenterParams() {
+			let centerParams = {
+				name     : this.refs.name.value,
+				category : this.refs.category.value,
+				city     : this.refs.city.value,
+				state    : this.refs.state.value,
+				region   : this.refs.region.value,
+				country  : this.refs.country.value,
+				area     : this.refs.area.value
+			};
+
+			let adminParams = {
+				first_name : this.refs.first_name.value,
+				last_name  : this.refs.last_name.value,
+				email      : this.refs.email.value
+			};
+
+			if (!this.edit_id || (this.refs.password.value && this.refs.password.value != '')) {
+				adminParams.password = this.refs.password.value;
+			}
+
 			return {
-				center : {
-					name     : this.refs.name.value,
-					category : this.refs.category.value,
-					city     : this.refs.city.value,
-					state    : this.refs.state.value,
-					region   : this.refs.region.value,
-					country  : this.refs.country.value,
-					area     : this.refs.area.value
-				},
-				admin : {
-					first_name : this.refs.first_name.value,
-					last_name  : this.refs.last_name.value,
-					email      : this.refs.email.value,
-					password   : this.refs.password.value
-				}
+				center : centerParams,
+				admin  : adminParams
 			};
 		}
 
 		create(data) {
-			// console.log("data");
-			// console.log(data);
 			this.parent.opts.service.create(data, (err, response) => {
 				if (!err) {
-					console.log(response.body().data(), response.statusCode());
+					// console.log(response.body().data(), response.statusCode());
 					this.parent.showList();
 				}
 				else {
@@ -253,11 +258,8 @@
 		}
 
 		edit(data) {
-			// console.log("data");
-			// console.log(data);
 			this.parent.opts.service.update(this.edit_id, data, (err, response) => {
 				if (!err) {
-					// console.log(response.body().data(), response.statusCode());
 					this.parent.showList();
 				}
 			});
