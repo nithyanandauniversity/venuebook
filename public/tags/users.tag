@@ -80,9 +80,9 @@
 		}
 
 		showForm(user) {
-			// console.log('show form!', user);
-			// this.opts.store.dispatch({type: 'EDIT_USER', id: user.id});
-			// this.update();
+			console.log('show form!', user);
+			this.opts.store.dispatch({type: 'EDIT_USER', id: user.id});
+			this.update();
 			// this.tags['user-form'].trigger('edit');
 		}
 

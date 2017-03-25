@@ -187,22 +187,24 @@
 					Enter Login Credentials
 				</h4>
 
-				<div class="four fields">
-					<div class="field {validation && validation.emptyName && 'error'}">
+				<div class = "four fields">
+					<div class = "field {validation && validation.emptyName && 'error'}">
 						<label>First Name</label>
-						<input type="text" ref="first_name" placeholder="First Name" />
+						<input type = "text" ref = "first_name" placeholder = "First Name" />
 					</div>
-					<div class="field">
+					<div class = "field">
 						<label>Last Name</label>
-						<input type="text" ref="last_name" placeholder="Last Name" />
+						<input type = "text" ref = "last_name" placeholder = "Last Name" />
 					</div>
-					<div class="field {validation && validation.emptyEmail && 'error'}">
+					<div class = "field {validation && validation.emptyEmail && 'error'}">
 						<label>Email</label>
-						<input type="text" ref="email" placeholder="Email Address" />
+						<div class = "ui {edit_id && 'disabled'} input">
+							<input type = "text" ref = "email" placeholder = "Email Address" />
+						</div>
 					</div>
-					<div class="field {validation && validation.emptyPassword && 'error'}">
+					<div class = "field {validation && validation.emptyPassword && 'error'}">
 						<label>Password</label>
-						<input type="password" ref="password" placeholder="Password" />
+						<input type = "password" ref = "password" placeholder = "Password" />
 					</div>
 				</div>
 			</div>
@@ -345,6 +347,35 @@
 			}
 
 			return {user: params};
+		}
+
+		loadEditForm(user){
+			this.activeRole               = user.role;
+			this.refs['first_name'].value = user.first_name;
+			this.refs['last_name'].value  = user.last_name;
+			this.refs['email'].value      = user.email;
+
+			if (this.activeRole > 3) {
+				this.leadTypeValue = { centers : [user.center] };
+			}
+			else if (this.activeRole == 2) {
+				this.leadTypeValue = user.user_permissions;
+				if (user.user_permissions.areas) {
+					this.leadType = 'area';
+				}
+				else if (user.user_permissions.countries) {
+					this.leadType = 'country';
+				}
+				else if (user.user_permissions.centers) {
+					this.leadType = 'center';
+				}
+			}
+
+			$(".ui.search.dropdown").dropdown({
+				forceSelection  : false,
+				selectOnKeydown : false
+			});
+
 		}
 
 		validateForm(params) {
@@ -491,14 +522,33 @@
 		console.log("this.edit_id");
 		console.log(this.edit_id);
 
-		setTimeout(() => {
+		if (this.edit_id) {
 			this.loadSearchInput();
 			this.generateUserRoleList();
-			$(".ui.search.dropdown").dropdown({
-				forceSelection  : false,
-				selectOnKeydown : false
+			this.parent.opts.service.get(this.edit_id, (err, response) => {
+				if (!err) {
+					this.user = response.body().data();
+					console.log("this.user");
+					console.log(this.user);
+					this.loadEditForm(this.user);
+					this.update();
+				}
+				else {
+					this.user = null;
+				}
 			});
-		}, 100)
+		}
+		else {
+			setTimeout(() => {
+				this.loadSearchInput();
+				this.generateUserRoleList();
+				$(".ui.search.dropdown").dropdown({
+					forceSelection  : false,
+					selectOnKeydown : false
+				});
+			}, 100)
+		}
+
 	</script>
 
 </user-form>
