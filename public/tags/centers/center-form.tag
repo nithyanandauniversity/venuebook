@@ -28,7 +28,17 @@
 				</div>
 				<div class="field">
 					<label for="area">Area</label>
-					<input type="text" ref="area" placeholder="Area (Ex: North America)" />
+					<!-- <input type="text" ref="area" placeholder="Area (Ex: North America)" /> -->
+					<select
+						ref      = "area"
+						class    = "ui search dropdown">
+						<option value="">Select area to add...</option>
+						<option
+							each    = "{area in parent.center_areas.obj}"
+							value   = "{area}">
+							{area}
+						</option>
+					</select>
 				</div>
 				<div class="field">
 					<label for="country">Country</label>
@@ -133,14 +143,20 @@
 			this.refs.last_name.value  = admin.last_name;
 			this.refs.email.value      = admin.email;
 
+			(".ui.search.dropdown").dropdown({
+				forceSelection  : false,
+				selectOnKeydown : false
+			});
+
 			this.update();
 		}
 
-		this.on('edit', () => {
+		this.edit_id = this.opts.state.id;
+
+		if (this.edit_id) {
 			let state = self.parent.opts.state;
 			console.log(self.opts.state);
 
-			this.edit_id = this.opts.state.id;
 			this.parent.opts.service.get(this.edit_id, (err, response) => {
 				if (!err) {
 					let result  = response.body().data();
@@ -153,8 +169,15 @@
 					console.log("ERROR LOADING CENTER !");
 				}
 			});
-
-		});
+		}
+		else {
+			setTimeout(() => {
+				$(".ui.search.dropdown").dropdown({
+					forceSelection  : false,
+					selectOnKeydown : false
+				});
+			}, 100)
+		}
 
 		this.countries        = this.parent.opts.countries();
 		this.centerCategories = this.parent.opts.centerCategories;

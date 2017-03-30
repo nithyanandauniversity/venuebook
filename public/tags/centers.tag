@@ -70,9 +70,17 @@
 			console.log('show form!', center);
 			this.opts.store.dispatch({type: 'EDIT_CENTER', id: center.id});
 			this.update();
-			// console.log("this.opts.store.getState()");
-			// console.log(this.opts.store.getState());
-			this.tags['center-form'].trigger('edit');
+			// this.tags['center-form'].trigger('edit');
+		}
+
+		if (this.opts.settingService) {
+			this.opts.settingService.getByName('center_areas', (err, response) => {
+				if (!err) {
+					this.center_areas = response.body()[0].data();
+					console.log("this.center_areas");
+					console.log(this.center_areas);
+				}
+			});
 		}
 
 		// this.opts.store.dispatch({type: 'LIST_CENTER'});

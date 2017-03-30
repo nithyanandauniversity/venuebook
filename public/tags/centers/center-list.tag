@@ -157,6 +157,10 @@
 				params.keyword = this.parent.searchQ;
 			}
 
+			if (this.parent.searchFilters) {
+				params.attributes = this.parent.searchFilters;
+			}
+
 			this.parent.opts.service.search(params, (err, response) => {
 				if (!err && response.body().length) {
 					let result = this.getData(response.body()[0]);

@@ -19,10 +19,9 @@
 
 					<div class="right menu">
 						<div
-							class = "menu-dropdown ui floating labeled icon inverted orange small dropdown button"
-							style = "height: 60%; margin-top: 16%;">
+							class = "menu-dropdown ui floating labeled icon inverted orange small dropdown button">
 							<i class = "icon user"></i>
-							<span>{ currentUser.first_name }</span>
+							<span style = "position: relative; top: 30%;">{ currentUser.first_name }</span>
 
 							<div class="menu">
 								<div

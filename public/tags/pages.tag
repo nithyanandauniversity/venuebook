@@ -19,6 +19,7 @@
 		store             = "{opts.store}"
 		state             = "{opts.store.getState().centers}"
 		service           = "{opts.services.centerService}"
+		setting-service   = "{opts.services.settingService}"
 		countries         = "{opts.services.countries}"
 		center-categories = "{opts.services.centerCategories}">
 	</centers>

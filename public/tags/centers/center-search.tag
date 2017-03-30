@@ -26,11 +26,22 @@
 		</div>
 	</div>
 
-	<div class="ui segment form" if="{showFilters}">
+	<div class="ui segment form" show = "{ showFilters }">
 		<div class="five fields">
 			<div class="field">
 				<label>Area</label>
-				<input type="text" ref="area" placeholder="Area (Ex: North America)" />
+				<!-- <input type="text" ref="area" placeholder="Area (Ex: North America)" /> -->
+				<select
+					ref   = "area"
+					class = "ui search dropdown">
+					<option value = "">Select area to add...</option>
+					<option
+						show  = "{ parent.center_areas }"
+						each  = "{area in parent.center_areas.obj}"
+						value = "{area}">
+						{area}
+					</option>
+				</select>
 			</div>
 			<div class="field">
 				<label>Country</label>
@@ -140,6 +151,13 @@
 			this.parent.searchQ       = this.refs.searchQ.value;
 			this.parent.performSearch(1);
 		}
+
+		setTimeout(() => {
+			$(".ui.search.dropdown").dropdown({
+				forceSelection  : false,
+				selectOnKeydown : false
+			});
+		}, 100)
 
 		triggerSearch(e) {
 			return(e) => {
