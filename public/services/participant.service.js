@@ -44,6 +44,46 @@ export default class ParticipantService {
 			});
 	}
 
+	import(file, callback) {
+		this.reloadApi();
+		this.uploadUrl = this.api.custom('participants/import_file')
+		console.log("file");
+		console.log(file);
+
+		// let xhr = new XMLHttpRequest();
+
+		// $.ajax({
+		// 	url         : '/participants/import_file',
+		// 	type        : 'POST',
+		// 	data        : file,
+		// 	cache       : false,
+		// 	dataType    : 'json',
+		// 	processData : false,
+		// 	contentType : 'text/csv',
+		// 	headers     : {
+		// 		'Token' : sessionStorage.getItem('HTTP_TOKEN')
+		// 	},
+		// 	success     : (data) => {
+		// 		console.log("data");
+		// 		console.log(data);
+		// 		callback(null, data);
+		// 	},
+		// 	error       : (err) => {
+		// 		console.log("err");
+		// 		console.log(err);
+		// 		callback(err);
+		// 	}
+		// });
+
+		// this.uploadUrl.post({csv: file})
+		// 	.then((response) => {
+		// 		callback(null, response);
+		// 	})
+		// 	.catch((err) => {
+		// 		callback(err);
+		// 	});
+	}
+
 	update(id, params, callback) {
 		this.reloadApi();
 		this.collection.put(id, params)

@@ -61,6 +61,12 @@
 		user-service = "{opts.services.userService}">
 	</profile>
 
+	<upload
+		if                  = "{opts.store.getState().routes.path == 'UPLOADS'}"
+		store               = "{opts.store}"
+		participant-service = "{opts.services.participantService}">
+	</upload>
+
 
 	<script>
 

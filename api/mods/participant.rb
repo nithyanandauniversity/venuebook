@@ -31,6 +31,26 @@ module Venuebook
 				end
 			end
 
+			# params do
+			# 	optional :csv, type: File, desc: 'csv containing users to be invited'
+			# end
+
+			# params do
+			# 	requires :csv, type: File, desc: 'Participants csv file'
+			# end
+
+			post '/import_file' do
+				puts params.inspect
+				if authorize! :create, Participant
+			# 		puts current_user['email']
+			# 		puts current_user['center_id']
+					puts "params.csv"
+					puts params.csv
+					# puts params.inspect
+					Participant.import_file(current_user['email'], params[:csv])
+				end
+			end
+
 			put '/:id' do
 				if authorize! :update, Participant
 					participant = Participant.update(params[:id], params)

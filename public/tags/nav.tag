@@ -47,6 +47,11 @@
 									<i class="icon blue setting"></i> Settings
 								</div> -->
 								<div class="divider"></div>
+								<!-- <div
+									class   = "item"
+									onclick = "{ showImport() }">
+									<i class="icon teal cloud upload"></i> Upload
+								</div> -->
 								<div
 									class   = "item"
 									onclick = "{ showProfile() }">
@@ -146,6 +151,15 @@
 		showSettings(e) {
 			return(e) => {
 				console.log("GO TO SETTINGS");
+			}
+		}
+
+		showImport(e) {
+			return(e) => {
+				this.parent.navigatePage({
+					type : 'UPLOADS',
+					data : this.currentUser
+				});
 			}
 		}
 

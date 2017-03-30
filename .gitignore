@@ -6,5 +6,6 @@ vendor/gems/*
 .sass-cache/*
 db/*.db
 .*.sw*
+*.csv
 passenger.*.pid*
 node_modules/
