@@ -3,12 +3,11 @@
 		<div class="ui inverted segment">
 			<div class="ui container">
 				<div class="ui inverted secondary menu">
-					<div
-						class   = "ui inverted red button {activeRoute == 'DASHBOARD' && 'active'}"
-						onclick = "{ goHome() }">
-						<!-- <img src="assets/images/logo.png"> -->
-						<h2>{ opts.heading }</h2>
-					</div>
+					<a class="item">
+						<h2 onclick = "{ goHome() }">
+							<i class="icon home {activeRoute == 'DASHBOARD' && 'orange'}"></i> { opts.heading }
+						</h2>
+					</a>
 					<a
 						each    = "{ navigations }"
 						show    = "{ role.includes(this.currentUser.role) }"
