@@ -83,8 +83,9 @@
 					if (result.token) {
 						sessionStorage.setItem('HTTP_TOKEN', result.token);
 						sessionStorage.setItem('CURRENT_USER', JSON.stringify(result.current_user));
+						sessionStorage.setItem('ALLOWED_CENTERS', JSON.stringify(result.allowed_centers));
 						console.info("Success");
-						this.parent.navigatePage({type: 'PARTICIPANTS', data: result.current_user});
+						this.parent.navigatePage({type: 'DASHBOARD', data: result.current_user});
 						console.log("this.opts.store.getState()");
 						console.log(this.opts.store.getState());
 					}

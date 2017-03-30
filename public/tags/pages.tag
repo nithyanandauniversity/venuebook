@@ -1,5 +1,10 @@
 <pages class="ui container">
 
+	<dashboard
+		if    = "{opts.store.getState().routes.path == 'DASHBOARD'}"
+		store = "{opts.store}">
+	</dashboard>
+
 	<participants
 		if        = "{opts.store.getState().routes.path == 'PARTICIPANTS'}"
 		store     = "{opts.store}"

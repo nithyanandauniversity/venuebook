@@ -9,6 +9,7 @@ import 'tags/login.tag!';
 import 'tags/app.tag!';
 import 'tags/nav.tag!';
 import 'tags/pages.tag!';
+import 'tags/dashboard.tag!';
 
 import 'tags/participants.tag!';
 import 'tags/participants/participant-search.tag!';

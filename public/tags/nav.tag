@@ -3,7 +3,9 @@
 		<div class="ui inverted segment">
 			<div class="ui container">
 				<div class="ui inverted secondary menu">
-					<div class="item">
+					<div
+						class   = "ui inverted red button {activeRoute == 'DASHBOARD' && 'active'}"
+						onclick = "{ goHome() }">
 						<!-- <img src="assets/images/logo.png"> -->
 						<h2>{ opts.heading }</h2>
 					</div>
@@ -79,6 +81,16 @@
 		console.log("this.currentUser");
 		console.log(this.currentUser);
 
+		goHome(e) {
+			return(e) => {
+				this.parent.navigatePage({
+					type : 'DASHBOARD',
+					data : this.currentUser
+				});
+				this.update();
+			}
+		}
+
 		navClicked(e) {
 			return(e) => {
 				let itm = e.item;
@@ -110,7 +122,7 @@
 			}
 		];
 
-		this.activeRoute = 'PARTICIPANTS';
+		this.activeRoute = 'DASHBOARD';
 
 		this.on('update', (a, b) => {
 			this.activeRoute = this.opts.store.getState().routes.path;

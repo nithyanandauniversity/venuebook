@@ -1,10 +1,15 @@
-import { LOGIN, PARTICIPANTS, CENTERS, PROGRAMS, EVENTS, USERS, VENUES, UPLOADS } from '../../constants/Routes'
+import { LOGIN, DASHBOARD, PARTICIPANTS, CENTERS, PROGRAMS, EVENTS, USERS, VENUES, UPLOADS } from '../../constants/Routes'
 
 export default function routes(state = {path: 'LOGIN', data: null}, action) {
 	switch (action.type) {
 		case LOGIN:
 			return {
 				path : 'LOGIN',
+				data : action.data
+			};
+		case DASHBOARD:
+			return {
+				path : 'DASHBOARD',
 				data : action.data
 			};
 		case PARTICIPANTS:

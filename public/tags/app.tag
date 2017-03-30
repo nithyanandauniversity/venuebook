@@ -9,7 +9,7 @@
 	<nav
 		if      = "{opts.store.getState().routes.path != 'LOGIN'}"
 		store   = "{opts.store}"
-		heading = "TOF Tracker">
+		heading = "Global ToF">
 	</nav>
 
 	<pages
@@ -35,7 +35,7 @@
 				if (!err) {
 					if (result.data().status && sessionStorage.getItem('CURRENT_USER')) {
 						this.navigatePage({
-							type: 'PARTICIPANTS',
+							type: 'DASHBOARD',
 							data: JSON.parse(sessionStorage.getItem('CURRENT_USER'))
 						});
 					}

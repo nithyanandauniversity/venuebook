@@ -30,7 +30,8 @@ module Venuebook
 
 					{
 						token: token,
-						current_user: user
+						current_user: user,
+						allowed_centers: user.allowed_centers
 					}
 				else
 					{}

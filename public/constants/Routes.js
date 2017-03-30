@@ -1,5 +1,6 @@
 export const LOGIN        = 'LOGIN'
 
+export const DASHBOARD    = 'DASHBOARD'
 export const PARTICIPANTS = 'PARTICIPANTS'
 export const CENTERS      = 'CENTERS'
 export const PROGRAMS     = 'PROGRAMS'
