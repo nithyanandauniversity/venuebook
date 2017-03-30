@@ -22,6 +22,20 @@ class Participant < Sequel::Model
 		JSON.parse(response.body)
 	end
 
+	def self.import_file(creator, file)
+		begin
+			response = RestClient.post PARBOOK_URL + "/import_file", {
+				creator: creator,
+				upload: file,
+				centers: Center.dataset.all.to_json
+			}#, 'Content-Type' => 'text/csv'
+			# puts response.inspect
+			response.body
+		rescue RestClient::Exception => e
+			puts e.inspect
+		end
+	end
+
 	def self.update(id, params)
 		response = RestClient.put PARBOOK_URL + "/#{id}", params
 		JSON.parse(response.body)
