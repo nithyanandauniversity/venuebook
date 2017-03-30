@@ -36,14 +36,14 @@
 				</div>
 			</div>
 
-			<div show="{activeRole >= 2}" style="margin-bottom: 1.5em;">
+			<div show="{ activeRole >= 1}" style="margin-bottom: 1.5em;">
 				<h4 class="ui horizontal divider header">
 					<i class="icon street view"></i>
 					Center / Access Information
 				</h4>
 
 				<div class="ui two column grid">
-					<div class="{activeRole >= 3 && 'right aligned middle aligned content'} six wide column">
+					<div class="{activeRole != 2 && 'right aligned middle aligned content'} six wide column">
 						<div
 							show  = "{ activeRole == 2 }"
 							class = "field">
@@ -57,7 +57,7 @@
 								</a>
 							</div>
 						</div>
-						<div show = "{ activeRole >= 3 }">
+						<div show = "{ activeRole >= 3 || activeRole == 1 }">
 							<h3>Select Primary Center :</h3>
 						</div>
 
@@ -140,9 +140,9 @@
 						<!-- SELECT CENTER IF USER IS PROGRAM_COORDINATOR OR DATA_ENTRY -->
 						<div
 							class = "field"
-							show  = "{ activeRole >= 3 || (activeRole == 2 && leadType == 'center')}">
+							show  = "{ activeRole >= 3 || (activeRole == 2 && leadType == 'center') || activeRole == 1 }">
 							<label show = "{ activeRole == 2 || activeRole == 3 }">Select Centers :</label>
-							<div style = "{ (activeRole == 2 || activeRole == 3) && 'margin-bottom: 1rem;'}">
+							<div style = "{ activeRole <= 3 && 'margin-bottom: 1rem;'}">
 								<div
 									each  = "{ center in leadTypeValue.centers }"
 									style = "margin-right: 8px;"
@@ -158,7 +158,7 @@
 								</div>
 							</div>
 							<div
-								show = "{ activeRole < 3 || !leadTypeValue.centers || !leadTypeValue.centers.length }"
+								show = "{ activeRole == 2 || !leadTypeValue.centers || !leadTypeValue.centers.length }"
 								class = "ui large input">
 								<input
 									type        = "text"
@@ -320,6 +320,7 @@
 				this.leadTypeValue.centers = this.leadTypeValue.centers.filter((center) => {
 					return e.item.center.id != center.id;
 				});
+				this.loadSearchInput();
 			}
 		}
 
@@ -350,7 +351,7 @@
 						params.permissions.centers = this.leadTypeValue.centers && this.leadTypeValue.centers.length ? this.leadTypeValue.centers.map((c) => { return c.id; }) : null;
 					}
 				}
-				else if (this.activeRole > 3) {
+				else if (this.activeRole > 3 || this.activeRole == 1) {
 					params.center_id = this.leadTypeValue && this.leadTypeValue.centers && this.leadTypeValue.centers.length ? this.leadTypeValue.centers[0].id : null;
 				}
 			}
@@ -364,7 +365,12 @@
 			this.refs['last_name'].value  = user.last_name;
 			this.refs['email'].value      = user.email;
 
-			if (this.activeRole > 3) {
+			if (this.activeRole == 1) {
+				if (user.center) {
+					this.leadTypeValue = { centers : [user.center] }
+				}
+			}
+			else if (this.activeRole > 3) {
 				this.leadTypeValue = { centers : [user.center] };
 			}
 			else if (this.activeRole == 2) {
@@ -523,10 +529,6 @@
 						keyword : query
 					}
 
-					// if (this.opts.currentUser.role > 2) {
-					// 	params.center_id = this.opts.currentUser.center_id;
-					// }
-
 					this.parent.opts.centerService.search(params, (err, response) => {
 						if (!err && response.body().length) {
 							let result = response.body()[0].data();
@@ -541,7 +543,6 @@
 				onSelect : (item) => {
 					$("#form-search-center")[0].value = '';
 					this.centerSelected(item.data);
-					// this.doSearch();
 				}
 			});
 		}
@@ -552,11 +553,11 @@
 		console.log(this.edit_id);
 
 		if (this.edit_id) {
-			this.loadSearchInput();
 			this.generateUserRoleList();
 			this.parent.opts.service.get(this.edit_id, (err, response) => {
 				if (!err) {
 					this.user = response.body().data();
+					this.loadSearchInput();
 					console.log("this.user");
 					console.log(this.user);
 					this.loadEditForm(this.user);
