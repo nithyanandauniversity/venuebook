@@ -12,12 +12,20 @@
 			<div class="field {validation && validation.emptyType && 'error'}">
 				<label>Program Type</label>
 				<div class = "ui search fluid input">
-					<input
+					<select
+						show  = "{ program_types.obj && program_types.obj.length > 0 }"
+						class = "ui search dropdown fluid"
+						ref   = "program_type"
+						show  = "{proTypes}">
+						<option value = "">Select Program Type...</option>
+						<option value = "{ value }" each = "{ value in program_types.obj }">{ value }</option>
+					</select>
+				</div>
+					<!-- <input
 						type        = "text"
 						ref         = "program_type"
 						class       = "prompt"
-						placeholder = "Program Type" />
-				</div>
+						placeholder = "Program Type" /> -->
 				<!-- <div
 					class = "ui fluid input"
 					if    = "{[2,3].includes(parent.currentUser.role)}">
@@ -53,29 +61,40 @@
 			return res.data();
 		}
 
-		loadProgramTypes() {
-			this.parent.opts.service.getProgramTypes((err, response) => {
-				if (!err) {
-					let data = this.getData(response.body()[0]).programs;
+		this.program_types = {};
 
-					if (data.length) {
-						if (this.parent.currentUser.role == 1) {
-							$('.ui.search').search({
-								source: data.map((d) => {
-									return {title: d['program_type']};
-								})
-							});
-						}
-						else {
-							this.proTypes = data.map((d) => {
-								return {label: d['program_type'], value: d['program_type']};
-							});
-							console.log(this.proTypes)
-						}
+		loadProgramTypes() {
+			// this.parent.opts.service.getProgramTypes((err, response) => {
+			// 	if (!err) {
+			// 		let data = this.getData(response.body()[0]).programs;
+
+			// 		if (data.length) {
+			// 			if (this.parent.currentUser.role == 1) {
+			// 				$('.ui.search').search({
+			// 					source: data.map((d) => {
+			// 						return {title: d['program_type']};
+			// 					})
+			// 				});
+			// 			}
+			// 			else {
+			// 				this.proTypes = data.map((d) => {
+			// 					return {label: d['program_type'], value: d['program_type']};
+			// 				});
+			// 				console.log(this.proTypes)
+			// 			}
+			// 			this.update();
+			// 		}
+			// 	}
+			// });
+
+			if (this.parent.opts.settingService) {
+				this.parent.opts.settingService.getByName('program_types', (err, response) => {
+					if (!err) {
+						this.program_types = response.body()[0].data();
 						this.update();
 					}
-				}
-			});
+				});
+			}
 		}
 
 		generateProgramParams() {
@@ -166,7 +185,7 @@
 					}
 				});
 			}
-		})
+		});
 
 		this.loadProgramTypes();
 

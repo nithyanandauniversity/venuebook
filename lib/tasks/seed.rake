@@ -33,4 +33,15 @@ namespace :seed do
 			value: areas.sort.to_json()
 		)
 	end
+
+	desc "Insert Settings - Program Type"
+	task :settings_program => :environment do
+		program_types = ['Weekly Event', 'Local Event', 'Bidadi Program', 'Annual Event', 'Temple Activity / Pooja', 'Outdoor Events', 'Other Events']
+
+		Setting.create(
+			name: 'program_types',
+			label: 'Program Types',
+			value: program_types.to_json()
+		)
+	end
 end
