@@ -56,6 +56,18 @@ export default class UserService {
 			});
 	}
 
+	setDefaultCenter(id, center_id, callback) {
+		this.reloadApi();
+		this.api.all('users/set_default_center')
+			.put(id, center_id)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 	create(params, callback) {
 		this.reloadApi();
 		this.collection.post(params)

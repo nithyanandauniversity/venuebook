@@ -31,7 +31,8 @@ module Venuebook
 					{
 						token: token,
 						current_user: user,
-						allowed_centers: user.allowed_centers
+						allowed_centers: user.allowed_centers,
+						center: user.center
 					}
 				else
 					{}

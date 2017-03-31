@@ -18,6 +18,14 @@
 
 					<div class="right menu">
 						<div
+							show    = "{currentUser.role < 3 && currentUser.center_id}"
+							class   = "ui inverted icon yellow small button"
+							onclick = "{ switchCenter() }">
+							<i
+								style = "font-size: 1.5em; position: relative; top: 30%;"
+								class = "icon street view"></i>
+						</div>
+						<div
 							class = "menu-dropdown ui floating labeled icon inverted orange small dropdown button">
 							<i class = "icon user"></i>
 							<span style = "position: relative; top: 30%;">{ currentUser.first_name }</span>
@@ -100,6 +108,12 @@
 					});
 				}
 			};
+		}
+
+		switchCenter(e) {
+			return(e) => {
+				this.parent.switchCenter();
+			}
 		}
 
 		this.navigations = [

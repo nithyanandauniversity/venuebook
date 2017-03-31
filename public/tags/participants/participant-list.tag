@@ -124,17 +124,15 @@
 
 	<script>
 
-		const self = this;
-
 		showView(e) {
 			return (e) => {
-				self.parent.showView(e.item);
+				this.parent.showView(e.item);
 			}
 		}
 
 		showForm(e) {
 			return (e) => {
-				self.parent.showForm(e.item);
+				this.parent.showForm(e.item);
 			}
 		}
 

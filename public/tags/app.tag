@@ -20,13 +20,18 @@
 	</pages>
 
 	<script>
-		this.route = this.opts.store.getState().routes;
+		this.route       = this.opts.store.getState().routes;
+		this.currentUser = this.opts.store.getState().routes.data;
 
 		console.log("sessionStorage");
 		console.log(sessionStorage);
 
 		triggerProfile() {
 			this.tags['pages'].trigger('showProfile');
+		}
+
+		switchCenter() {
+			this.tags['pages'].trigger('showCenterSelection');
 		}
 
 		authenticate() {

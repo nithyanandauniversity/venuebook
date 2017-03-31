@@ -48,6 +48,7 @@ import 'tags/users/user-form.tag!'
 import 'tags/users/user-view.tag!'
 
 import 'tags/profile.tag!'
+import 'tags/center-selection.tag!'
 import 'tags/upload.tag!'
 
 import 'tags/riot-pagination.tag!';

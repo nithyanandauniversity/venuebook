@@ -67,6 +67,12 @@
 		user-service = "{opts.services.userService}">
 	</profile>
 
+	<center-selection
+		store          = "{opts.store}"
+		current-user   = "{currentUser}"
+		center-service = "{opts.services.centerService}">
+	</center-selection>
+
 	<upload
 		if                  = "{opts.store.getState().routes.path == 'UPLOADS'}"
 		store               = "{opts.store}"
@@ -76,33 +82,73 @@
 
 	<script>
 
+		this.route       = this.opts.store.getState().routes;
+		this.currentUser = this.opts.store.getState().routes.data;
+
 		this.on('showProfile', () => {
 			$("profile").modal({
-					transition : 'vertical flip',
-					onShow     : () => {
-						if ($(".ui.dimmer.modals > profile").length > 1) {
-							$(".ui.dimmer.modals > profile")[0].remove();
-						}
-					},
-					onVisible  : () => {
-						this.tags['profile'].trigger('loaded');
+				transition : 'vertical flip',
+				onShow     : () => {
+					if ($(".ui.dimmer.modals > profile").length > 1) {
+						$(".ui.dimmer.modals > profile")[0].remove();
 					}
-				})
-				.modal('show');
-
+				},
+				onVisible  : () => {
+					this.tags['profile'].trigger('loaded');
+				}
+			})
+			.modal('show');
 		});
+
+		showCenterSelection() {
+			this.trigger('showCenterSelection');
+		}
+
+		this.on('showCenterSelection', () => {
+			console.log('loading...');
+			$("center-selection").modal({
+				transition : 'vertical flip',
+				closable   : false,
+				onShow     : () => {
+					if ($(".ui.dimmer.modals > center-selection").length > 1) {
+						$(".ui.dimmer.modals > center-selection")[0].remove();
+					}
+				},
+				onVisible  : () => {
+					this.tags['center-selection'].trigger('loaded');
+				}
+			})
+			.modal('show');
+		});
+
+		applySelectedCenter(center_id, make_default) {
+			if (make_default) {
+				this.opts.services.userService.setDefaultCenter(this.currentUser.id, {center_id: center_id}, (err, response) => {
+					if (!err) {
+						this.setActiveCenter(center_id);
+					}
+				});
+			}
+			else {
+				this.setActiveCenter(center_id);
+			}
+		}
+
+		setActiveCenter(center_id) {
+			this.currentUser.center_id = center_id;
+			sessionStorage.setItem('CURRENT_USER', JSON.stringify(this.currentUser));
+
+			let route = this.opts.store.getState().routes;
+			this.parent.navigatePage({
+				type : route.path,
+				data : this.currentUser
+			});
+			$("center-selection").modal('hide');
+		}
 
 		hideModal() {
 			$("profile").modal('hide');
 		}
-
-		console.log("this.opts");
-		console.log(this.opts);
-
-		this.route = this.opts.store.getState().routes;
-
-		console.log("this.route");
-		console.log(this.route);
 
 	</script>
 

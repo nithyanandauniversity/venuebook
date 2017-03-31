@@ -69,6 +69,21 @@ module Venuebook
 				end
 			end
 
+			put '/set_default_center/:id' do
+				user = User.find(id: params[:id])
+
+				puts user.email
+				puts current_user['email']
+				puts params[:center_id]
+
+				if user.email == current_user['email'] && params[:center_id]
+					user.update(center_id: params[:center_id])
+					user
+				else
+					error!({status: 401, message: "401 Unauthorized"}, 401)
+				end
+			end
+
 		end
 	end
 end
