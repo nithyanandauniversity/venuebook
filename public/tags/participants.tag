@@ -26,6 +26,8 @@
 
 		this.searchQ = '';
 
+		this.activeCenter = JSON.parse(sessionStorage.getItem('CENTER') || "{}");
+
 		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_PARTICIPANT'});
 			this.update();
@@ -55,7 +57,6 @@
 		}
 
 		showView(participant) {
-			// console.log('show view!', participant);
 			this.opts.store.dispatch({
 				type : 'VIEW_PARTICIPANT',
 				id   : participant.member_id
@@ -65,14 +66,11 @@
 		}
 
 		showForm(participant) {
-			// console.log('show form!', participant);
 			this.opts.store.dispatch({type: 'EDIT_PARTICIPANT', id: participant.member_id});
 			this.update();
 			// this.tags['participant-form'].trigger('edit');
 		}
 
-		// this.opts.store.dispatch({type: 'LIST_PARTICIPANT'});
-		// this.update();
 	</script>
 
 </participants>

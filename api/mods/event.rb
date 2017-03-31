@@ -8,16 +8,23 @@ module Venuebook
 
 			get do
 				if authorize! :read, Event
+					center_id = current_user['role'] < 3 ? params[:center_id] : current_user['center_id']
 
 					if params[:upcoming]
-						events = Event.where('start_date > ?', (Date.today - 1.day)).order(:start_date)
+
+						events = Event.where(center_id: center_id)
+							.where('start_date > ?', (Date.today - 1.day))
+							.order(:start_date)
+
 						[{events: JSON.parse(events.to_json(:include => :program))}]
+
 					elsif params[:past]
 
 						page = params[:past] && params[:past][:page].to_i || 1
 						size = params[:past] && params[:past][:limit].to_i || 10
 
-						events = Event.filter('start_date <= ?', (Date.today - 1.day))
+						events = Event.where(center_id: center_id)
+							.filter('start_date <= ?', (Date.today - 1.day))
 							.reverse(:start_date)
 							.paginate(page, size)
 

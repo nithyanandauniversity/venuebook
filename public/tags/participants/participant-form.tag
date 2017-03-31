@@ -562,6 +562,7 @@
 					gender                 : this.gender,
 					dob                    : this.refs.dob.value,
 					notes                  : this.refs.notes.value,
+					center_code            : this.parent.activeCenter.code,
 					participant_attributes : JSON.stringify({
 						role        : parseInt(this.refs.role.value),
 						ia_graduate : parseInt(this.ia_graduate),

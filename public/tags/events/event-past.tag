@@ -114,6 +114,10 @@
 			// 	params.keyword = this.parent.searchQ;
 			// }
 
+			if (this.parent.activeCenter) {
+				params.center_id = this.parent.activeCenter.id;
+			}
+
 			this.parent.opts.service.getPast(params, (err, response) => {
 				if (!err && response.body().length) {
 					let result = this.getData(response.body()[0]);

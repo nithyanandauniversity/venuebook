@@ -25,10 +25,11 @@
 	</centers>
 
 	<programs
-		if      = "{opts.store.getState().routes.path == 'PROGRAMS'}"
-		store   = "{opts.store}"
-		state   = "{opts.store.getState().programs}"
-		service = "{opts.services.programService}">
+		if              = "{opts.store.getState().routes.path == 'PROGRAMS'}"
+		store           = "{opts.store}"
+		state           = "{opts.store.getState().programs}"
+		setting-service = "{opts.services.settingService}"
+		service         = "{opts.services.programService}">
 	</programs>
 
 	<venues

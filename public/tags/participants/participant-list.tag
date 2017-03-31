@@ -124,6 +124,8 @@
 
 	<script>
 
+		this.currentUser  = this.parent.opts.store.getState().routes.data;
+
 		showView(e) {
 			return (e) => {
 				this.parent.showView(e.item);
@@ -190,6 +192,10 @@
 
 			if (this.parent.searchQ) {
 				params.keyword = this.parent.searchQ;
+			}
+
+			if (this.parent.activeCenter) {
+				params.center_code = this.parent.activeCenter.code;
 			}
 
 			this.parent.opts.service.search(params, (err, response) => {

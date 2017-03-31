@@ -69,7 +69,13 @@
 		}
 
 		loadUpcoming() {
-			this.parent.opts.service.getUpcoming((err, response) => {
+			let params = {upcoming : true};
+
+			if (this.parent.activeCenter) {
+				params.center_id = this.parent.activeCenter.id;
+			}
+
+			this.parent.opts.service.getUpcoming(params, (err, response) => {
 				if (!err) {
 					this.upcoming = this.getData(response.body()[0])['events'];
 				}

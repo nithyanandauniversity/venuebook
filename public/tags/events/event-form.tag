@@ -270,7 +270,7 @@
 					end_date         : this.refs.end_date.value,
 					program_donation : this.refs.program_donation.value,
 					notes            : this.refs.notes.value,
-					center_id        : this.parent.currentUser.center_id
+					center_id        : this.parent.activeCenter.id
 				},
 				venues : this.venues.reduce((data, record, i) => {
 					let venue = {
