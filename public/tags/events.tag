@@ -73,7 +73,6 @@
 		console.log(this.opts);
 
 		this.currentUser  = this.opts.store.getState().routes.data;
-		this.activeCenter = JSON.parse(sessionStorage.getItem('CENTER') || "{}");
 
 		createEvent() {
 			this.prevState = this.opts.store.getState().events;

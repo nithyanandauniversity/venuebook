@@ -8,7 +8,7 @@
 
 	<script>
 
-		this.currentUser = this.opts.store.getState().routes.data;
+		this.currentUser  = this.opts.store.getState().routes.data;
 
 		editVenue(venue) {
 			this.opts.store.dispatch({type: 'EDIT_VENUE', id: venue.id});

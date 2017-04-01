@@ -30,9 +30,11 @@ module Venuebook
 
 			post do
 				if authorize! :create, Venue
+
 					if current_user['role'] == 3
 						params[:venue][:center_id] ||= current_user['center_id']
 					end
+
 					venue = Venue.create(params[:venue])
 					if authorize! :create, Address
 						venue.add_address(params[:address]) if params[:address]

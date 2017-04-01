@@ -114,8 +114,8 @@
 			// 	params.keyword = this.parent.searchQ;
 			// }
 
-			if (this.parent.activeCenter) {
-				params.center_id = this.parent.activeCenter.id;
+			if (this.currentUser) {
+				params.center_id = this.currentUser.center_id;
 			}
 
 			this.parent.opts.service.getPast(params, (err, response) => {

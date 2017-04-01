@@ -194,8 +194,8 @@
 				params.keyword = this.parent.searchQ;
 			}
 
-			if (this.parent.activeCenter) {
-				params.center_code = this.parent.activeCenter.code;
+			if (this.currentUser) {
+				params.center_code = this.currentUser.center_code;
 			}
 
 			this.parent.opts.service.search(params, (err, response) => {

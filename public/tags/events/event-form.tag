@@ -180,6 +180,8 @@
 		this.venues        = [];
 		this.allVenues     = [];
 
+		this.currentUser = this.parent.opts.store.getState().routes.data;
+
 		getData(res) {
 			return res.data();
 		}
@@ -270,7 +272,7 @@
 					end_date         : this.refs.end_date.value,
 					program_donation : this.refs.program_donation.value,
 					notes            : this.refs.notes.value,
-					center_id        : this.parent.activeCenter.id
+					center_id        : this.currentUser.center_id
 				},
 				venues : this.venues.reduce((data, record, i) => {
 					let venue = {
@@ -399,7 +401,7 @@
 
 		loadVenues() {
 			this.parent.opts.venueService.search({
-				center_id: this.parent.currentUser.center_id
+				center_id: this.currentUser.center_id
 			}, (err, response) => {
 				if (!err) {
 					this.allVenues = this.getData(response.body()[0])['venues'];
@@ -414,7 +416,8 @@
 
 		loadCoordinators() {
 			this.parent.opts.userService.find({
-				search_coordinators: true
+				search_coordinators: true,
+				center_id: this.currentUser.center_id
 			}, (err, response) => {
 				if (!err) {
 					this.allCoordinators = this.getData(response.body()[0])['users'];

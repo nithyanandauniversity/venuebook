@@ -45,7 +45,7 @@
 								</div>
 								<div
 									class   = "item"
-									show    = "{currentUser.role == 3}"
+									show    = "{currentUser.role <= 3}"
 									onclick = "{ showVenueManagement() }">
 									<i class="icon violet map"></i> Venues
 								</div>

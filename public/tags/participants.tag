@@ -26,8 +26,6 @@
 
 		this.searchQ = '';
 
-		this.activeCenter = JSON.parse(sessionStorage.getItem('CENTER') || "{}");
-
 		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_PARTICIPANT'});
 			this.update();

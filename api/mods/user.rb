@@ -23,17 +23,33 @@ module Venuebook
 			get do
 				if params[:search_coordinators] && current_user['role'] < 5
 					if authorize! :read, User
-						users = User.where('role < 5').where('role >= 3')
-						users = users.where('center_id = ?', current_user['center_id'] || params[:center_id])
 
-						users = users.or('role = 1') if current_user['role'] == 1
+						center_id = params[:center_id] || current_user['center_id']
+						users     = User.where('center_id = ?', center_id)
+							.where(role: [3,4])
+
+						if current_user['role'] < 3
+
+							center = Center.find(id: center_id)
+
+							ids = []
+							center.leads[:area].each { |u| ids << u['id'] }
+							center.leads[:country].each { |u| ids << u['id'] }
+							center.leads[:center].each { |u| ids << u['id'] }
+
+							users = users.or('id IN ?', ids)
+							users = users.or('center_id = ?', center_id) if current_user['role'] == 1
+						end
 
 						[{users: JSON.parse(users.to_json(:except => [:encrypted_password]))}]
 					end
+
 				elsif params[:email]
+
 					if authorize! :read, User
 						[{user: User.find_by_email(params[:email])}]
 					end
+
 				elsif params[:search]
 					return User.search(params[:search])
 				end

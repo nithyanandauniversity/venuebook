@@ -306,7 +306,7 @@
 
 	<script>
 
-		const self = this;
+		this.currentUser  = this.parent.opts.store.getState().routes.data;
 
 		// this.validation = {};
 		this.contacts   = [];
@@ -314,32 +314,32 @@
 
 		setGender(e) {
 			return (e) => {
-				self.gender = e.target.dataset.value;
+				this.gender = e.target.dataset.value;
 			}
 		}
 
 		setGrad(e) {
 			return (e) => {
 				console.log(e.target.dataset.value);
-				self.ia_graduate = e.target.dataset.value;
+				this.ia_graduate = e.target.dataset.value;
 			}
 		}
 
 		setHealer(e) {
 			return (e) => {
-				self.is_healer = e.target.dataset.value;
+				this.is_healer = e.target.dataset.value;
 			}
 		}
 
 		addContact(e) {
 			return (e) => {
-				self.insertContact(false);
+				this.insertContact(false);
 			}
 		}
 
 		addAddress(e) {
 			return (e) => {
-				self.insertAddress(false);
+				this.insertAddress(false);
 			}
 		}
 
@@ -349,7 +349,7 @@
 
 		markContactDefault(e) {
 			return (e) => {
-				let def = self.contacts.filter(self.getDefault)[0];
+				let def = this.contacts.filter(this.getDefault)[0];
 				def.default            = false;
 				e.item.contact.default = true;
 			}
@@ -357,7 +357,7 @@
 
 		markAddressDefault(e) {
 			return (e) => {
-				let def = self.addresses.filter(self.getDefault)[0];
+				let def = this.addresses.filter(this.getDefault)[0];
 				def.default            = false;
 				e.item.address.default = true;
 			}
@@ -368,13 +368,13 @@
 				let contact = this.contacts[e.item.i];
 
 				if (!contact.id) {
-					self.contacts.splice(e.item.i, 1);
+					this.contacts.splice(e.item.i, 1);
 				}
 				else {
 					if (confirm("Are you sure you want to remove this Contact information?")) {
 						this.parent.opts.service.removeContact(this.edit_id, contact.id, (err, response) => {
 							if (!err) {
-								self.contacts.splice(e.item.i, 1);
+								this.contacts.splice(e.item.i, 1);
 							}
 						});
 					}
@@ -387,13 +387,13 @@
 				let address = this.addresses[e.item.i];
 
 				if (!address.id) {
-					self.addresses.splice(e.item.i, 1);
+					this.addresses.splice(e.item.i, 1);
 				}
 				else {
 					if (confirm("Are you sure you want to remove this Address?")) {
 						this.parent.opts.service.removeAddress(this.edit_id, address.id, (err, response) => {
 							if (!err) {
-								self.addresses.splice(e.item.i, 1);
+								this.addresses.splice(e.item.i, 1);
 							}
 						});
 					}
@@ -562,7 +562,7 @@
 					gender                 : this.gender,
 					dob                    : this.refs.dob.value,
 					notes                  : this.refs.notes.value,
-					center_code            : this.parent.activeCenter.code,
+					center_code            : this.currentUser.center_code,
 					participant_attributes : JSON.stringify({
 						role        : parseInt(this.refs.role.value),
 						ia_graduate : parseInt(this.ia_graduate),
@@ -608,10 +608,10 @@
 			this.ia_graduate = undefined;
 			this.is_healer   = undefined;
 
-			self.insertContact(true);
-			self.insertAddress(true);
+			this.insertContact(true);
+			this.insertAddress(true);
 
-			self.update();
+			this.update();
 		}
 
 		cancel() {
@@ -625,8 +625,8 @@
 
 
 
-		let state = self.parent.opts.state;
-		console.log(self.opts.state);
+		let state = this.parent.opts.state;
+		console.log(this.opts.state);
 
 		this.edit_id = this.opts.state.id;
 		if (this.edit_id) {
@@ -650,10 +650,10 @@
 				type: 'date'
 			});
 
-			self.insertContact(true);
-			self.insertAddress(true);
+			this.insertContact(true);
+			this.insertAddress(true);
 
-			self.update();
+			this.update();
 		}
 
 	</script>

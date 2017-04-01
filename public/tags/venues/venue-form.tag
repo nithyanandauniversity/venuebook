@@ -80,8 +80,9 @@
 		generateVenueParams() {
 			return {
 				venue: {
-					name     : this.refs.name.value,
-					capacity : this.refs.capacity.value
+					name      : this.refs.name.value,
+					capacity  : this.refs.capacity.value,
+					center_id : this.parent.currentUser.center_id
 				},
 				address: {
 					street      : this.refs.street.value,
