@@ -24,12 +24,12 @@ class Participant < Sequel::Model
 
 	def self.import_file(creator, file)
 		begin
-			response = RestClient.post PARBOOK_URL + "/import_file", {
+			response = RestClient::Request.execute :method => :post, :url => PARBOOK_URL + "/import_file", :payload => {
 				creator: creator,
 				upload: file,
 				centers: Center.dataset.all.to_json
-			}#, 'Content-Type' => 'text/csv'
-			# puts response.inspect
+			}, :timeout => nil, :open_timeout => nil
+
 			response.body
 		rescue RestClient::Exception => e
 			puts e.inspect
@@ -38,12 +38,12 @@ class Participant < Sequel::Model
 
 	def self.import_file_sg(creator, file)
 		begin
-			response = RestClient.post PARBOOK_URL + "/import_file_singapore", {
+			response = RestClient::Request.execute :method => :post, :url => PARBOOK_URL + "/import_file_singapore", :payload => {
 				creator: creator,
 				upload: file,
 				centers: Center.dataset.all.to_json
-			}#, 'Content-Type' => 'text/csv'
-			# puts response.inspect
+			}, :timeout => nil, :open_timeout => nil
+
 			response.body
 		rescue RestClient::Exception => e
 			puts e.inspect
