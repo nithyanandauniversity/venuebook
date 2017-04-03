@@ -125,8 +125,6 @@
 
 	<script>
 
-		const self = this;
-
 		this.activeVenueName = '';
 
 		this.registrationConfirmationOptions = [
@@ -254,11 +252,11 @@
 						params.center_id = this.opts.currentUser.center_id;
 					}
 
-					self.opts.service.search(params, (err, response) => {
+					this.opts.service.search(params, (err, response) => {
 						if (!err && response.body().length) {
 							let result = response.body()[0].data();
 
-							done({suggestions: result.participants.map(self.formatResults)});
+							done({suggestions: result.participants.map(this.formatResults)});
 						}
 						else {
 							done({suggestions: []});
@@ -267,7 +265,7 @@
 				},
 				onSelect : (item) => {
 					$("#search-attendance")[0].value = '';
-					self.parent.addToAttendance(item.data, this.activeVenue, this.parent.event_dates[this.date_index]);
+					this.parent.addToAttendance(item.data, this.activeVenue, this.parent.event_dates[this.date_index]);
 				}
 			});
 		}

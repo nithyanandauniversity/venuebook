@@ -18,6 +18,7 @@ import 'tags/participants/participant-form.tag!';
 import 'tags/participants/participant-view.tag!';
 import 'tags/participants/participant-comments.tag!';
 import 'tags/participants/participant-center.tag!';
+import 'tags/participants/participant-enrichers.tag!';
 
 import 'tags/centers.tag!'
 import 'tags/centers/center-search.tag!';

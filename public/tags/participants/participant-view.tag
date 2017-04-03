@@ -118,9 +118,16 @@
 					center = "{participant.center}">
 				</participant-center>
 
+				<!-- Participant Enrichers -->
+				<participant-enrichers
+					if      = "{participant.friends}"
+					friends = "{participant.friends}">
+				</participant-enrichers>
 			</div>
 			<div class="seven wide column">
-				<participant-comments comments = "{participant.comments}"></participant-comments>
+				<participant-comments
+					comments = "{participant.comments}">
+				</participant-comments>
 			</div>
 
 		</div>

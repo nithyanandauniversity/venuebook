@@ -124,6 +124,26 @@
 				</div>
 			</div>
 
+			<div class="fields">
+				<div class="right floated eight wide column field">
+					<label>Enrichers</label>
+					<div
+						each  = "{ enrichers }"
+						style = "margin-right: 8px; margin-bottom: 6px;"
+						class = "ui icon teal buttons">
+						<button class = "ui button">
+							{first_name} {last_name}
+						</button>
+						<button
+							class   = "ui icon button"
+							onclick = "{ removeAreaFromList() }">
+							<i class = "icon remove"></i>
+						</button>
+					</div>
+					<input id="search-enrichers" type="text" placeholder="Search Enrichers from list..." />
+				</div>
+			</div>
+
 
 			<div class="fields" style="margin-top: 25px;">
 				<div class="eight wide field">
@@ -311,6 +331,7 @@
 		// this.validation = {};
 		this.contacts   = [];
 		this.addresses  = [];
+		this.enrichers  = [];
 
 		setGender(e) {
 			return (e) => {
@@ -434,10 +455,12 @@
 			this.refs.notes.value       = participant.notes;
 			this.gender                 = participant.gender;
 
-			this.refs.role.value     = attr.role;
-			this.ia_graduate         = attr.ia_graduate;
-			this.refs.ia_dates.value = attr.ia_dates;
-			this.is_healer           = attr.is_healer;
+			this.refs.role.value        = attr.role;
+			this.ia_graduate            = attr.ia_graduate;
+			this.refs.ia_dates.value    = attr.ia_dates;
+			this.is_healer              = attr.is_healer;
+
+			this.enrichers              = participant.friends;
 
 			$("#participant-dob").calendar({
 				type        : 'date',
@@ -446,6 +469,10 @@
 
 			participant.contacts.forEach((c) => { this.insertContact(c.id == participant.default_contact, c.id) });
 			participant.addresses.forEach((a) => { this.insertAddress(a.id == participant.default_address, a.id) });
+
+			setTimeout(() => {
+				this.loadEnricherSearchInput();
+			}, 100);
 
 			this.update();
 
@@ -505,6 +532,12 @@
 			contacts.forEach((contact, i) => {
 				this.refs['contact_type_' + i].value  = contact.contact_type;
 				this.refs['contact_value_' + i].value = contact.value;
+			});
+		}
+
+		generateEnrichers(enrichers) {
+			return enrichers.map((en) => {
+				return en.member_id;
 			});
 		}
 
@@ -571,7 +604,8 @@
 					})
 				},
 				addresses : this.generateAddresses(this.addresses),
-				contacts  : this.generateContacts(this.contacts)
+				contacts  : this.generateContacts(this.contacts),
+				friends   : this.generateEnrichers(this.enrichers)
 			};
 		}
 
@@ -595,6 +629,7 @@
 		reset() {
 			this.contacts  = [];
 			this.addresses = [];
+			this.enrichers = [];
 
 			this.refs.first_name.value  = ''
 			this.refs.last_name.value   = ''
@@ -623,7 +658,67 @@
 			}
 		}
 
+		formatResults(participant) {
+			let value = participant.first_name + ' ' + participant.last_name;
 
+			if (participant.other_names && participant.other_names != '') {
+				value = value.trim() + ' (' + participant.other_names + ')';
+			}
+
+			if (participant.email && participant.email != '') {
+				value = value.trim() + ' [' + participant.email + ']';
+			}
+
+			return {value: value.trim(), data: participant};
+		}
+
+		loadEnricherSearchInput() {
+			$("#search-enrichers").autocomplete({
+				minChars : 2,
+				lookup   : (query, done) => {
+					let params = {
+						page    : 1,
+						limit   : 15,
+						keyword : query
+					};
+
+					if (this.currentUser.role > 2) {
+						params.center_id = this.currentUser.center_code;
+					}
+
+					this.parent.opts.service.search(params, (err, response) => {
+						if (!err && response.body().length) {
+							let result = response.body()[0].data();
+
+							done({suggestions: result.participants.map(this.formatResults)});
+						}
+						else {
+							done({suggestions: []});
+						}
+					});
+				},
+				onSelect : (item) => {
+					$("#search-enrichers")[0].value = '';
+
+					let ex = this.enrichers.filter((en) => {
+						return en.member_id == item.data.member_id;
+					});
+
+					if (ex.length == 0) {
+						this.enrichers.push(item.data);
+						this.update();
+					}
+				}
+			});
+		}
+
+		removeAreaFromList(e) {
+			return(e) => {
+				this.enrichers = this.enrichers.filter((en) => {
+					return en.member_id != e.item.member_id;
+				});
+			}
+		}
 
 		let state = this.parent.opts.state;
 		console.log(this.opts.state);
@@ -649,6 +744,10 @@
 			$("#participant-dob").calendar({
 				type: 'date'
 			});
+
+			setTimeout(() => {
+				this.loadEnricherSearchInput();
+			}, 100);
 
 			this.insertContact(true);
 			this.insertAddress(true);

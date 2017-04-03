@@ -206,7 +206,7 @@
 	</script>
 
 	<style scoped>
-		:scope { font-size: 0.7em; }
+		:scope { font-size: 0.65em; }
 		i.action, .action-btn { color: black !important;  }
 	</style>
 

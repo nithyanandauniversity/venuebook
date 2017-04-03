@@ -1,6 +1,6 @@
 <participant-center>
 
-	<div class="ui segment">
+	<div class="ui segment" style="margin-bottom: 2em;">
 		<h3><i class="icon street view"></i> Center</h3>
 
 		<h3 style = "margin: 0;">{opts.center.name} ({opts.center.category})</h3>
