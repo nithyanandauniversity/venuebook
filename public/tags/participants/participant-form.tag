@@ -328,7 +328,6 @@
 
 		this.currentUser  = this.parent.opts.store.getState().routes.data;
 
-		// this.validation = {};
 		this.contacts   = [];
 		this.addresses  = [];
 		this.enrichers  = [];
@@ -460,7 +459,7 @@
 			this.refs.ia_dates.value    = attr.ia_dates;
 			this.is_healer              = attr.is_healer;
 
-			this.enrichers              = participant.friends;
+			this.enrichers              = participant.friends || [];
 
 			$("#participant-dob").calendar({
 				type        : 'date',
