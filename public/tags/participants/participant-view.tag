@@ -120,7 +120,7 @@
 
 				<!-- Participant Enrichers -->
 				<participant-enrichers
-					if      = "{participant.friends}"
+					if      = "{participant.friends && participant.friends.length > 0}"
 					friends = "{participant.friends}">
 				</participant-enrichers>
 			</div>
@@ -137,10 +137,8 @@
 
 	<script>
 
-		const self = this;
-
 		edit() {
-			this.parent.showForm({id: this.opts.state.id});
+			this.parent.showForm({member_id: this.opts.state.id});
 		}
 
 		this.participant = {};
