@@ -35,14 +35,18 @@
 					onclick = "{ submitForm() }">Login</div>
 			</div>
 
-			<div class="ui error message"></div>
-
 		</form>
+
+		<div
+			class = "ui error message"
+			show  = "{ loginError }">
+			<h3>Error</h3>
+			<p>Authentication Error occurred. Please check your credentials and try again.</p>
+		</div>
+
 	</div>
 
 	<script>
-
-		const self = this;
 
 		validateForm() {
 			let email    = this.refs.email.value;
@@ -70,6 +74,9 @@
 		doLogin() {
 			// console.log("this.opts");
 			// console.log(this.opts);
+			this.loginError = false;
+			this.update();
+
 			this.opts.service.doLogin({
 				auth: {
 					email: this.refs.email.value,
@@ -91,6 +98,8 @@
 						console.log(this.opts.store.getState());
 					}
 					else {
+						this.loginError = true;
+						this.update();
 						console.error("Failed!");
 					}
 				}
