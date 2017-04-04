@@ -128,19 +128,31 @@
 				<div class="right floated eight wide column field">
 					<label>Enrichers</label>
 					<div
-						each  = "{ enrichers }"
+						each  = "{ enricher in enrichers }"
 						style = "margin-right: 8px; margin-bottom: 6px;"
-						class = "ui icon teal buttons">
+						class = "ui icon teal { !default_friend || enricher.member_id != default_friend.member_id && 'basic'} buttons">
 						<button class = "ui button">
-							{first_name} {last_name}
+							{enricher.first_name} {enricher.last_name}
 						</button>
 						<button
-							class   = "ui icon button"
-							onclick = "{ removeAreaFromList() }">
+							class          = "ui icon button"
+							data-tooltip   = "Make Default Enricher"
+							data-inverted  = ""
+							data-variation = "mini"
+							show           = "{ !default_friend || enricher.member_id != default_friend.member_id }"
+							onclick        = "{ makeEnricherDefault() }">
+							<i class="icon checkmark"></i>
+						</button>
+						<button
+							class          = "ui icon button"
+							data-tooltip   = "Remove Enricher"
+							data-inverted  = ""
+							data-variation = "mini"
+							onclick        = "{ removeEnricherFromList() }">
 							<i class = "icon remove"></i>
 						</button>
 					</div>
-					<input id="search-enrichers" type="text" placeholder="Search Enrichers from list..." />
+					<input id = "search-enrichers" type = "text" placeholder = "Search Enrichers from list..." />
 				</div>
 			</div>
 
@@ -453,6 +465,7 @@
 			this.refs.dob.value         = participant.dob;
 			this.refs.notes.value       = participant.notes;
 			this.gender                 = participant.gender;
+			this.default_friend         = {member_id: participant.default_friend};
 
 			this.refs.role.value        = attr.role;
 			this.ia_graduate            = attr.ia_graduate;
@@ -595,6 +608,7 @@
 					dob                    : this.refs.dob.value,
 					notes                  : this.refs.notes.value,
 					center_code            : this.currentUser.center_code,
+					default_friend         : this.default_friend ? this.default_friend.member_id : null,
 					participant_attributes : JSON.stringify({
 						role        : parseInt(this.refs.role.value),
 						ia_graduate : parseInt(this.ia_graduate),
@@ -705,17 +719,34 @@
 
 					if (ex.length == 0) {
 						this.enrichers.push(item.data);
+						if (this.enrichers.length == 1) { this.default_friend = this.enrichers[0]; }
 						this.update();
 					}
 				}
 			});
 		}
 
-		removeAreaFromList(e) {
+		makeEnricherDefault(e) {
 			return(e) => {
+				console.log("e.item");
+				console.log(e.item);
+				this.default_friend = e.item.enricher;
+				console.log("this.default_friend");
+				console.log(this.default_friend);
+				this.update();
+			}
+		}
+
+		removeEnricherFromList(e) {
+			return(e) => {
+				let is_default = this.default_friend && this.default_friend.member_id == e.item.enricher.member_id;
 				this.enrichers = this.enrichers.filter((en) => {
-					return en.member_id != e.item.member_id;
+					return en.member_id != e.item.enricher.member_id;
 				});
+
+				if (is_default && this.enrichers.length > 0) {
+					this.default_friend = this.enrichers[0];
+				}
 			}
 		}
 
