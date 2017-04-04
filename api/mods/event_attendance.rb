@@ -102,6 +102,16 @@ module Venuebook
 									data[:amount]              = other_reg.first.amount
 									data[:attendance]          = EventAttendance::REGISTERED_AND_ATTENDED
 								end
+							else
+								other_att = record.where(attendance: EventAttendance::NOT_REGISTERED_AND_ATTENDED)
+									.exclude(attendance_date: data[:attendance_date])
+
+								if other_att.count > 0
+									data[:confirmation_status] = other_att.first.confirmation_status
+									data[:payment_status]      = other_att.first.payment_status
+									data[:payment_method]      = other_att.first.payment_method
+									data[:amount]              = other_att.first.amount
+								end
 							end
 
 						end
@@ -121,6 +131,20 @@ module Venuebook
 				if authorize! :update, EventAttendance
 					attendance = EventAttendance.find(id: params[:id])
 					attendance.update(params[:attendance])
+
+					other_records = EventAttendance.where(member_id: attendance.member_id)
+						.exclude(id: attendance.id)
+
+					if other_records.count > 0
+						other_records.each do |rec|
+							rec.update(
+								confirmation_status: attendance.confirmation_status,
+								payment_status: attendance.payment_status,
+								payment_method: attendance.payment_method,
+								amount: attendance.amount
+							)
+						end
+					end
 
 					if params[:send_all]
 						return {event_attendances: EventAttendance.all_attendances(attendance[:event_id])}

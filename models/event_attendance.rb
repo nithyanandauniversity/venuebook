@@ -1,7 +1,6 @@
 class EventAttendance < Sequel::Model
 	self.plugin :timestamps
 	many_to_one :event
-	# many_to_many :participant, left_key: :member_id, right_key: :member_id
 
 	REGISTERED                  = 1
 	REGISTERED_AND_ATTENDED     = 2

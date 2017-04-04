@@ -23,6 +23,12 @@
 		show  = "{parent.event_dates && parent.event_dates.length > 1}">
 		<div class="header item">Event Dates : </div>
 		<a
+			class   = "item ui horizontal large label {date_index == 'ALL' ? 'brown' : 'grey'}"
+			style   = "margin-right: 8px;"
+			onclick = "{ selectEventDate() }">
+			ALL
+		</a>
+		<a
 			each    = "{event_date, i in parent.event_dates}"
 			class   = "item ui horizontal large label {parseInt(date_index) == i ? 'brown' : 'grey'}"
 			style   = "margin-right: 8px;"
@@ -33,8 +39,13 @@
 
 	<h3
 		class = "ui dividing header"
-		if    = "{parent.event_dates && parent.event_dates.length > 0 && activeVenueName && date_index >= 0}">
+		if    = "{parent.event_dates && parent.event_dates.length > 0 && activeVenueName && (date_index == 'ALL' || date_index >= 0)}">
 		Attendance details on {format(parent.event_dates[date_index], 'date', 'longDate')} at location: { activeVenueName }
+		<span style = "position: relative; float: right; bottom: 10px;">
+			<button class = "ui green button tiny" onclick = "{ downloadAttendanceList() }">
+				<i class = "icon download"></i> Download List
+			</button>
+		</span>
 	</h3>
 
 	<table
@@ -54,7 +65,7 @@
 		<tbody>
 			<tr
 				each = "{attendance, i in parent.attendances}"
-				if   = "{(activeVenue == 'ALL' || attendance.venue_id == activeVenue) && parent.event_dates[date_index].toString() == new Date(attendance.attendance_date).toString()}">
+				if   = "{ (activeVenue == 'ALL' || attendance.venue_id == activeVenue) && (date_index == 'ALL' || (date_index != 'ALL' && parent.event_dates[date_index].toString() == new Date(attendance.attendance_date).toString())) }">
 				<td>{i + 1}</td>
 				<td show = "{activeVenue == 'ALL'}">
 					{attendance.venue.name}
@@ -116,7 +127,7 @@
 	<div
 		class = "ui fluid input huge success message"
 		style = "position: absolute; bottom: 10px; left: 10px; right: 10px;"
-		show  = "{parent.allowAttendance && activeVenue != 'ALL'}">
+		show  = "{parent.allowAttendance && activeVenue != 'ALL' && date_index != 'ALL'}">
 		<input
 			id          = "search-attendance"
 			type        = "text"
@@ -159,7 +170,7 @@
 
 		selectEventDate(e) {
 			return(e) => {
-				this.date_index = e.item.i;
+				this.date_index = e.item ? e.item.i : 'ALL';
 				this.update();
 				this.setAttValues();
 			}
@@ -287,7 +298,7 @@
 		setAttValues() {
 
 			let attendances = this.parent.attendances.filter((attendance) => {
-				return (attendance.venue_id == this.activeVenue && new Date(attendance.attendance_date).toString() == this.parent.event_dates[this.date_index].toString());
+				return (attendance.venue_id == this.activeVenue && (this.date_index == 'ALL' || new Date(attendance.attendance_date).toString() == this.parent.event_dates[this.date_index].toString()));
 			});
 
 			for (let i = 0; i < attendances.length; i++) {
@@ -298,7 +309,16 @@
 				this.refs['amount_' + i].value              = att.amount;
 			}
 
-			$(".search.ui.dropdown").dropdown();
+			// $(".search.ui.dropdown").dropdown();
+		}
+
+		downloadAttendanceList(e) {
+			return(e) => {
+				let activeVenue = this.activeVenue == 'ALL' ? null : this.activeVenue;
+				let date_index  = this.date_index == 'ALL' ? null : this.date_index;
+
+				this.parent.requestReport(activeVenue, date_index);
+			}
 		}
 
 		this.on('loaded', () => {

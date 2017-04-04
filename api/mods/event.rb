@@ -77,7 +77,12 @@ module Venuebook
 
 			get '/:id/event_attendances' do
 				if authorize! :read, EventAttendance
-					[{event_attendances: EventAttendance.all_attendances(params[:id])}]
+					if params[:download]
+						event = Event.find(id: params[:id])
+						event.get_attendance_csv(params[:download])
+					else
+						[{event_attendances: EventAttendance.all_attendances(params[:id])}]
+					end
 				end
 			end
 

@@ -331,7 +331,7 @@
 
 				setTimeout( () => {
 					this.setRegValues();
-					$(".search.ui.dropdown").dropdown();
+					// $(".search.ui.dropdown").dropdown();
 				}, 20);
 			}
 		});

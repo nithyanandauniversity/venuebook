@@ -294,6 +294,34 @@
 			}
 		}
 
+		requestReport(venue, date_index) {
+			let params = {
+				venue_id        : venue || null,
+				attendance_date : date_index || null
+			};
+
+			this.parent.opts.service.getAttendanceReport(this.view_id, params, (err, response) => {
+				if (!err) {
+					let data       = response.body();
+					let csvContent = "data:text/csv;charset=utf-8,";
+
+					data.forEach((info, i) => {
+						let dataString = info.data().join(",");
+						csvContent += i < data.length ? dataString+ "\n" : dataString;
+					});
+
+					let encodedUri = encodeURI(csvContent);
+					let link = document.createElement("a");
+					link.setAttribute("href", encodedUri);
+					link.setAttribute("download", "attendance_list.csv");
+					document.body.appendChild(link);
+					link.click();
+				}
+				// console.log("err, response");
+				// console.log(err, response);
+			});
+		}
+
 		if (this.view_id) {
 			this.parent.opts.service.get(this.view_id, (err, response) => {
 				if (!err) {
