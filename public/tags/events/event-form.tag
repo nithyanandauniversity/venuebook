@@ -129,7 +129,7 @@
 										data-tooltip   = "Remove Event Venue"
 										data-inverted  = ""
 										data-variation = "mini"
-										onclick        = "{removeEventVenue()}">
+										onclick        = "{ removeEventVenue() }">
 										<i class="remove icon"></i>
 									</button>
 								</td>
@@ -258,8 +258,8 @@
 
 		insertVenue(venue_id = null, user_id = null) {
 			this.venues.push({
-				venue_id: venue_id,
-				user_id: user_id
+				venue_id : venue_id,
+				user_id  : user_id
 			});
 		}
 
@@ -460,8 +460,11 @@
 			venues.forEach((v) => { this.insertVenue(v.venue_id, v.user_id) });
 			this.update();
 
-			this.assignVenues(venues);
-			$(".ui.search.event_venue.dropdown").dropdown();
+
+			setTimeout(() => {
+				this.assignVenues(venues);
+				$(".ui.search.event_venue.dropdown").dropdown();
+			}, 10)
 		}
 
 		assignVenues(venues) {
