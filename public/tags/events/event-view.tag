@@ -268,16 +268,53 @@
 			}
 		}
 
+		groupAttendances(attendances) {
+			let groups = {};
+
+			for (let i = 0; i < attendances.length; i++) {
+				let attendance = attendances[i];
+				if (!groups[attendance.member_id]) {
+					groups[attendance.member_id] = [];
+				}
+
+				groups[attendance.member_id].push(attendance);
+			}
+
+			this.attendances = [];
+
+			for (let id in groups) {
+
+				let attendance  = groups[id][0];
+				let participant = attendance.participant;
+				let venue       = attendance.venue;
+
+
+				let attended_dates = groups[id].reduce( (arr = [], att, idx) => {
+					if (att.attendance > 1) {
+						attendance[att.attendance_date] = true;
+						arr.push(att.attendance_date);
+					}
+					return arr;
+				}, []);
+
+				attendance.attended_dates   = attended_dates;
+				attendance.entry_percentage = (attended_dates.length / this.event_dates.length) * 100
+
+				this.attendances.push(attendance);
+			}
+		}
+
 		reloadAttendanceData(data) {
 			if (this.event_dates.length > 1) {
 				let registrations = data.filter((a) => { return a.attendance < 3 });
+				let attendances   = data.filter((a) => { return a.attendance > 1 });
 				this.groupRegistrations(registrations);
+				this.groupAttendances(attendances);
 			}
 			else {
 				this.registrations = data.filter((a) => { return a.attendance < 3 });
+				this.attendances   = data.filter((a) => { return a.attendance > 1 });
 			}
-
-			this.attendances = data.filter((a) => { return a.attendance > 1 });
 		}
 
 		loadDates() {

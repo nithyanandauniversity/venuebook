@@ -59,13 +59,14 @@
 				<th>Payment</th>
 				<th>Method</th>
 				<th>Amount</th>
+				<th show = "{date_index == 'ALL'}">Attendance %</th>
 				<th style="width: 58px;"></th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr
 				each = "{attendance, i in parent.attendances}"
-				if   = "{ (activeVenue == 'ALL' || attendance.venue_id == activeVenue) && (date_index == 'ALL' || (date_index != 'ALL' && parent.event_dates[date_index].toString() == new Date(attendance.attendance_date).toString())) }">
+				if   = "{ ( activeVenue == 'ALL' || attendance.venue_id == activeVenue ) && ( date_index == 'ALL' || ( date_index != 'ALL' && attendance[format(parent.event_dates[date_index], 'date', 'isoDate')] ) ) }">
 				<td>{i + 1}</td>
 				<td show = "{activeVenue == 'ALL'}">
 					{attendance.venue.name}
@@ -105,6 +106,9 @@
 						class    = "ui input small { !attendance.payment_status && 'disabled' }">
 						<input ref="{'amount_' + i}" type="text" placeholder="Payment Amount" />
 					</div>
+				</td>
+				<td show = "{date_index == 'ALL'}">
+					{attendance.entry_percentage} %
 				</td>
 				<td>
 					<button
@@ -331,7 +335,6 @@
 				if (this.date_index == undefined) {
 					this.date_index  = 0;
 				}
-
 
 				this.loadDates();
 				this.setActiveVenueName();
