@@ -61,7 +61,7 @@
 
 		save(e) {
 			return(e) => {
-				this.parent.applySelectedCenter(this.selectedCenter.id, this.refs.make_default.checked);
+				this.parent.applySelectedCenter(this.selectedCenter, this.refs.make_default.checked);
 			}
 		}
 

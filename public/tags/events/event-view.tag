@@ -354,8 +354,6 @@
 					document.body.appendChild(link);
 					link.click();
 				}
-				// console.log("err, response");
-				// console.log(err, response);
 			});
 		}
 

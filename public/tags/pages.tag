@@ -122,21 +122,23 @@
 			.modal('show');
 		});
 
-		applySelectedCenter(center_id, make_default) {
+		applySelectedCenter(center, make_default) {
 			if (make_default) {
-				this.opts.services.userService.setDefaultCenter(this.currentUser.id, {center_id: center_id}, (err, response) => {
+				this.opts.services.userService.setDefaultCenter(this.currentUser.id, {center_id: center.id}, (err, response) => {
 					if (!err) {
-						this.setActiveCenter(center_id);
+						this.setActiveCenter(center);
 					}
 				});
 			}
 			else {
-				this.setActiveCenter(center_id);
+				this.setActiveCenter(center);
 			}
 		}
 
-		setActiveCenter(center_id) {
-			this.currentUser.center_id = center_id;
+		setActiveCenter(center) {
+			this.currentUser.center_id   = center.id;
+			this.currentUser.center_code = center.code;
+
 			sessionStorage.setItem('CURRENT_USER', JSON.stringify(this.currentUser));
 
 			let route = this.opts.store.getState().routes;
