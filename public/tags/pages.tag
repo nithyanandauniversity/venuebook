@@ -6,12 +6,14 @@
 	</dashboard>
 
 	<participants
-		if        = "{opts.store.getState().routes.path == 'PARTICIPANTS'}"
-		store     = "{opts.store}"
-		state     = "{opts.store.getState().participants}"
-		service   = "{opts.services.participantService}"
-		countries = "{opts.services.countries}"
-		dialcodes = "{opts.services.dialcodes}">
+		if              = "{opts.store.getState().routes.path == 'PARTICIPANTS'}"
+		store           = "{opts.store}"
+		state           = "{opts.store.getState().participants}"
+		service         = "{opts.services.participantService}"
+		setting-service = "{opts.services.settingService}"
+		center-service  = "{opts.services.centerService}"
+		countries       = "{opts.services.countries}"
+		dialcodes       = "{opts.services.dialcodes}">
 	</participants>
 
 	<centers

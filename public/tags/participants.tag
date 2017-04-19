@@ -24,7 +24,8 @@
 
 	<script>
 
-		this.searchQ = '';
+		this.searchQ   = '';
+		this.extSearch = null;
 
 		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_PARTICIPANT'});
@@ -45,11 +46,19 @@
 		}
 
 		performSearch(pageNo) {
-			this.opts.store.dispatch({type: 'SEARCH_PARTICIPANT', query: {
-				page    : pageNo || 1,
-				limit   : 10,
-				keyword : this.searchQ || ''
-			}});
+			// console.log("this.extSearch");
+			// console.log(this.extSearch);
+			let params = {
+				page       : pageNo || 1,
+				limit      : 10,
+				keyword    : this.searchQ || ''
+			};
+
+			if (this.extSearch) {
+				params.ext_search = this.extSearch;
+			}
+
+			this.opts.store.dispatch({type: 'SEARCH_PARTICIPANT', query: params});
 			this.update();
 			this.tags['participant-list'].trigger('search');
 		}
@@ -67,6 +76,16 @@
 			this.opts.store.dispatch({type: 'EDIT_PARTICIPANT', id: participant.member_id});
 			this.update();
 			// this.tags['participant-form'].trigger('edit');
+		}
+
+		if (this.opts.settingService) {
+			this.opts.settingService.getByName('center_areas', (err, response) => {
+				if (!err) {
+					this.center_areas = response.body()[0].data();
+					// console.log("this.center_areas");
+					// console.log(this.center_areas);
+				}
+			});
 		}
 
 	</script>

@@ -14,6 +14,22 @@ class Center < Sequel::Model
 
 	end
 
+	def self.get_codes_by_areas(areas)
+		codes = Center.where("area IN ?", areas).map { |center|
+			center.code if center.code
+		}.compact
+
+		codes
+	end
+
+	def self.get_codes_by_countries(countries)
+		codes = Center.where("country IN ?", countries).map { |center|
+			center.code if center.code
+		}.compact
+
+		codes
+	end
+
 	def self.search(params)
 		# puts params.inspect
 		size       = params && params[:limit].to_i || 10
