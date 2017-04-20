@@ -30,6 +30,7 @@
 			<span if = "{ extSearchType && extSearchType == 'area' }">Area(s): {extSearchTypeValue.areas.join(', ')}</span>
 			<span if = "{ extSearchType && extSearchType == 'country' }">Country(s): {extSearchTypeValue.countries.join(', ')}</span>
 			<span if = "{ extSearchType && extSearchType == 'center' }">Center(s): <span each = "{extSearchTypeValue.centers}">{name}</span></span>
+			<span if = "{ extSearchType && extSearchType == 'global' }">Global: (All Areas / Countries / Centers)</span>
 			<div style="text-align: right;">
 				<button class="ui button basic red" onclick = "{ clearExtSearch(); }">Clear</button>
 			</div>
@@ -142,9 +143,13 @@
 					</div>
 				</div>
 
+				<div class="field" show="{extSearchType && extSearchType == 'global'}">
+					<h3>Search for participant globally across all Areas and Countries?</h3>
+				</div>
+
 				<div class="right aligned column" style="text-align: right;">
 					<div
-						show  = "{(extSearchType == 'area' && extSearchTypeValue.areas && extSearchTypeValue.areas.length > 0) || (extSearchType == 'country' && extSearchTypeValue.countries && extSearchTypeValue.countries.length > 0) || (extSearchType == 'center' && extSearchTypeValue.centers && extSearchTypeValue.centers.length > 0)}"
+						show  = "{(extSearchType == 'area' && extSearchTypeValue.areas && extSearchTypeValue.areas.length > 0) || (extSearchType == 'country' && extSearchTypeValue.countries && extSearchTypeValue.countries.length > 0) || (extSearchType == 'center' && extSearchTypeValue.centers && extSearchTypeValue.centers.length > 0) || (extSearchType == 'global')}"
 						class = "ui button basic green"
 						onclick = "{ applyExtSearchSettings() }">
 						Apply
@@ -164,7 +169,8 @@
 		this.extSearchTypes = [
 			{label: "Search by Area", value: "area"},
 			{label: "Search by Country", value: "country"},
-			{label: "Search by Center", value: "center"}
+			{label: "Search by Center", value: "center"},
+			{label: "Search Globally", value: "global"}
 		];
 
 		setSearchParams() {
@@ -172,7 +178,7 @@
 
 			if (
 				this.extSearchType &&
-				(this.extSearchTypeValue && (this.extSearchTypeValue.areas || this.extSearchTypeValue.countries || this.extSearchTypeValue.centers))
+				(this.extSearchTypeValue && (this.extSearchTypeValue.areas || this.extSearchTypeValue.countries || this.extSearchTypeValue.centers || this.extSearchTypeValue.global))
 				)
 			{
 				if (this.extSearchType == 'center') {
@@ -286,6 +292,8 @@
 
 		applyExtSearchSettings(e) {
 			return(e) => {
+				if (this.extSearchType == 'global') { this.extSearchTypeValue = {global: true}; }
+
 				console.log("Search Applied", this.extSearchTypeValue);
 				this.extSearchApply = true;
 				this.update();
