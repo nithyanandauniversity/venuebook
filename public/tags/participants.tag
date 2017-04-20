@@ -82,8 +82,6 @@
 			this.opts.settingService.getByName('center_areas', (err, response) => {
 				if (!err) {
 					this.center_areas = response.body()[0].data();
-					// console.log("this.center_areas");
-					// console.log(this.center_areas);
 				}
 			});
 		}

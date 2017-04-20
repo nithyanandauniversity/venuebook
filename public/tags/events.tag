@@ -127,6 +127,14 @@
 			this.tags['event-past'].trigger('reload');
 		}
 
+		if (this.opts.settingService) {
+			this.opts.settingService.getByName('center_areas', (err, response) => {
+				if (!err) {
+					this.center_areas = response.body()[0].data();
+				}
+			});
+		}
+
 	</script>
 
 </events>

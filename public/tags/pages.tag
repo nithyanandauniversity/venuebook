@@ -51,7 +51,10 @@
 		program-service     = "{opts.services.programService}"
 		venue-service       = "{opts.services.venueService}"
 		participant-service = "{opts.services.participantService}"
-		user-service        = "{opts.services.userService}">
+		center-service      = "{opts.services.centerService}"
+		setting-service     = "{opts.services.settingService}"
+		user-service        = "{opts.services.userService}"
+		countries           = "{opts.services.countries}">
 	</events>
 
 	<users
