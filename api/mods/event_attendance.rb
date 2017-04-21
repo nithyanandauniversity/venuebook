@@ -11,6 +11,8 @@ module Venuebook
 				if authorize! :create, EventAttendance
 					data = params[:attendance]
 
+					# puts "DATA IS :: #{data.inspect}\n\n"
+
 					case data[:attendance].to_i
 					when EventAttendance::REGISTERED
 						registration = EventAttendance.where(
@@ -116,6 +118,8 @@ module Venuebook
 
 						end
 					end
+
+					# puts "\n\nSAVING || #{data.inspect}\n\n"
 
 					event_attendance = EventAttendance.create(data)
 

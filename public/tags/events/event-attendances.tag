@@ -66,7 +66,10 @@
 		<tbody>
 			<tr
 				each = "{attendance, i in parent.attendances}"
-				if   = "{ ( activeVenue == 'ALL' || attendance.venue_id == activeVenue ) && ( date_index == 'ALL' || ( date_index != 'ALL' && attendance[format(parent.event_dates[date_index], 'date', 'isoDate')] ) ) }">
+				if   = "{
+					( activeVenue == 'ALL' && ( date_index == 'ALL' || ( date_index != 'ALL' && attendance[format(parent.event_dates[date_index], 'date', 'isoDate')] ) ) ) ||
+					( activeVenue != 'ALL' && ( (date_index == 'ALL' && attendance.attended_venues.includes(activeVenue)) || (date_index != 'ALL' && attendance[format(parent.event_dates[date_index], 'date', 'isoDate')] == activeVenue) ) )
+				}">
 				<td>{i + 1}</td>
 				<td show = "{activeVenue == 'ALL'}">
 					{attendance.venue.name}

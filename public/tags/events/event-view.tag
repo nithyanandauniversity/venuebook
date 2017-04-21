@@ -284,20 +284,20 @@
 
 			for (let id in groups) {
 
-				let attendance  = groups[id][0];
-				let participant = attendance.participant;
-				let venue       = attendance.venue;
-
+				let attendance = groups[id][0];
+				let venue_ids  = [];
 
 				let attended_dates = groups[id].reduce( (arr = [], att, idx) => {
 					if (att.attendance > 1) {
-						attendance[att.attendance_date] = true;
+						attendance[att.attendance_date] = att.venue_id;
+						venue_ids.push(att.venue_id);
 						arr.push(att.attendance_date);
 					}
 					return arr;
 				}, []);
 
 				attendance.attended_dates   = attended_dates;
+				attendance.attended_venues  = Array.from(new Set(venue_ids));
 				attendance.entry_percentage = (attended_dates.length / this.event_dates.length) * 100
 
 				this.attendances.push(attendance);
