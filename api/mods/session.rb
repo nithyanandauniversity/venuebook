@@ -23,7 +23,7 @@ module Venuebook
 						:role => user.role,
 						:email => user.email,
 						:center_id => user.center_id,
-						:center_code => user.center.code
+						:center_code => user.center ? user.center.code : nil
 					}
 
 					# token = JWT.encode payload, rsa_private, 'RS256'
