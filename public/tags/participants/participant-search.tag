@@ -19,7 +19,10 @@
 			onclick = "{ toggleExtSearch() }">
 			<i class = "sitemap icon" style = "margin: 0;"></i>
 		</div>
-		<div class = "ui primary basic button" onclick = "{ parent.showNew }">
+		<div
+			class   = "ui primary basic button"
+			if      = "{currentUser.role < 5}"
+			onclick = "{ parent.showNew }">
 			<i class = "add user icon"></i> New
 		</div>
 	</div>
@@ -172,6 +175,8 @@
 			{label: "Search by Center", value: "center"},
 			{label: "Search Globally", value: "global"}
 		];
+
+		this.currentUser  = this.parent.opts.store.getState().routes.data;
 
 		setSearchParams() {
 			this.parent.searchQ  = this.refs.searchQ.value;

@@ -6,6 +6,7 @@
 			<button
 				class   = "ui basic primary large button right floated"
 				style   = "margin: 2px;"
+				if      = "{currentUser.role < 5}"
 				show    = "{opts.state.view == 'UPCOMING_EVENT' || opts.state.view == 'PAST_EVENT'}"
 				onclick = "{ createEvent }">
 				<i class="icon add to calendar"></i> Create New
