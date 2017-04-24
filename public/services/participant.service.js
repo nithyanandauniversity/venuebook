@@ -33,6 +33,19 @@ export default class ParticipantService {
 			});
 	}
 
+	getAttendances(id, callback) {
+		this.reloadApi();
+		this.api.one('participants', id)
+			.all('events')
+			.getAll()
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 	create(params, callback) {
 		this.reloadApi();
 		this.collection.post(params)

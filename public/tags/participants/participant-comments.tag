@@ -1,4 +1,4 @@
-<participant-comments>
+<participant-comments style = "display: block; margin-bottom: 1em;">
 
 	<div class = "ui segment">
 
@@ -6,7 +6,8 @@
 
 		<div
 			show  = {opts.comments.length}
-			class = "ui segment comments">
+			class = "ui segment comments"
+			style = "overflow-y: scroll; max-height: 200px;">
 			<div
 				class = "comment"
 				style = "border-bottom: 1px solid #ccc;"

@@ -14,12 +14,43 @@ class Participant < Sequel::Model
 		participant = JSON.parse(response.body)
 
 		participant['center'] = Center.find(code: participant['center_code'])
+		participant['events_count'] = EventAttendance.where(member_id: participant['member_id'])
+			.map { |attendance|
+				attendance.event_id
+			}.compact.uniq!.length
 		participant
 	end
 
 	def self.create(params)
 		response = RestClient.post PARBOOK_URL, params
 		JSON.parse(response.body)
+	end
+
+	def self.get_events(member_id)
+		events = {}
+
+		EventAttendance.where(member_id: member_id).each do |attendance|
+			if !events[attendance.event_id.to_s.to_sym]
+				event = Event.find(id: attendance.event_id)
+				events[attendance.event_id.to_s.to_sym] = JSON.parse(event.to_json)
+				events[attendance.event_id.to_s.to_sym]['program'] = event.program
+				events[attendance.event_id.to_s.to_sym]['venues']  = []
+				events[attendance.event_id.to_s.to_sym]['dates']   = []
+			end
+
+			itm = events[attendance.event_id.to_s.to_sym]
+
+			itm['venues'] << attendance.venue_id unless itm['venues'].include? attendance.venue_id
+			itm['dates'] << attendance.attendance_date unless itm['dates'].include? attendance.attendance_date
+		end
+
+		results = []
+		events.each do |key, value|
+			value['venues'] = value['venues'].map { |id| Venue.find(id: id) }
+			results << value
+		end
+
+		[results]
 	end
 
 	def self.import_file(creator, file)

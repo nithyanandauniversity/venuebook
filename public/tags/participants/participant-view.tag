@@ -112,6 +112,17 @@
 					</div>
 				</div>
 
+				<participant-events
+					participant = "{participant}"
+					count       = "{participant.events_count}">
+				</participant-events>
+
+			</div>
+			<div class="seven wide column">
+				<participant-comments
+					comments = "{participant.comments}">
+				</participant-comments>
+
 				<!-- Participant Center Info -->
 				<participant-center
 					if     = "{participant.center}"
@@ -123,11 +134,6 @@
 					if      = "{participant.friends && participant.friends.length > 0}"
 					friends = "{participant.friends}">
 				</participant-enrichers>
-			</div>
-			<div class="seven wide column">
-				<participant-comments
-					comments = "{participant.comments}">
-				</participant-comments>
 			</div>
 
 		</div>
@@ -146,6 +152,21 @@
 
 		this.participantRoles = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
 		this.view_id          = this.opts.state.id;
+
+		loadEvents(callback) {
+			if (this.participant && this.participant.member_id) {
+				this.parent.opts.service.getAttendances(this.participant.member_id, (err, response) => {
+					console.log("err, response");
+					console.log(err, response);
+					if (!err) {
+						callback(response.body());
+					}
+					else {
+						callback([]);
+					}
+				});
+			}
+		}
 
 		if (this.view_id) {
 			this.parent.opts.service.get(this.view_id, (err, response) => {

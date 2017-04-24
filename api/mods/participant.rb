@@ -44,6 +44,12 @@ module Venuebook
 				end
 			end
 
+			get '/:id/events' do
+				if authorize! :read, Participant
+					return Participant.get_events(params[:id])
+				end
+			end
+
 			post do
 				if authorize! :create, Participant
 					participant = Participant.create(params)
