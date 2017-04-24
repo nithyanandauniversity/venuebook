@@ -13,11 +13,12 @@ class Participant < Sequel::Model
 		response    = RestClient.get PARBOOK_URL + "/#{id}"
 		participant = JSON.parse(response.body)
 
-		participant['center'] = Center.find(code: participant['center_code'])
+		participant['center']       = Center.find(code: participant['center_code'])
 		participant['events_count'] = EventAttendance.where(member_id: participant['member_id'])
 			.map { |attendance|
 				attendance.event_id
-			}.compact.uniq!.length
+			}.compact.uniq.length
+
 		participant
 	end
 

@@ -182,7 +182,7 @@
 				)
 			{
 				if (this.extSearchType == 'center') {
-					this.parent.extSearch = this.extSearchTypeValue.centers.map((center) => { return center.code; })
+					this.parent.extSearch = { centers: this.extSearchTypeValue.centers.map((center) => { return center.code; }) }
 				}
 				else {
 					this.parent.extSearch = this.extSearchTypeValue;

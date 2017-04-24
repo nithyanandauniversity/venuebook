@@ -589,6 +589,7 @@
 
 			if (!this.edit_id) {
 				// CREATE PARTICIPANT
+				saveParams.participant.center_code = this.currentUser.center_code;
 				this.create(saveParams);
 			}
 			else {
@@ -607,7 +608,7 @@
 					gender                 : this.gender,
 					dob                    : this.refs.dob.value,
 					notes                  : this.refs.notes.value,
-					center_code            : this.currentUser.center_code,
+					// center_code            : this.currentUser.center_code,
 					default_friend         : this.default_friend ? this.default_friend.member_id : null,
 					participant_attributes : JSON.stringify({
 						role        : parseInt(this.refs.role.value),
