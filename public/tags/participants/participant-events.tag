@@ -5,7 +5,7 @@
 		style = "min-height: 120px;">
 
 		<h3>
-			<i class="icon unordered list"></i>Events ({opts.count})
+			<i class="orange icon unordered list"></i>Events ({opts.count})
 			<button
 				if      = "{opts.count > 0}"
 				class   = "ui icon tiny button basic orange right floated"

@@ -147,11 +147,25 @@
 			this.parent.showForm({member_id: this.opts.state.id});
 		}
 
-		this.participant = {};
-		this.attributes  = {};
-
+		this.participant      = {};
+		this.attributes       = {};
+		this.currentUser      = this.parent.opts.store.getState().routes.data;
 		this.participantRoles = ['None', 'Volunteer', 'Thanedar', 'Kotari', 'Mahant', 'Sri Mahant'];
 		this.view_id          = this.opts.state.id;
+
+		switchParticipantCenter(center) {
+			this.parent.opts.service.update(this.participant.member_id, {
+				participant : {center_code : center.code}
+			}, (err, response) => {
+				if (!err) {
+					this.parent.showList();
+				}
+				else {
+					console.log("err");
+					console.log(err);
+				}
+			});
+		}
 
 		loadEvents(callback) {
 			if (this.participant && this.participant.member_id) {

@@ -2,7 +2,7 @@
 
 	<div class = "ui segment">
 
-		<h3><i class="icon comments"></i>Comments</h3>
+		<h3><i class="blue icon comments"></i>Comments</h3>
 
 		<div
 			show  = {opts.comments.length}
