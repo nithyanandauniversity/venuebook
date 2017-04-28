@@ -89,11 +89,11 @@
 				</div>
 			</div>
 
-			<h4 class="ui dividing header">
+			<h4 class="ui dividing header" show="{!hideAdmin}">
 				Center Administrator
 			</h4>
 
-			<div class="four fields">
+			<div class="four fields" show="{!hideAdmin}">
 				<div class="field {validation && validation.emptyName && 'error'}">
 					<label for="first_name">First Name</label>
 					<input type="text" ref="first_name" placeholder="First Name" />
@@ -113,16 +113,26 @@
 			</div>
 		</div>
 
-		<div class="ui right aligned grid">
-			<div class="column">
-				<button class="ui large green button" onclick="{save}">
-					SAVE
-				</button>
-				<button class="ui large red button" onclick="{cancel}">
-					{opts.state.view == 'ADD_CENTER' ? 'RESET' : 'CANCEL'}
-				</button>
+		<div class="ui two column grid">
+			<div class="ui left aligned column">
+				<label style="font-size: 0.7em;">
+					<input type="checkbox" onclick="{ toggleCenterAdmin() }" ref = "no_center_admin" />
+					Create Center without an Administrator?
+				</label>
+			</div>
+
+			<div class="ui right aligned column">
+				<div class="column">
+					<button class="ui large green button" onclick="{save}">
+						SAVE
+					</button>
+					<button class="ui large red button" onclick="{cancel}">
+						{opts.state.view == 'ADD_CENTER' ? 'RESET' : 'CANCEL'}
+					</button>
+				</div>
 			</div>
 		</div>
+
 
 	</div>
 
@@ -182,25 +192,16 @@
 		this.countries        = this.parent.opts.countries();
 		this.centerCategories = this.parent.opts.centerCategories;
 
+		toggleCenterAdmin(e) {
+			return(e) => {
+				this.hideAdmin = !this.hideAdmin;
+				this.update();
+			}
+		}
+
 		validateForm(params) {
-			let emailRegex = new RegExp(/^[a-z0-9](\.?[a-z0-9_-]){0,}@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/);
+			let emailRegex  = new RegExp(/^[a-z0-9](\.?[a-z0-9_-]){0,}@[a-z0-9-]+\.([a-z]{1,6}\.)?[a-z]{2,6}$/);
 			this.validation = {};
-
-			if (!params.admin.first_name || params.admin.first_name == '') {
-				this.validation.emptyName = true;
-			}
-
-			if (!this.edit_id && (!params.admin.password || params.admin.password == '')) {
-				this.validation.emptyPassword = true;
-			}
-
-			if (params.admin.email && params.admin.email != '') {
-				this.validation.emptyEmail = false;
-				this.validation.validEmail = emailRegex.test(params.admin.email);
-			}
-			else {
-				this.validation.emptyEmail = true;
-			}
 
 			if (
 				(!params.center.name || params.center.name == '') ||
@@ -214,11 +215,34 @@
 				this.validation.incompleteCenter = true;
 			}
 
-			let is_valid = !this.validation.emptyName && !this.validation.emptyPassword
-				&& (this.validation.validEmail && !this.validation.emptyEmail)
-				&& !this.validation.incompleteCenter;
+			if (params.admin) {
+				if (!params.admin.first_name || params.admin.first_name == '') {
+					this.validation.emptyName = true;
+				}
 
-			return is_valid;
+				if (!this.edit_id && (!params.admin.password || params.admin.password == '')) {
+					this.validation.emptyPassword = true;
+				}
+
+				if (params.admin.email && params.admin.email != '') {
+					this.validation.emptyEmail = false;
+					this.validation.validEmail = emailRegex.test(params.admin.email);
+				}
+				else {
+					this.validation.emptyEmail = true;
+				}
+
+				return !this.validation.emptyName && !this.validation.emptyPassword
+					&& (this.validation.validEmail && !this.validation.emptyEmail)
+					&& !this.validation.incompleteCenter;
+			}
+			else {
+				return !this.validation.incompleteCenter;
+			}
+
+
+
+			// return is_valid;
 		}
 
 		save() {
@@ -257,14 +281,19 @@
 				email      : this.refs.email.value
 			};
 
+			let no_center_admin = this.refs.no_center_admin.checked;
+
 			if (!this.edit_id || (this.refs.password.value && this.refs.password.value != '')) {
 				adminParams.password = this.refs.password.value;
 			}
 
-			return {
-				center : centerParams,
-				admin  : adminParams
-			};
+			let param = { center : centerParams };
+
+			if (!no_center_admin) {
+				param.admin = adminParams;
+			}
+
+			return param;
 		}
 
 		create(data) {
