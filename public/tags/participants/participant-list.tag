@@ -145,7 +145,7 @@
 		remove(e) {
 			return (e) => {
 				if (confirm("Are you sure you want to delete the participant?")) {
-					this.parent.opts.service.remove(e.item.id, (err, response) => {
+					this.parent.opts.service.remove(e.item.member_id, (err, response) => {
 						if (!err) {
 							console.log(response.body().data(), response.statusCode());
 							this.performSearch();

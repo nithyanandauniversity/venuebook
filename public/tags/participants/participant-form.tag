@@ -177,8 +177,22 @@
 								<span class={contact.default && 'ui ribbon label'}>#{i + 1}</span>
 							</td>
 							<td>
+								<select
+									ref   = "{'contact_code_' + i}"
+									style = "width: 150px;"
+									class = "ui search dropdown">
+									<option value="">Select Code...</option>
+									<option
+										each  = {code in dialcodes}
+										value = "({code.dial_code})">
+										{code.name} ({code.dial_code})
+									</option>
+								</select>
+							</td>
+							<td>
 								<input
 									type        = "text"
+									style       = "width: 120px;"
 									ref         = "{'contact_value_' + i}"
 									placeholder = "Contact number" />
 							</td>
@@ -213,7 +227,7 @@
 							</td>
 						</tr>
 					</table>
-					<div style="text-align: center;">
+					<div style = "text-align: center;">
 						<span
 							show  = "{validation && validation.emptyEmail && validation.emptyContact}"
 							class = "ui pointing red basic label">
@@ -221,21 +235,21 @@
 						</span>
 					</div>
 				</div>
-				<div class="eight wide field">
-					<h4 class="ui dividing header">
+				<div class = "eight wide field">
+					<h4 class = "ui dividing header">
 						Address Information
 						<span
-							class="ui primary basic tiny button right floated"
-							style="position: relative; bottom: 10px;"
-							onclick="{addAddress()}">
-							<i class="plus icon"></i> Add
+							class   = "ui primary basic tiny button right floated"
+							style   = "position: relative; bottom: 10px;"
+							onclick = "{addAddress()}">
+							<i class = "plus icon"></i> Add
 						</span>
 					</h4>
 
 					<table class="ui basic table">
 						<tr
-							each="{address, i in addresses}"
-							class="{address.default && 'positive'}">
+							each  = "{address, i in addresses}"
+							class = "{address.default && 'positive'}">
 							<td style="vertical-align: top;">
 								<span class={address.default && 'ui ribbon label'}>#{i + 1}</span>
 							</td>
@@ -288,7 +302,7 @@
 									</div>
 								</div>
 							</td>
-							<td style="width: 65px;">
+							<td style = "width: 65px;">
 								<button
 									class          = "circular mini ui icon olive button"
 									show           = "{!address.default}"
@@ -297,7 +311,7 @@
 									data-inverted  = ""
 									data-variation = "mini"
 									onclick        = "{markAddressDefault()}">
-									<i class="checkmark icon"></i>
+									<i class = "checkmark icon"></i>
 								</button>
 								<button
 									class          = "circular mini ui icon orange button"
@@ -306,12 +320,12 @@
 									data-inverted  = ""
 									data-variation = "mini"
 									onclick        = "{removeAddress()}">
-									<i class="remove icon"></i>
+									<i class = "remove icon"></i>
 								</button>
 							</td>
 						</tr>
 					</table>
-					<div style="text-align: center;">
+					<div style = "text-align: center;">
 						<span
 							show  = "{validation && validation.emptyAddress}"
 							class = "ui pointing red basic label">
@@ -526,13 +540,16 @@
 
 		generateContacts(contacts) {
 			return contacts.reduce((data, record, i) => {
+				let code   = this.refs['contact_code_' + i].value;
+				let number = this.refs['contact_value_' + i].value;
+
 				let contact = {
 					contact_type : this.refs['contact_type_' + i].value,
-					value        : this.refs['contact_value_' + i].value,
+					value        : [code, number].join(' '),
 					default      : record.default
 				}
 
-				if (contact.value && contact.value.length > 0) {
+				if (contact.value && contact.value.length > 0 && contact.value[0] == '(') {
 					data.push(contact);
 				}
 
@@ -542,8 +559,10 @@
 
 		assignContacts(contacts) {
 			contacts.forEach((contact, i) => {
+				let number = contact.value.split(' ');
+				this.refs['contact_code_' + i].value  = number.shift();
+				this.refs['contact_value_' + i].value = number.join(' ');
 				this.refs['contact_type_' + i].value  = contact.contact_type;
-				this.refs['contact_value_' + i].value = contact.value;
 			});
 		}
 
