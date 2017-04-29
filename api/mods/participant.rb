@@ -56,6 +56,12 @@ module Venuebook
 				end
 			end
 
+			post '/:id/comments' do
+				if authorize! :update, Participant
+					return Participant.create_comments(params[:id], params)
+				end
+			end
+
 			# params do
 			# 	optional :csv, type: File, desc: 'csv containing users to be invited'
 			# end

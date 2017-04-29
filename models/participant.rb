@@ -27,6 +27,11 @@ class Participant < Sequel::Model
 		JSON.parse(response.body)
 	end
 
+	def self.create_comments(id, params)
+		response = RestClient.post PARBOOK_URL + "/#{id}/comments", params
+		JSON.parse(response.body)
+	end
+
 	def self.get_events(member_id)
 		events = {}
 
