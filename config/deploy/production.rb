@@ -26,6 +26,9 @@ role :web, %w{iamsaravana.com}
 role :db,  %w{iamsaravana.com}
 
 set :branch, 'saravana-dev'
+# set :branch, 'master'
+set :deploy_to, '/var/www/venuebook'
+set :rails_env, :production
 
 
 # Configuration
