@@ -3,7 +3,7 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-server "globaltof.nithyananda.org", user: "saravana", roles: %w{app db web}, primary: true
+server "globaltof.nithyananda.org", user: "webadmin", roles: %w{app db web}, primary: true
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
