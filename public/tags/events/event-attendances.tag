@@ -643,9 +643,9 @@
 			for (let i = 0; i < attendances.length; i++) {
 				let att = attendances[i];
 
-				this.refs['payment_status_' + i].value      = att.payment_status;
-				this.refs['payment_method_' + i].value      = att.payment_method;
-				this.refs['amount_' + i].value              = att.amount;
+				this.refs['payment_status_' + i].value = att.payment_status;
+				this.refs['payment_method_' + i].value = att.payment_method;
+				this.refs['amount_' + i].value         = att.amount;
 			}
 
 			// $(".search.ui.dropdown").dropdown();

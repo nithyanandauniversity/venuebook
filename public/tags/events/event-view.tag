@@ -312,8 +312,22 @@
 				this.groupAttendances(attendances);
 			}
 			else {
-				this.registrations = data.filter((a) => { return a.attendance < 3 });
-				this.attendances   = data.filter((a) => { return a.attendance > 1 });
+				// this.registrations = data.filter((a) => { return a.attendance < 3 });
+				this.registrations = data.reduce( (arr = [], reg, idx) => {
+					if (reg.attendance < 3) {
+						reg[reg.attendance_date] = reg.venue_id;
+						arr.push(reg);
+					}
+					return arr;
+				}, []);
+				// this.attendances   = data.filter((a) => { return a.attendance > 1 });
+				this.attendances   = data.reduce( (arr = [], att, idx) => {
+					if (att.attendance > 1) {
+						att[att.attendance_date] = att.venue_id;
+						arr.push(att);
+					}
+					return arr;
+				}, []);
 			}
 		}
 
