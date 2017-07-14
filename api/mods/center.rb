@@ -19,7 +19,9 @@ module Venuebook
 
 					return {
 						center: center,
-						venues: center.venues,
+						venues: center.venues.collect { |venue|
+							JSON.parse(venue.to_json(:include => :address))
+						},
 						admin: center.admin
 					}
 				end

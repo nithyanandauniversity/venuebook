@@ -71,6 +71,25 @@
 					</h3>
 
 					<div
+						class = "ui list"
+						show  = "{venues.length > 0}">
+						<div
+							class = "item"
+							each  = "{venue in venues}">
+							<i class = "icon map pin"></i>
+							<div class="content" style="width: 100%;">
+								<div class="header">{venue.name}</div>
+								<div class="description">
+									<span>{venue.address.street}, {venue.address.city}</span><br />
+									<span show="{venue.address.state != ''}">{venue.address.state},</span>
+									<span show="{venue.address.postal_code != ''}">{venue.address.postal_code}.</span>
+									<span show="{venue.address.country}"><strong>{venue.address.country}.</strong></span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div
 						class = "ui message red"
 						show  = "{venues.length == 0}">
 						No Venues Available
@@ -114,3 +133,4 @@
 
 	</script>
 </center-view>
+

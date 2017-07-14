@@ -9,7 +9,7 @@ module Venuebook
 
 			get do
 				if authorize! :read, Venue
-					if params[:center_id] && current_user['center_id'] == params[:center_id].to_i
+					if params[:center_id] #&& current_user['center_id'] == params[:center_id].to_i
 						venues = Venue.where(center_id: params[:center_id])
 
 						[{ venues: JSON.parse(venues.to_json(:include => :address)) }]
