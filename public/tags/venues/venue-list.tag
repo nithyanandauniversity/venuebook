@@ -50,7 +50,8 @@
 
 		loadVenuesList() {
 			this.parent.opts.service.search({
-				center_id: this.parent.currentUser.center_id
+				center_id : this.parent.currentUser.center_id,
+				version   : Date.now()
 			}, (err, response) => {
 				if (!err) {
 					this.venues = this.getData(response.body()[0])['venues'];
