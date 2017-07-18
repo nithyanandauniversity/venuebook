@@ -77,6 +77,7 @@
 			this.refs.program_name.value = '';
 			this.refs.program_type.value = '';
 			this.validation              = {};
+			this.parent.reloadList();
 		}
 
 		create(data) {
