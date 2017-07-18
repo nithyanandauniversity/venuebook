@@ -65,7 +65,7 @@
 		}
 
 		loadProgramsList() {
-			this.parent.opts.service.search(null, (err, response) => {
+			this.parent.opts.service.search({version: Date.now()}, (err, response) => {
 				if (!err) {
 					this.programs = this.getData(response.body()[0])['programs'];
 					this.generateProgramListByGroup();

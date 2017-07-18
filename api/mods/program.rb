@@ -68,3 +68,4 @@ module Venuebook
 		end
 	end
 end
+
