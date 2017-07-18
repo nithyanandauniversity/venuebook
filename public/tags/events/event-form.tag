@@ -401,7 +401,8 @@
 
 		loadVenues() {
 			this.parent.opts.venueService.search({
-				center_id: this.currentUser.center_id
+				center_id : this.currentUser.center_id,
+				version   : Date.now()
 			}, (err, response) => {
 				if (!err) {
 					this.allVenues = this.getData(response.body()[0])['venues'];
