@@ -87,7 +87,8 @@
 					let params = {
 						page    : 1,
 						limit   : 15,
-						keyword : query
+						keyword : query,
+						version : Date.now()
 					};
 
 					this.opts.centerService.search(params, (err, response) => {

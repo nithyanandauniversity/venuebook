@@ -135,11 +135,11 @@
 					else {
 						// NO RESULTS
 					}
-					this.update();
 				}
 				else {
 					console.log("ERROR !");
 				}
+				this.update();
 			});
 		}
 
