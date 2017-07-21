@@ -526,7 +526,8 @@
 					let params = {
 						page    : 1,
 						limit   : 10,
-						keyword : query
+						keyword : query,
+						version : Date.now()
 					}
 
 					this.parent.opts.centerService.search(params, (err, response) => {

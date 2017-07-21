@@ -712,7 +712,8 @@
 					let params = {
 						page    : 1,
 						limit   : 15,
-						keyword : query
+						keyword : query,
+						version : Date.now()
 					};
 
 					if (this.currentUser.role > 2) {

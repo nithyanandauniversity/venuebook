@@ -189,6 +189,7 @@
 		}
 
 		getParticipants(params) {
+			params.version = Date.now();
 
 			if (this.parent.searchQ) {
 				params.keyword = this.parent.searchQ;

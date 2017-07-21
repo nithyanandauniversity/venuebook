@@ -25,7 +25,7 @@ export default class ParticipantService {
 
 	get(id, callback) {
 		this.reloadApi();
-		this.api.one('participants', id).get()
+		this.api.one('participants', id).get({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})
@@ -38,7 +38,7 @@ export default class ParticipantService {
 		this.reloadApi();
 		this.api.one('participants', id)
 			.all('events')
-			.getAll()
+			.getAll({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})

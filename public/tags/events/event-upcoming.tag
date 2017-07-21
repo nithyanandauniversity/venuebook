@@ -69,7 +69,10 @@
 		}
 
 		loadUpcoming() {
-			let params = {upcoming : true};
+			let params = {
+				upcoming : true,
+				version  : Date.now()
+			};
 
 			if (this.currentUser) {
 				params.center_id = this.currentUser.center_id;

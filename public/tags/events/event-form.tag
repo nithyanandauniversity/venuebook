@@ -386,7 +386,7 @@
 		}
 
 		loadPrograms() {
-			this.parent.opts.programService.search(null, (err, response) => {
+			this.parent.opts.programService.search({version : Date.now()}, (err, response) => {
 				if (!err) {
 					this.programs = this.getData(response.body()[0])['programs'];
 					this.generateProgramListByGroup();
@@ -417,8 +417,9 @@
 
 		loadCoordinators() {
 			this.parent.opts.userService.find({
-				search_coordinators: true,
-				center_id: this.currentUser.center_id
+				search_coordinators : true,
+				center_id           : this.currentUser.center_id,
+				version             : Date.now()
 			}, (err, response) => {
 				if (!err) {
 					this.allCoordinators = this.getData(response.body()[0])['users'];

@@ -104,8 +104,9 @@
 
 		getDefaultQueryParams() {
 			return {
-				page  : this.getPage(),
-				limit : this.perPage
+				page    : this.getPage(),
+				limit   : this.perPage,
+				version : Date.now()
 			}
 		}
 

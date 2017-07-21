@@ -14,7 +14,7 @@ export default class SettingService {
 
 	get(callback) {
 		this.reloadApi();
-		this.collection.getAll()
+		this.collection.getAll({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})
@@ -25,7 +25,7 @@ export default class SettingService {
 
 	getByName(name, callback) {
 		this.reloadApi();
-		this.collection.getAll({name: name})
+		this.collection.getAll({name: name, version: Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})

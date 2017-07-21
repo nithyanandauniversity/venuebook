@@ -25,7 +25,7 @@ export default class UserService {
 
 	get(id, callback) {
 		this.reloadApi();
-		this.api.one('users', id).get()
+		this.api.one('users', id).get({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})

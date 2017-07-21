@@ -130,7 +130,8 @@
 					let params = {
 						page    : 1,
 						limit   : 10,
-						keyword : query
+						keyword : query,
+						version : Date.now()
 					}
 
 					// if (this.opts.currentUser.role > 2) {

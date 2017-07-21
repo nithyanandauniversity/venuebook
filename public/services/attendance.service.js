@@ -14,7 +14,7 @@ export default class AttendanceService {
 
 	get(id, callback) {
 		this.reloadApi();
-		this.api.one('event_attendances', id).get()
+		this.api.one('event_attendances', id).get({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})

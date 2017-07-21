@@ -14,7 +14,7 @@ export default class ProgramService {
 
 	get(id, callback) {
 		this.reloadApi();
-		this.api.one('venues', id).get()
+		this.api.one('venues', id).get({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})

@@ -25,7 +25,7 @@ export default class CenterService {
 
 	get(id, callback) {
 		this.reloadApi();
-		this.api.one('centers', id).get()
+		this.api.one('centers', id).get({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})

@@ -47,7 +47,7 @@ export default class EventService {
 
 	get(id, callback) {
 		this.reloadApi();
-		this.api.one('events', id).get()
+		this.api.one('events', id).get({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})
@@ -60,7 +60,7 @@ export default class EventService {
 		this.reloadApi();
 		this.api.one('events', id)
 			.all('event_attendances')
-			.getAll()
+			.getAll({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})

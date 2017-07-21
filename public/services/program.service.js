@@ -14,7 +14,7 @@ export default class ProgramService {
 
 	getProgramTypes(callback) {
 		this.reloadApi();
-		this.collection.getAll({only_types: true})
+		this.collection.getAll({only_types: true, version: Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})
@@ -25,7 +25,7 @@ export default class ProgramService {
 
 	get(id, callback) {
 		this.reloadApi();
-		this.api.one('programs', id).get()
+		this.api.one('programs', id).get({version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})
