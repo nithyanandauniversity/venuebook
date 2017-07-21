@@ -8,6 +8,7 @@ export default class ProgramService {
 
 	reloadApi() {
 		this.api.header('Token', sessionStorage.getItem('HTTP_TOKEN'));
+		this.api.header('Cache-Control', 'max-age=3600');
 		this.collection = this.api.all('programs');
 	}
 
