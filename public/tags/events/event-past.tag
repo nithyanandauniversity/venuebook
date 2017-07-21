@@ -104,13 +104,13 @@
 
 		getDefaultQueryParams() {
 			return {
-				page    : this.getPage(),
-				limit   : this.perPage,
-				version : Date.now()
+				page  : this.getPage(),
+				limit : this.perPage,
 			}
 		}
 
 		getPast(params) {
+			params.version = Date.now();
 			// if (this.parent.searchQ) {
 			// 	params.keyword = this.parent.searchQ;
 			// }
