@@ -198,7 +198,7 @@
 					</div>
 					<div class = "field {validation && validation.emptyEmail && 'error'}">
 						<label>Email</label>
-						<div class = "ui {edit_id && 'disabled'} input">
+						<div class = "ui {edit_id || role > 1 && 'disabled'} input">
 							<input type = "text" ref = "email" placeholder = "Email Address" />
 						</div>
 						<div

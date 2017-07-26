@@ -10,6 +10,7 @@ module Venuebook
 			post do
 				if authorize! :create, EventAttendance
 					data = params[:attendance]
+					data[:created_by] = current_user['id']
 
 					# puts "DATA IS :: #{data.inspect}\n\n"
 

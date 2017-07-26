@@ -12,6 +12,7 @@ class EventAttendance < Sequel::Model
 		attendances = JSON.parse(EventAttendance.where(event_id: event_id).to_json())
 
 		event_attendances = attendances.collect { |attendance|
+			attendance['creator']     = attendance['created_by'] && User.find(id: attendance['created_by']) || {}
 			attendance['participant'] = Participant.get(attendance['member_id'])
 			attendance['venue']       = Venue.find(id: attendance['venue_id'])
 			attendance

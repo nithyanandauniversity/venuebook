@@ -8,6 +8,15 @@ class Event < Sequel::Model
 	many_to_many :users, :left_key => :event_id, :right_key => :user_id, :join_table => :event_venues
 	many_to_one :program
 
+
+	def creator
+		if created_by && User.find(id: created_by)
+			User.find(id: created_by)
+		else
+			{}
+		end
+	end
+
 	def get_attendance_csv(params)
 
 		smkts = ["None", "Volunteer", "Thanedar", "Kotari", "Mahant", "Sri Mahant"]

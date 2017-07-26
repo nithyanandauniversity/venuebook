@@ -67,6 +67,7 @@ module Venuebook
 
 						{
 							event: JSON.parse(event.to_json()),
+							creator: event.creator,
 							program: program,
 							event_venues: event_venues,
 							attendances: EventAttendance.all_attendances(event.id)
@@ -89,9 +90,10 @@ module Venuebook
 			post do
 				if authorize! :create, Event
 					event    = Event.create(params[:event])
+					creator  = current_user['id']
 					reg_code = (event.id * 5 * 6 * 7 * 8).to_s(36)
 					uuid     = SecureRandom.uuid
-					event.update(uuid: uuid, registration_code: reg_code)
+					event.update(uuid: uuid, registration_code: reg_code, created_by: creator)
 
 					if params[:venues] && params[:venues].length > 0
 						params[:venues].each do |v|
