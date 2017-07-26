@@ -52,6 +52,7 @@ module Venuebook
 
 			post do
 				if authorize! :create, Participant
+					params[:participant]['created_by'] = current_user['id']
 					participant = Participant.create(params)
 				end
 			end
