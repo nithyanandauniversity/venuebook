@@ -120,6 +120,7 @@
 			</div>
 			<div class="seven wide column">
 				<participant-comments
+					if       = "{participant.comments}"
 					comments = "{participant.comments}">
 				</participant-comments>
 
