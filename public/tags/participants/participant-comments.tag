@@ -37,12 +37,13 @@
 			<span>No Comments for this user!</span>
 		</div>
 
-		<div class="ui fluid icon input">
+		<div class="ui fluid icon input {emptyVal && 'error'}">
 			<input
 				type        = "text"
 				id          = "commentInput"
 				ref         = "comment"
 				onkeypress  = "{ saveComment() }"
+				onkeyup     = "{ checkThis() }"
 				placeholder = "Enter a comment for the user..." />
 			<i class="icon comment"></i>
 		</div>
@@ -76,12 +77,29 @@
 					let comment = this.refs.comment.value;
 					this.refs.comment.value = '';
 
+					if (comment == '' || !comment.length) {
+						this.emptyVal = true;
+						return false;
+					}
+
+					this.emptyVal = false;
 					if (!this.commentId) {
 						this.createComment(comment);
 					}
 					else {
 						this.updateComment(comment);
 					}
+				}
+			}
+		}
+
+		checkThis(e) {
+			return(e) => {
+				if (e.which == 27 && this.commentId) {
+					this.commentId          = null;
+					this.emptyVal           = false;
+					this.refs.comment.value = '';
+					this.update();
 				}
 			}
 		}
