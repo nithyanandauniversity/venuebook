@@ -63,6 +63,12 @@ module Venuebook
 				end
 			end
 
+			put '/:id/comments/:comment_id' do
+				if authorize! :update, Participant
+					return Participant.update_comments(params[:id], params[:comment_id], params)
+				end
+			end
+
 			# params do
 			# 	optional :csv, type: File, desc: 'csv containing users to be invited'
 			# end

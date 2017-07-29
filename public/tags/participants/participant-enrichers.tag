@@ -11,7 +11,7 @@
 				style = "border-bottom: 1px solid #ccc;"
 				each  = {friend in opts.friends}>
 				<div class = "content">
-					<a href = "" class = "author">{friend.first_name} {friend.last_name}</a>
+					<a class = "author">{friend.first_name} {friend.last_name}</a>
 					<div class = "metadata">{friend.email}</div>
 				</div>
 			</div>

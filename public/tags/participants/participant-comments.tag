@@ -16,7 +16,17 @@
 				<div class = "content">
 					<a href = "" class = "author">{comment.created_by}</a>
 					<div class = "metadata">{comment.created_at}</div>
-					<div class = "text">{comment.content}</div>
+					<div class = "text">
+						<span>{comment.content}</span>
+						<span
+							class   = "right floated"
+							title   = "Edit Comment"
+							style   = "cursor: pointer;"
+							onclick = "{ editComment() }"
+							show    = "{comment.created_by == getCurrentUser()}">
+							<i class="teal icon edit"></i>
+						</span>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -29,14 +39,15 @@
 
 		<div class="ui fluid icon input">
 			<input
-				type        ="text"
-				ref         ="comment"
-				onkeypress  ="{ createComment() }"
-				placeholder ="Enter a comment for the user..." />
+				type        = "text"
+				id          = "commentInput"
+				ref         = "comment"
+				onkeypress  = "{ saveComment() }"
+				placeholder = "Enter a comment for the user..." />
 			<i class="icon comment"></i>
 		</div>
 
-		<div class="ui pointing red label">This doesn't work now</div>
+		<!-- <div class="ui pointing red label">This doesn't work now</div> -->
 
 	</div>
 
@@ -44,24 +55,62 @@
 	<script>
 
 		this.comments = this.opts.comments;
+		this.currentUser = this.parent.currentUser;
 
-		createComment(e) {
+		getCurrentUser() {
+			return this.currentUser.email;
+		}
+
+		editComment(e) {
+			return(e) => {
+				let comment = e.item.comment;
+				this.commentId = comment.id;
+				this.refs.comment.value = comment.content;
+				$("#commentInput").focus();
+			}
+		}
+
+		saveComment(e) {
 			return(e) => {
 				if (e.which == 13) {
 					let comment = this.refs.comment.value;
 					this.refs.comment.value = '';
 
-					this.parent.createComment(comment, (err, response) => {
-						if (!err) {
-							if (response && response.body() && response.body().data()) {
-								this.comments = response.body().data().comments;
-								this.update();
-							}
-						}
-					});
+					if (!this.commentId) {
+						this.createComment(comment);
+					}
+					else {
+						this.updateComment(comment);
+					}
 				}
 			}
 		}
+
+		createComment(comment) {
+			this.parent.createComment(comment, (err, response) => {
+				if (!err) {
+					if (response && response.body() && response.body().data()) {
+						this.comments = response.body().data().comments;
+						this.update();
+					}
+				}
+			});
+		}
+
+		updateComment(comment) {
+			this.parent.updateComment(this.commentId, comment, (err, response) => {
+				if (!err) {
+					if (response && response.body() && response.body().data()) {
+						this.comments = response.body().data().comments;
+						this.update();
+					}
+				}
+			});
+		}
+
+		setTimeout(() => {
+			this.update();
+		}, 100);
 	</script>
 
 </participant-comments>

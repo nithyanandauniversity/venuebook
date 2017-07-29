@@ -57,7 +57,7 @@ describe 'User API' do
 
 		response = JSON.parse(last_response.body)
 
-		expect(response['email']).to eql nil
+		expect(response['email']).to eql "sgsaravana@gmail.com"
 		expect(response['role']).to eql 1
 	end
 

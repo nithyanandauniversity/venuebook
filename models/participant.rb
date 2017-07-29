@@ -32,6 +32,11 @@ class Participant < Sequel::Model
 		JSON.parse(response.body)
 	end
 
+	def self.update_comments(id, comment_id, params)
+		response = RestClient.put PARBOOK_URL + "/#{id}/comments/#{comment_id}", params
+		JSON.parse(response.body)
+	end
+
 	def self.get_events(member_id)
 		events = {}
 

@@ -184,12 +184,22 @@
 		}
 
 		createComment(content, callback) {
-			let params = {
+			let params = { comment : {
 				content    : content,
 				created_by : this.currentUser.email
-			}
+			} };
 
 			this.parent.opts.service.createComment(this.participant.member_id, params, callback);
+		}
+
+		updateComment(commentId, content, callback) {
+			let params = { comment : {
+				content : content
+			} };
+
+			if (commentId) {
+				this.parent.opts.service.updateComment(this.participant.member_id, commentId, params, callback);
+			}
 		}
 
 		if (this.view_id) {

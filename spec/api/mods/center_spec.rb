@@ -4,6 +4,7 @@ describe "Center" do
 
    before(:all) do
       User.dataset.all { |u| u.destroy }
+      Center.dataset.all { |c| c.destroy }
       user = User.create(first_name: "Saravana", last_name: "B", email: "sgsaravana@gmail.com", password: "123123", role: 1)
 
       post "/api/v1/sessions/login", auth: {
@@ -40,7 +41,7 @@ describe "Center" do
 
       post '/api/v1/centers', {
          center: {name:"Yogam Center", state: "Singapore", country: "Singapore"},
-         admin: {first_name: "Saravana", email: "saravana@gmail.com", password: "123111"}
+         admin: {first_name: "Saravana", email: "saravana11@gmail.com", password: "123111"}
       }, {'HTTP_TOKEN' => @token}
 
       res = JSON.parse(last_response.body)
@@ -50,7 +51,7 @@ describe "Center" do
       response = JSON.parse(last_response.body)
 
       expect(response['center']['name']).to eql "Yogam Center"
-      expect(response['admin']['email']).to eql "saravana@gmail.com"
+      expect(response['admin']['email']).to eql "saravana11@gmail.com"
       expect(response['admin']['role']).to eql 3
    end
 
@@ -116,7 +117,7 @@ describe "Center" do
       Center.dataset.all { |c| c.destroy }
       post '/api/v1/centers', {
          center: {name:"Yogam", state: "Singapore", country: "Singapore"},
-         admin: {first_name: "Saravana", email: "saravana@gmail.com", password: "123111"}
+         admin: {first_name: "Saravana", email: "saravana12@gmail.com", password: "123111"}
       }, {'HTTP_TOKEN' => @token}
 
       res    = JSON.parse(last_response.body)

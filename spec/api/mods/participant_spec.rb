@@ -175,7 +175,7 @@ describe 'Participant' do
 		response = JSON.parse(last_response.body)
 
 		participant    = Participant.get(response['member_id'])
-		participant_id = participant['id']
+		participant_id = participant['member_id']
 
 		expect(participant['addresses'].length).to eql 2
 		expect(participant['contacts'].length).to eql 2
@@ -203,7 +203,7 @@ describe 'Participant' do
 	it "should be able to edit participant" do
 		participant = Participant.create({participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}})
 
-		put "api/v1/participants/#{participant['id']}", {participant: {last_name:"B"}}, {'HTTP_TOKEN' => @token}
+		put "api/v1/participants/#{participant['member_id']}", {participant: {last_name:"B"}}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 
@@ -215,7 +215,7 @@ describe 'Participant' do
 	it "should be able to delete participant" do
 		participant = Participant.create({participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}})
 
-		delete "api/v1/participants/#{participant['id']}", nil, {'HTTP_TOKEN' => @token}
+		delete "api/v1/participants/#{participant['member_id']}", nil, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
 

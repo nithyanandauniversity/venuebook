@@ -71,6 +71,19 @@ export default class ParticipantService {
 			});
 	}
 
+	updateComment(id, commentId, params, callback) {
+		this.reloadApi();
+		this.api.one('participants', id)
+			.all('comments')
+			.put(commentId, params)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 	import(file, callback) {
 		this.reloadApi();
 		this.uploadUrl = this.api.custom('participants/import_file')
