@@ -9,6 +9,39 @@ class Participant < Sequel::Model
 		JSON.parse(response.body)
 	end
 
+	def self.download(params)
+		response = RestClient.get PARBOOK_URL, {params: params}
+		results  = JSON.parse(response.body)
+
+		smkts = ["None", "Volunteer", "Thanedar", "Kotari", "Mahant", "Sri Mahant"]
+
+		csv = []
+		csv << [
+			"First name", "Last name", "Email Address", "Contact number", "IA Graduate", "SMKT", "Gender", "Created by", "Created at"
+		]
+
+		results.each do |participant|
+			attribute = JSON.parse(participant['participant_attributes'])
+			number    = participant['contact'] ? participant['contact']['value'] : ''
+			smkt      = smkts[attribute['role'] || 0]
+			creator   = User.find(id: participant['created_by'])
+
+			csv << [
+				participant['first_name'],
+				participant['last_name'],
+				participant['email'],
+				number,
+				attribute['ia_graduate'] ? "Yes" : "No",
+				smkt,
+				participant['gender'] ? "Yes" : "No",
+				creator,
+				participant['created_at']
+			]
+		end
+
+		csv
+	end
+
 	def self.get(id)
 		response    = RestClient.get PARBOOK_URL + "/#{id}"
 		participant = JSON.parse(response.body)

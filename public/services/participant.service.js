@@ -23,6 +23,20 @@ export default class ParticipantService {
 			});
 	}
 
+	getParticipantsReport(params, callback) {
+		console.log("params");
+		console.log(params);
+
+		this.reloadApi();
+		this.collection.getAll({download: params})
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 	get(id, callback) {
 		this.reloadApi();
 		this.api.one('participants', id).get({version : Date.now()})
@@ -73,7 +87,7 @@ export default class ParticipantService {
 
 	updateComment(id, commentId, params, callback) {
 		this.reloadApi();
-		this.api.one('participants', id)
+		this.collection.getAll('participants',)
 			.all('comments')
 			.put(commentId, params)
 			.then((response) => {

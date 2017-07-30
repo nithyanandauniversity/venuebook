@@ -15,26 +15,37 @@ module Venuebook
 						# params[:search][:center_code] ||= current_user['center_code']
 					end
 
-					ext_search = params[:search][:ext_search] || nil
+					if params[:search]
+						puts "Search !!!"
+						ext_search = params[:search][:ext_search] || nil
 
-					if ext_search && !ext_search.blank?
+						if ext_search && !ext_search.blank?
 
-						if ext_search[:areas] && ext_search[:areas].length > 0
+							if ext_search[:areas] && ext_search[:areas].length > 0
 
-							params[:search][:center_codes] = Center.get_codes_by_areas(ext_search[:areas])
+								params[:search][:center_codes] = Center.get_codes_by_areas(ext_search[:areas])
 
-						elsif ext_search[:countries] && ext_search[:countries].length > 0
+							elsif ext_search[:countries] && ext_search[:countries].length > 0
 
-							params[:search][:center_codes] = Center.get_codes_by_countries(ext_search[:countries])
+								params[:search][:center_codes] = Center.get_codes_by_countries(ext_search[:countries])
 
-						elsif ext_search[:centers] && ext_search[:centers].length > 0
+							elsif ext_search[:centers] && ext_search[:centers].length > 0
 
-							params[:search][:center_codes] = ext_search[:centers]
+								params[:search][:center_codes] = ext_search[:centers]
 
+							end
 						end
+
+						return Participant.search(params)
+
+					elsif params[:download]
+						puts "Download !!!"
+						return Participant.download(params)
+
+					else
+						puts "PARAMS HERE !!! #{params.inspect}"
 					end
 
-					return Participant.search(params)
 				end
 			end
 

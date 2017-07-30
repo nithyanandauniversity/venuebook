@@ -101,13 +101,20 @@
 					</div>
 					<div class="ui left aligned column grid">
 						<div class="row">
-							<div class="ui left aligned column">
+							<div class="ui left aligned eight wide column">
 								<span style="margin-right: 10px;">
 									<i class="icon trophy green"></i>- IA Graduate
 								</span>
 								<span>
 									<i class="icon heart red"></i>- Healer
 								</span>
+							</div>
+							<div class="ui right aligned eight wide column">
+								<button
+									class = "ui green button tiny {downloadProgress && 'disabled'}"
+									onclick = "{ downloadAllParticipantsList() }">
+									<i class = "icon download"></i> Download All
+								</button>
 							</div>
 						</div>
 					</div>
@@ -223,6 +230,38 @@
 					console.log("ERROR !");
 				}
 			});
+		}
+
+		downloadAllParticipantsList(e) {
+			return(e) => {
+				if (this.downloadProgress) {
+					return false;
+				}
+
+				this.downloadProgress = true;
+				this.parent.opts.service.getParticipantsReport({download: true}, (err, response) => {
+
+					if (!err) {
+						let data       = response.body();
+						let csvContent = "data:text/csv;charset=utf-8,";
+
+						data.forEach((info, i) => {
+							let dataString = info.data().join(",");
+							csvContent += i < data.length ? dataString+ "\n" : dataString;
+						});
+
+
+						let encodedUri = encodeURI(csvContent);
+						let link = document.createElement("a");
+						link.setAttribute("href", encodedUri);
+						link.setAttribute("download", "attendance_list.csv");
+						document.body.appendChild(link);
+						this.downloadProgress = false;
+						link.click();
+						this.update();
+					}
+				});
+			}
 		}
 
 		performSearch() {
