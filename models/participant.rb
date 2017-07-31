@@ -34,7 +34,7 @@ class Participant < Sequel::Model
 				attribute['ia_graduate'] ? "Yes" : "No",
 				smkt,
 				participant['gender'] ? "Yes" : "No",
-				creator,
+				"#{creator.first_name} #{creator.last_name}",
 				participant['created_at']
 			]
 		end

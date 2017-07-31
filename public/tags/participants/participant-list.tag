@@ -237,9 +237,16 @@
 				if (this.downloadProgress) {
 					return false;
 				}
+				let params = {
+					version: Date.now()
+				}
+
+				if (this.currentUser) {
+					params.center_code = this.currentUser.center_code;
+				}
 
 				this.downloadProgress = true;
-				this.parent.opts.service.getParticipantsReport({download: true}, (err, response) => {
+				this.parent.opts.service.getParticipantsReport(params, (err, response) => {
 
 					if (!err) {
 						let data       = response.body();
@@ -254,7 +261,7 @@
 						let encodedUri = encodeURI(csvContent);
 						let link = document.createElement("a");
 						link.setAttribute("href", encodedUri);
-						link.setAttribute("download", "attendance_list.csv");
+						link.setAttribute("download", "all_participants_" + Date.now() + ".csv");
 						document.body.appendChild(link);
 						this.downloadProgress = false;
 						link.click();
