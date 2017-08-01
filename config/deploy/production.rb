@@ -25,7 +25,7 @@ role :app, %w{globaltof.nithyananda.org}
 role :web, %w{globaltof.nithyananda.org}
 role :db,  %w{globaltof.nithyananda.org}
 
-set :branch, 'saravana-dev'
+set :branch, 'release_1.0.0-beta'
 # set :branch, 'master'
 set :deploy_to, '/var/www/venuebook'
 set :rails_env, :production
