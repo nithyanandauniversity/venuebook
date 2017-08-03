@@ -6,6 +6,18 @@ module DataImport
 
 	module Participant
 
+		def self.generate_countries_list
+			countries = []
+			COUNTRIES_YML.each do |code, country|
+				countries << {
+					code: code,
+					name: "#{country} (#{code})",
+					country: country
+				}
+			end
+			countries
+		end
+
 		def self.import(creator, file)
 			puts "Module DataImport::Participant.import works !"
 			puts "#{PARBOOK_URL}/import_file"
@@ -14,6 +26,47 @@ module DataImport
 				puts response.inspect
 			rescue RestClient::Exception => e
 				puts e.body
+			end
+		end
+
+		def self.download(params)
+			countries_list = Participant.generate_countries_list()
+
+			response = RestClient.get PARBOOK_URL, {params: {
+				download: {
+					center_code: params[:center_code],
+					with_address: true,
+					with_contacts: true
+				}
+			}}
+
+			results  = JSON.parse(response.body)
+			center = Center.find(code: params[:center_code])
+			smkts = ["N", "V", "T", "K", "M", "S"]
+
+			CSV.open("participants_#{params[:center_code]}.csv", "w")  do |csv|
+				csv << [
+					"Member ID", "First name", "Last name", "Gender", "Email Address", "Spiritual Name",
+					"Primary contact", "type", "Secondary contact", "type", "IA Graduate?", "IA Dates", "Healer", "SMKT Role",
+					"Street", "City", "State", "Postal Code", "Country", "Notes", "Primary center"
+				]
+
+				results.each do |par|
+					contact1   = par['contacts'][0] || {}
+					contact2   = par['contacts'][1] || {}
+					address    = par['address'] || {}
+					attributes = JSON.parse(par['participant_attributes'])
+
+					csv << [
+						par['member_id'], par['first_name'], par['last_name'], par['gender'] ? par['gender'][0] : '', par['email'], par['other_names'],
+						contact1['value'], contact1['contact_type'] ? contact1['contact_type'][0] : '', contact2['number'], contact2['contact_type'] ? contact2['contact_type'][0] : '',
+						attributes['ia_graduate'] ? "Y" : "N", attributes['ia_dates'], attributes['is_healer'] ? "Y" : "N", smkts[attributes['role'] || 0],
+						address['street'], address['city'], address['state'], address['postal_code'], address['country'], par['notes'],
+						"#{params[:center_number]} - #{params[:center_code]} - #{center[:name]}"
+					]
+				end
+
+				csv
 			end
 		end
 	end
