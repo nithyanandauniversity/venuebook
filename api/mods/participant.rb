@@ -57,7 +57,7 @@ module Venuebook
 
 			get '/:id/events' do
 				if authorize! :read, Participant
-					return Participant.get_events(params[:id])
+					return Participant.get_events(params[:id], params[:attendance_only])
 				end
 			end
 

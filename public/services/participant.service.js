@@ -52,7 +52,7 @@ export default class ParticipantService {
 		this.reloadApi();
 		this.api.one('participants', id)
 			.all('events')
-			.getAll({version : Date.now()})
+			.getAll({attendance_only: true, version : Date.now()})
 			.then((response) => {
 				callback(null, response);
 			})

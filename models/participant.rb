@@ -47,7 +47,11 @@ class Participant < Sequel::Model
 		participant = JSON.parse(response.body)
 
 		participant['center']       = Center.find(code: participant['center_code'])
-		participant['events_count'] = EventAttendance.where(member_id: participant['member_id'])
+		participant['events_count'] = EventAttendance.where(member_id: participant['member_id']).exclude(attendance: EventAttendance::REGISTERED)
+			.map { |attendance|
+				attendance.event_id
+			}.compact.uniq.length
+		participant['registration_count'] = EventAttendance.where(member_id: participant['member_id'], attendance: EventAttendance::REGISTERED)
 			.map { |attendance|
 				attendance.event_id
 			}.compact.uniq.length
@@ -70,10 +74,12 @@ class Participant < Sequel::Model
 		JSON.parse(response.body)
 	end
 
-	def self.get_events(member_id)
+	def self.get_events(member_id, attendance_only)
 		events = {}
 
-		EventAttendance.where(member_id: member_id).each do |attendance|
+		attendances = EventAttendance.where(member_id: member_id)
+		attendances = attendances.exclude(attendance: EventAttendance::REGISTERED) if attendance_only
+		attendances.each do |attendance|
 			if !events[attendance.event_id.to_s.to_sym]
 				event = Event.find(id: attendance.event_id)
 				events[attendance.event_id.to_s.to_sym] = JSON.parse(event.to_json)
