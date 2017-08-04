@@ -13,10 +13,10 @@
 	</nav>
 
 	<pages
-		if       = {opts.store.getState().routes.path != 'LOGIN'}
-		store    = {opts.store}
-		state    = {opts.store.getState().participants}
-		services = {opts.services}>
+		if       = "{opts.store.getState().routes.path != 'LOGIN'}"
+		store    = "{opts.store}"
+		state    = "{opts.store.getState().participants}"
+		services = "{opts.services}">
 	</pages>
 
 	<script>
@@ -66,6 +66,8 @@
 		}
 
 		this.authenticate();
+
+		$("#init-loader").hide();
 	</script>
 
 </app>
