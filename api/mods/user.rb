@@ -59,6 +59,9 @@ module Venuebook
 				if authorize! :create, User
 					unless User.find_by_email(params[:user].email)
 						user = User.create(params[:user])
+
+						user.update(center_id: user.allowed_centers.first.id) if user.role == 2 && user.allowed_centers.count > 0
+
 						JSON.parse(user.to_json({:include => [:user_permissions]}))
 					else
 						error!({status: 409, message: "409 Email Conflict"}, 409)

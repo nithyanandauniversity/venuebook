@@ -383,6 +383,7 @@
 				}
 				else if (user.user_permissions.centers) {
 					this.leadType = 'center';
+					user.user_permissions.centers = user.allowed_centers;
 				}
 			}
 			else if (this.activeRole == 3) {

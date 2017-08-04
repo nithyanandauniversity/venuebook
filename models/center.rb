@@ -30,20 +30,33 @@ class Center < Sequel::Model
 		codes
 	end
 
-	def self.search(params)
+	def self.search(params, current_user)
 		# puts params.inspect
 		size       = params && params[:limit].to_i || 10
 		page       = params && params[:page].to_i || 1
 		keyword    = params && params[:keyword] || nil
 		attributes = params && params[:attributes] || nil
+		selection  = params && params[:center_selection] || false
 
 		# puts "KEYWORD :: #{keyword} || ATTRIBUTES :: #{attributes}\n\n\n"
+
+		if selection
+			user = User.find(id: current_user['id'])
+			if user.role == 2
+				puts user.allowed_center_list.inspect
+				centers = user.allowed_center_list
+			else
+				centers = Center.order(:id)
+			end
+		else
+			centers = Center.order(:id)
+		end
 
 		if (keyword && !keyword.blank?) || (attributes && !attributes.blank?)
 			# SEARCH
 			if !keyword.blank?
 				if attributes && !attributes.blank?
-					centers = Center.order(:id)
+					# centers = Center.order(:id)
 					centers = centers.where(region: attributes.region) if attributes.region
 					centers = centers.where(area: attributes.area) if attributes.area
 					centers = centers.where(country: attributes.country) if attributes.country
@@ -52,7 +65,7 @@ class Center < Sequel::Model
 					centers = centers.where(category: attributes.category) if attributes.category
 					centers = centers.where((Sequel.ilike(:name, "%#{keyword}%"))).paginate(page, size)
 				else
-					centers = Center.where(
+					centers = centers.where(
 						(Sequel.ilike(:name, "%#{keyword}%")) |
 						(Sequel.ilike(:region, "%#{keyword}%")) |
 						(Sequel.ilike(:area, "%#{keyword}%")) |
@@ -63,7 +76,7 @@ class Center < Sequel::Model
 					).paginate(page, size)
 				end
 			else
-				centers = Center.order(:id)
+				# centers = Center.order(:id)
 				centers = centers.where(region: attributes.region) if attributes.region
 				centers = centers.where(area: attributes.area) if attributes.area
 				centers = centers.where(country: attributes.country) if attributes.country
@@ -75,7 +88,7 @@ class Center < Sequel::Model
 			end
 		else
 			# ALL
-			centers = Center.order(:id).paginate(page, size)
+			centers = centers.order(:id).paginate(page, size)
 		end
 
 		[{

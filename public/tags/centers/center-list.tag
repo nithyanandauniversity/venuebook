@@ -152,7 +152,7 @@
 		}
 
 		getCenters(params) {
-
+			params.center_selection = true;
 			if (this.parent.searchQ) {
 				params.keyword = this.parent.searchQ;
 			}

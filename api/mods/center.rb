@@ -9,7 +9,7 @@ module Venuebook
 
 			get do
 				if authorize! :read, Center
-					return Center.search(params[:search])
+					return Center.search(params[:search], current_user)
 				end
 			end
 

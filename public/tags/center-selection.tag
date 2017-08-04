@@ -74,7 +74,7 @@
 
 		if (!this.selectedCenter) {
 			let center = sessionStorage.getItem('CENTER');
-			if (center) {
+			if (center && center != "null") {
 				this.selectedCenter = JSON.parse(center);
 			}
 		}
@@ -85,10 +85,11 @@
 				minChars : 2,
 				lookup   : (query, done) => {
 					let params = {
-						page    : 1,
-						limit   : 15,
-						keyword : query,
-						version : Date.now()
+						page             : 1,
+						limit            : 15,
+						keyword          : query,
+						version          : Date.now(),
+						center_selection : true
 					};
 
 					this.opts.centerService.search(params, (err, response) => {

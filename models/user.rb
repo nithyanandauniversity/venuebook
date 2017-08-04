@@ -45,15 +45,17 @@ class User < Sequel::Model
 
 	def allowed_centers
 		if role == 2 && permissions
-			if user_permissions['areas']
-				centers = Center.where(area: user_permissions['areas'])
-			elsif user_permissions['coutries']
-				centers = Center.where(country: user_permissions['coutries'])
-			elsif user_permissions['centers']
-				centers = Center.where(id: user_permissions['centers'])
-			end
+			allowed_center_list.all
+		end
+	end
 
-			centers.all
+	def allowed_center_list
+		if user_permissions['areas']
+			centers = Center.where(area: user_permissions['areas'])
+		elsif user_permissions['countries']
+			centers = Center.where(country: user_permissions['countries'])
+		elsif user_permissions['centers']
+			centers = Center.where(id: user_permissions['centers'])
 		end
 	end
 
