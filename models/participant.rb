@@ -13,30 +13,54 @@ class Participant < Sequel::Model
 		response = RestClient.get PARBOOK_URL, {params: params}
 		results  = JSON.parse(response.body)
 
+		csv   = []
 		smkts = ["None", "Volunteer", "Thanedar", "Kotari", "Mahant", "Sri Mahant"]
+		# CSV.open("participants_#{params[:center_code]}.csv", "w") do |csv|
 
-		csv = []
-		csv << [
-			"First name", "Last name", "Email Address", "Contact number", "IA Graduate", "SMKT", "Gender", "Created by", "Created at"
-		]
+		# end
+
+		row = ["First name", "Last name", "Email Address", "Contact number"]
+
+		row << "IA Graduate" if [true, 'true'].include?(params[:download][:ia_graduate])
+		row << "SMKT" if [true, 'true'].include?(params[:download][:smkt])
+		row << "Gender" if [true, 'true'].include?(params[:download][:gender])
+		row << "Enrichers" if [true, 'true'].include?(params[:download][:enrichers])
+		row << "Created by" if [true, 'true'].include?(params[:download][:created_by])
+		row << "Created at" if [true, 'true'].include?(params[:download][:created_at])
+		csv << row
 
 		results.each do |participant|
 			attribute = JSON.parse(participant['participant_attributes'])
 			number    = participant['contact'] ? participant['contact']['value'] : ''
 			smkt      = smkts[attribute['role'] || 0]
 			creator   = User.find(id: participant['created_by'])
+			address   = ''
 
-			csv << [
+			if participant['address']
+				street      = participant['address']['street'] ? participant['address']['street'].gsub(',', '.') : ''
+				city        = participant['address']['city'] ? participant['address']['city'].gsub(',', '.') : ''
+				state       = participant['address']['state'] ? participant['address']['state'].gsub(',', '.') : ''
+				postal_code = participant['address']['postal_code'] ? participant['address']['postal_code'].gsub(',', '.') : ''
+				country     = participant['address']['country'] ? participant['address']['country'].gsub(',', '.') : ''
+
+				address = "#{street} #{city} #{state} #{postal_code}. #{country}"
+			end
+
+			row = [
 				participant['first_name'],
 				participant['last_name'],
 				participant['email'],
-				number,
-				attribute['ia_graduate'] ? "Yes" : "No",
-				smkt,
-				participant['gender'] ? "Yes" : "No",
-				"#{creator.first_name} #{creator.last_name}",
-				participant['created_at']
+				number
 			]
+
+			row << address if [true, 'true'].include?(params[:download][:with_address])
+			row << (attribute['ia_graduate'] ? "Yes" : "No") if [true, 'true'].include?(params[:download][:ia_graduate])
+			row << smkt if [true, 'true'].include?(params[:download][:smkt])
+			row << participant['gender'] ? "Yes" : "No" if [true, 'true'].include?(params[:download][:gender])
+			row << participant['enricher_names'].join(' / ') if [true, 'true'].include?(params[:download][:enrichers])
+			row << "#{creator.first_name} #{creator.last_name}" if [true, 'true'].include?(params[:download][:created_by])
+			row << participant['created_at'] if [true, 'true'].include?(params[:download][:created_at])
+			csv << row
 		end
 
 		csv
