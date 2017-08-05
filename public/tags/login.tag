@@ -31,7 +31,7 @@
 				</div>
 
 				<div
-					class   = "ui fluid huge orange submit button"
+					class   = "ui fluid huge orange submit button {authenticating && 'disabled'}"
 					onclick = "{ submitForm() }">Login</div>
 			</div>
 
@@ -57,6 +57,10 @@
 
 		submitForm(e) {
 			return(e) => {
+				if (this.authenticating) {
+					return false;
+				}
+
 				if (this.validateForm()) {
 					this.doLogin();
 				}
@@ -74,7 +78,8 @@
 		doLogin() {
 			// console.log("this.opts");
 			// console.log(this.opts);
-			this.loginError = false;
+			this.loginError     = false;
+			this.authenticating = true;
 			this.update();
 
 			this.opts.service.doLogin({
@@ -87,6 +92,7 @@
 					let result = response.body().data();
 					// console.log("result");
 					// console.log(result);
+					this.authenticating = false;
 					if (result.token) {
 						sessionStorage.setItem('HTTP_TOKEN', result.token);
 						sessionStorage.setItem('CURRENT_USER', JSON.stringify(result.current_user));
