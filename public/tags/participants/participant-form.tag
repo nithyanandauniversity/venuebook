@@ -339,7 +339,7 @@
 
 		<div class="ui right aligned grid">
 			<div class="column">
-				<button class="ui large green button" onclick="{save}">
+				<button class="ui large green button {savingParticipant && 'disabled'}" onclick="{save}">
 					SAVE
 				</button>
 				<button class="ui large red button" onclick="{cancel}">
@@ -599,12 +599,19 @@
 		}
 
 		save() {
+			if (this.savingParticipant) {
+				return false;
+			}
+
 			let saveParams = this.generateParticipantParams();
 			this.errors = this.validateForm(saveParams);
 
 			if (!this.validateForm(saveParams)) {
 				return false;
 			}
+
+			this.savingParticipant = true;
+			this.update();
 
 			if (!this.edit_id) {
 				// CREATE PARTICIPANT
@@ -644,17 +651,25 @@
 
 		create(data) {
 			this.parent.opts.service.create(data, (err, response) => {
+				this.savingParticipant = false;
 				if (!err) {
 					this.parent.showList();
+				}
+				else {
+					this.update();
 				}
 			});
 		}
 
 		edit(data) {
 			this.parent.opts.service.update(this.edit_id, data, (err, response) => {
+				this.savingParticipant = false;
 				if (!err) {
 					console.log(response.body().data(), response.statusCode());
 					this.parent.showList();
+				}
+				else {
+					this.update();
 				}
 			});
 		}

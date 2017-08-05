@@ -6,10 +6,10 @@
 		style = "margin-bottom: 25px;">
 		<thead>
 			<tr>
+				<th>Program</th>
+				<th>Name</th>
 				<th>Start Date</th>
 				<th>End Date</th>
-				<th>Name</th>
-				<th>Program</th>
 				<th style="min-width: 160px; width: 240px; max-width: 240px; text-align: center;">
 					<i class="options icon"></i> Actions
 				</th>
@@ -17,13 +17,13 @@
 		</thead>
 		<tbody>
 			<tr each = { events } scope = { this }>
-				<td>{format(start_date, 'date', 'fullDate')}</td>
-				<td>{end_date ? format(end_date, 'date', 'fullDate') : '-'}</td>
-				<td>{name || '-'}</td>
 				<td>
 					{program.program_name}
 					<div class="meta">({program.program_type})</div>
 				</td>
+				<td>{name || '-'}</td>
+				<td>{format(start_date, 'date', 'fullDate')}</td>
+				<td>{end_date ? format(end_date, 'date', 'fullDate') : '-'}</td>
 				<td>
 					<button
 						class    = "ui action-btn vertical olive animated button"
@@ -57,6 +57,36 @@
 				</td>
 			</tr>
 		</tbody>
+		<tfoot>
+			<tr>
+				<td
+					colspan = "5"
+					style   = "border-top: 1px solid rgba(34,36,38,.1);">
+					<div class="ui centered column grid">
+						<div class="row">
+							<riot-pagination
+								show         = "{ events.length }"
+								current-page = "{ currentPage }"
+								per-page     = "{ perPage }"
+								page-changed = "{ switchPage }"
+								page-count   = "{ pageCount }"
+								record-count = "{ recordCount }"
+								max-buttons  = "8"
+								show-first   = "true"
+								show-last    = "true"
+								show-next    = "true"
+								show-prev    = "true">
+							</riot-pagination>
+						</div>
+						<div class="row">
+							<span class="ui label">
+								Showing { recordRange } / { recordCount } records in { pageCount } pages
+							</span>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tfoot>
 	</table>
 
 	<div
@@ -135,11 +165,13 @@
 					else {
 						// NO RESULTS
 					}
+					this.update();
+					this.tags['riot-pagination'].trigger('refresh');
 				}
 				else {
 					console.log("ERROR !");
 				}
-				this.update();
+				// this.update();
 			});
 		}
 

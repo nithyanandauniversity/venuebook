@@ -160,7 +160,7 @@
 
 			<div class="ui right aligned grid">
 				<div class="column">
-					<button class="ui large green button" onclick = "{ save }">
+					<button class="ui large green button {savingEvent && 'disabled'}" onclick = "{ save }">
 						SAVE
 					</button>
 					<button class="ui large red button" onclick = "{ cancel }">
@@ -310,12 +310,19 @@
 		}
 
 		save() {
+			if (this.savingEvent) {
+				return false;
+			}
+
 			let saveParams = this.generateEventParams();
 			this.errors = this.validateForm(saveParams);
 
 			if (!this.validateForm(saveParams)) {
 				return false;
 			}
+
+			this.savingEvent = true;
+			this.update();
 
 			if (!this.edit_id) {
 				// CREATE EVENT
@@ -329,16 +336,24 @@
 
 		create(data) {
 			this.parent.opts.service.create(data, (err, response) => {
+				this.savingEvent = false;
 				if (!err) {
 					this.parent.showUpcoming();
+				}
+				else {
+					this.update();
 				}
 			});
 		}
 
 		edit(data) {
 			this.parent.opts.service.update(this.edit_id, data, (err, response) => {
+				this.savingEvent = false;
 				if (!err) {
 					this.parent.goPrev();
+				}
+				else {
+					this.update();
 				}
 			});
 		}
