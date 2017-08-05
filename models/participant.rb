@@ -21,6 +21,7 @@ class Participant < Sequel::Model
 
 		row = ["First name", "Last name", "Email Address", "Contact number"]
 
+		row << "Address" if [true, 'true'].include?(params[:download][:with_address])
 		row << "IA Graduate" if [true, 'true'].include?(params[:download][:ia_graduate])
 		row << "SMKT" if [true, 'true'].include?(params[:download][:smkt])
 		row << "Gender" if [true, 'true'].include?(params[:download][:gender])
