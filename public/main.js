@@ -35,6 +35,8 @@ import 'tags/venues.tag!'
 import 'tags/venues/venue-list.tag!'
 import 'tags/venues/venue-form.tag!'
 
+import 'tags/downloads.tag!'
+
 import 'tags/events.tag!'
 import 'tags/events/event-upcoming.tag!'
 import 'tags/events/event-past.tag!'

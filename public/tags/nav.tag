@@ -49,6 +49,12 @@
 									onclick = "{ showVenueManagement() }">
 									<i class="icon violet map"></i> Venues
 								</div>
+								<div
+									class   = "item"
+									show    = "{currentUser.role <= 4}"
+									onclick = "{ showDownloads() }">
+									<i class="icon blue download"></i> Downloads
+								</div>
 								<!-- <div
 									class   = "item"
 									onclick = "{ showSettings() }">
@@ -63,7 +69,7 @@
 								<div
 									class   = "item"
 									onclick = "{ showProfile() }">
-									<i class="icon blue user"></i> Profile
+									<i class="icon orange user"></i> Profile
 								</div>
 								<div
 									class   = "item"
@@ -167,6 +173,15 @@
 			return(e) => {
 				this.parent.navigatePage({
 					type : 'VENUES',
+					data : this.currentUser
+				});
+			}
+		}
+
+		showDownloads(e) {
+			return(e) => {
+				this.parent.navigatePage({
+					type : 'DOWNLOADS',
 					data : this.currentUser
 				});
 			}
