@@ -115,20 +115,17 @@
 					link.setAttribute("href", encodedUri);
 					link.setAttribute("download", "all_participants_" + Date.now() + ".csv");
 					document.body.appendChild(link);
+
 					this.downloadProgress = false;
-					link.click();
 					this.reset();
 					this.update();
+
+					link.click();
 				}
 			});
 		}
 
 		reset() {
-			this.refs.first_name.checked     = true;
-			this.refs.last_name.checked      = true;
-			this.refs.email.checked          = true;
-			this.refs.contact_number.checked = true;
-
 			this.refs.address.checked     = false;
 			this.refs.ia_graduate.checked = false;
 			this.refs.smkt.checked        = false;
