@@ -35,7 +35,7 @@
 		}
 
 		authenticate() {
-
+			$("#init-loader").hide();
 			this.opts.services.sessionService.authenticate((err, result) => {
 				if (!err) {
 					if (result.data().status && sessionStorage.getItem('CURRENT_USER')) {
@@ -66,8 +66,6 @@
 		}
 
 		this.authenticate();
-
-		$("#init-loader").hide();
 	</script>
 
 </app>
