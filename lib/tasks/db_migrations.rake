@@ -19,6 +19,16 @@ namespace :migrations do
 		end
 	end
 
+	desc "Download all Participants in Template for update"
+	task :download_for_update, [:number, :code] => :environment do |t, args|
+		params = {
+			center_number: args[:number],
+			center_code: args[:code]
+		}
+
+		DataImport::Participant.download(params)
+	end
+
 	desc "Import Participants Information from Singapore"
 	task :participants_sg, [:creator, :file] => :environment do |t, args|
 		creator   = args[:creator]

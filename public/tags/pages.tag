@@ -42,6 +42,14 @@
 		service   = "{opts.services.venueService}">
 	</venues>
 
+	<downloads
+		if                  = "{opts.store.getState().routes.path == 'DOWNLOADS'}"
+		store               = "{opts.store}"
+		state               = "{opts.store.getState().programs}"
+		event-service       = "{opts.services.eventService}"
+		participant-service = "{opts.services.participantService}">
+	</downloads>
+
 	<events
 		if                  = "{opts.store.getState().routes.path == 'EVENTS'}"
 		store               = "{opts.store}"

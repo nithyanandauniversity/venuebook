@@ -39,9 +39,12 @@ module Venuebook
 						return Participant.search(params)
 
 					elsif params[:download]
-						puts "Download !!!"
+						# puts "Download !!!"
 						return Participant.download(params)
-
+						# content_type "text/csv"
+						# header['Content-Disposition'] = "attachment; filename=yourfilename.csv"
+						# env['api.format'] = :binary
+						# File.open(file.path).read
 					else
 						puts "PARAMS HERE !!! #{params.inspect}"
 					end

@@ -1,6 +1,6 @@
 import { ADD_VENUE, EDIT_VENUE } from '../../constants/VenueActions'
 
-export default function programs(state = {view: ADD_VENUE}, action) {
+export default function venues(state = {view: ADD_VENUE}, action) {
 	switch (action.type) {
 		case ADD_VENUE:
 			return {
