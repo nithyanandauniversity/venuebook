@@ -162,13 +162,11 @@ class Participant < Sequel::Model
 	end
 
 	def self.deleteContact(id, contact_id)
-		response = RestClient.delete PARBOOK_URL + "/#{id}/contact/#{contact_id}"
-		JSON.parse(response)
+		RestClient.delete PARBOOK_URL + "/#{id}/contact/#{contact_id}"
 	end
 
 	def self.deleteAddress(id, address_id)
-		response = RestClient.delete PARBOOK_URL + "/#{id}/address/#{address_id}"
-		JSON.parse(response)
+		RestClient.delete PARBOOK_URL + "/#{id}/address/#{address_id}"
 	end
 
 	def self.delete(id)

@@ -421,6 +421,7 @@
 						this.parent.opts.service.removeContact(this.edit_id, contact.id, (err, response) => {
 							if (!err) {
 								this.contacts.splice(e.item.i, 1);
+								this.update();
 							}
 						});
 					}
@@ -440,6 +441,7 @@
 						this.parent.opts.service.removeAddress(this.edit_id, address.id, (err, response) => {
 							if (!err) {
 								this.addresses.splice(e.item.i, 1);
+								this.update();
 							}
 						});
 					}
@@ -517,7 +519,7 @@
 					state       : this.refs['state_' + i].value,
 					postal_code : this.refs['postal_code_' + i].value,
 					country     : this.refs['country_' + i].value,
-					default     : record.default
+					is_default  : record.default
 				};
 
 				if ((address.city && address.city.length > 0) && (address.country != '' && address.country.length > 0)) {
@@ -546,7 +548,7 @@
 				let contact = {
 					contact_type : this.refs['contact_type_' + i].value,
 					value        : [code, number].join(' '),
-					default      : record.default
+					is_default   : record.default
 				}
 
 				if (contact.value && contact.value.length > 0 && contact.value[0] == '(') {
@@ -789,9 +791,7 @@
 		let state = this.parent.opts.state;
 		console.log(this.opts.state);
 
-		this.edit_id = this.opts.state.id;
-		if (this.edit_id) {
-
+		getEditData(id) {
 			this.parent.opts.service.get(this.edit_id, (err, response) => {
 				if (!err) {
 					this.participant = response.body().data();
@@ -803,7 +803,11 @@
 					console.log("ERROR LOADING PARTICIPANT !");
 				}
 			});
+		}
 
+		this.edit_id = this.opts.state.id;
+		if (this.edit_id) {
+			this.getEditData(this.edit_id);
 		}
 		else {
 

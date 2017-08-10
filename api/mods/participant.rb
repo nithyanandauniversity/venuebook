@@ -109,13 +109,13 @@ module Venuebook
 				end
 			end
 
-			delete '/:id/contact/:contact_id' do
+			delete '/:id/contacts/:contact_id' do
 				if authorize! :update, Participant
 					Participant.deleteContact(params[:id], params[:contact_id])
 				end
 			end
 
-			delete '/:id/address/:address_id' do
+			delete '/:id/addresses/:address_id' do
 				if authorize! :update, Participant
 					Participant.deleteAddress(params[:id], params[:address_id])
 				end

@@ -152,8 +152,9 @@ export default class ParticipantService {
 	removeContact(participant_id, contact_id, callback) {
 		this.reloadApi();
 		let participant = this.api.one('participants', participant_id);
+		let contact     = participant.one('contacts', contact_id);
 
-		participant.delete('contact', contact_id)
+		contact.delete()
 			.then((response) => {
 				callback(null, response);
 			})
