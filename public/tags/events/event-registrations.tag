@@ -333,7 +333,8 @@
 				this.showExtSearch = !this.showExtSearch;
 				if (this.showExtSearch) {
 					setTimeout(() => {
-						this.loadSearchInput();
+						// this.loadSearchInput();
+						this.loadCenterSearchInput();
 						$(".ui.search.dropdown").dropdown({
 							forceSelection  : false,
 							selectOnKeydown : false
@@ -412,7 +413,7 @@
 				this.extSearchTypeValue.centers = this.extSearchTypeValue.centers.filter((center) => {
 					return e.item.center.id != center.id;
 				});
-				this.loadSearchInput();
+				this.loadCenterSearchInput();
 			}
 		}
 
@@ -440,14 +441,14 @@
 			}
 		}
 
-		formatResults(center) {
+		formatCenterResults(center) {
 			let attributes = [center.area, center.country, center.region, center.state, center.city].join(', ');
 			let value      = center.name + ' - ' + center.category + ' [' + attributes + ']';
 
 			return {value: value, data: center};
 		}
 
-		loadSearchInput() {
+		loadCenterSearchInput() {
 			$("#form-search-center").autocomplete({
 				minChars : 2,
 				lookup   : (query, done) => {
@@ -463,7 +464,7 @@
 						if (!err && response.body().length) {
 							let result = response.body()[0].data();
 
-							done({suggestions: result.centers.map(this.formatResults)});
+							done({suggestions: result.centers.map(this.formatCenterResults)});
 						}
 						else {
 							done({suggestions: []});
