@@ -156,6 +156,18 @@ class Participant < Sequel::Model
 		end
 	end
 
+	def self.update_file(number, file)
+		begin
+			response = RestClient::Request.execute :method => :post, :url => PARBOOK_URL + "/update_file", :payload => {
+				number: number,
+				upload: file,
+				centers: Center.dataset.all.to_json
+			}, :timeout => nil, :open_timeout => nil
+		rescue RestClient::Exception => e
+			puts e.inspect
+		end
+	end
+
 	def self.update(id, params)
 		response = RestClient.put PARBOOK_URL + "/#{id}", params
 		JSON.parse(response.body)

@@ -19,6 +19,23 @@ namespace :migrations do
 		end
 	end
 
+	desc "Update Participants Information"
+	task :participants_update, [:number, :file] => :environment do |t, args|
+		number = args[:number]
+		file   = args[:file]
+
+		response  = Participant.update_file(number, File.open(file))
+
+		CSV.open("update_errors_list.csv", "w") do |csv|
+			response.force_encoding("UTF-8").split('\n').each do |_row|
+				_row = _row.gsub(/\\"/,"")
+				_row = _row.gsub(/\\'/,"")
+				row = _row.split(',')
+				csv << row
+			end
+		end
+	end
+
 	desc "Download all Participants in Template for update"
 	task :download_for_update, [:number, :code] => :environment do |t, args|
 		params = {
