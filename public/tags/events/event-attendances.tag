@@ -40,7 +40,9 @@
 	<h3
 		class = "ui dividing header"
 		if    = "{parent.event_dates && parent.event_dates.length > 0 && activeVenueName && (date_index == 'ALL' || date_index >= 0)}">
-		Attendance details on {format(parent.event_dates[date_index], 'date', 'longDate')} at location: { activeVenueName }
+		<span>Attendance details </span>
+		<span if="{ date_index != 'ALL' }">on {format(parent.event_dates[date_index], 'date', 'longDate')} </span>
+		<span>at location: { activeVenueName }</span>
 		<span style = "position: relative; float: right; bottom: 10px;">
 			<button class = "ui green button tiny" onclick = "{ downloadAttendanceList() }">
 				<i class = "icon download"></i> Download List

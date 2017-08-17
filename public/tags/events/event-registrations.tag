@@ -499,9 +499,7 @@
 						return (v.venue_id == this.activeVenue);
 					})[0];
 
-					if (venue) {
-						this.activeVenueName = venue.venue.name;
-					}
+					this.activeVenueName = (venue && venue.venue) ? venue.venue.name : '';
 				}
 			}
 		}
@@ -580,6 +578,7 @@
 			return {value: value.trim(), data: participant};
 		}
 
+		this.currentUser  = this.parent.parent.opts.store.getState().routes.data;
 
 		loadSearchInput() {
 			$("#search-registration").autocomplete({
