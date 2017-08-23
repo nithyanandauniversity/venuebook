@@ -110,6 +110,13 @@
 							</div>
 						</div>
 					</div>
+
+					<div if="{participant.creator}" class="extra content" style="font-size: 0.5em;">
+						<div class="right floated">
+							<span>Created by : {participant.creator.first_name} {participant.creator.last_name}</span>
+							<span>on {format(participant.created_at, 'date', 'isoDate')}</span>
+						</div>
+					</div>
 				</div>
 
 				<participant-events

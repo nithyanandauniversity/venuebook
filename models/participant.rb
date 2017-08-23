@@ -72,6 +72,7 @@ class Participant < Sequel::Model
 		participant = JSON.parse(response.body)
 
 		participant['center']       = Center.find(code: participant['center_code'])
+		participant['creator']      = participant['created_by'] ? User.find(id: participant['created_by']) : {}
 		participant['events_count'] = EventAttendance.where(member_id: participant['member_id']).exclude(attendance: EventAttendance::REGISTERED)
 			.map { |attendance|
 				attendance.event_id
@@ -102,7 +103,7 @@ class Participant < Sequel::Model
 	def self.get_events(member_id, attendance_only)
 		events = {}
 
-		attendances = EventAttendance.where(member_id: member_id)
+		attendances = EventAttendance.where(member_id: member_id).order(:attendance_date)
 		attendances = attendances.exclude(attendance: EventAttendance::REGISTERED) if attendance_only
 		attendances.each do |attendance|
 			if !events[attendance.event_id.to_s.to_sym]
