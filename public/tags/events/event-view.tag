@@ -34,6 +34,12 @@
 								</h5>
 							</div>
 						</div>
+						<div class="extra content" if="creator" style="font-size: 0.5em;">
+							<div class="right floated">
+								<span>Created by: {creator.first_name} {creator.last_name}</span>
+								<span> on {format(event.created_at, 'date', 'isoDate')}</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -376,6 +382,7 @@
 				if (!err) {
 					let data = response.body().data();
 					this.event   = data.event;
+					this.creator = data.creator;
 					this.program = data.program;
 					this.venues  = data.event_venues;
 					this.initTab();
