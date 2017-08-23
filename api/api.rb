@@ -1,7 +1,9 @@
 Dir["#{File.dirname(__FILE__)}/mods/**/*.rb"].each { |f| require f; }
+require "#{File.dirname(__FILE__)}/audit.rb"
 
 module Venuebook
    class API < Grape::API
+      use Audits
       version 'v1', using: :path
       format :json
 
