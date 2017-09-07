@@ -31,9 +31,10 @@ module Venuebook
 
          def authenticated
             token = request.headers['Token']
+
             if token
                begin
-                  decoded_token = JWT.decode token, hmac_secret, true, { :algorithm => 'HS256' }
+                  decoded_token = JWT.decode token, SECRET, true, { :algorithm => 'HS256' }
                   if decoded_token
                      return decoded_token
                   else
@@ -50,7 +51,7 @@ module Venuebook
 
             if token
                begin
-                  decoded_token = JWT.decode token, hmac_secret, true, { :algorithm => 'HS256' }
+                  decoded_token = JWT.decode token, SECRET, true, { :algorithm => 'HS256' }
                rescue Exception => e
                   puts e.inspect
                   error!({status: 401, message: "401 Unauthorized"}, 401)
