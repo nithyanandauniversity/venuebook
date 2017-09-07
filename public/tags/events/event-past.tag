@@ -115,7 +115,11 @@
 		}
 
 		remove(e) {
-			return(e) => {}
+			return(e) => {
+				if (confirm("Are you sure you want to delete the Event?")) {
+					this.parent.removeEvent(e.item);
+				}
+			}
 		}
 
 		getData(res) {

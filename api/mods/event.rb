@@ -150,7 +150,17 @@ module Venuebook
 			delete "/:id" do
 				if authorize! :destroy, Event
 					event = Event.find(id: params[:id])
-					event.destroy
+					if event
+						if EventAttendance.where(event_id: event.id).count > 0
+							error!({status: 422, message: "Event has Registrations or Attendances"}, 422)
+						else
+							EventVenue.where(event_id: params[:id]).destroy
+							event.destroy
+							'true'
+						end
+					else
+						error!({status: 421, message: "Event not available"}, 421)
+					end
 				end
 			end
 		end

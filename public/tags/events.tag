@@ -97,6 +97,17 @@
 			this.update();
 		}
 
+		removeEvent(event) {
+			this.prevState = this.opts.store.getState().events;
+			this.opts.service.remove(event.id, (err, response) => {
+				console.log("err, response");
+				console.log(err, response);
+				if (!err) {
+					this.tags['event-past'].trigger('reload');
+				}
+			});
+		}
+
 		goPrev() {
 			if (this.prevState && this.prevState.view) {
 				if (this.prevState.view == 'PAST_EVENT') {
