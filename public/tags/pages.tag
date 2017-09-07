@@ -93,6 +93,12 @@
 		participant-service = "{opts.services.participantService}">
 	</upload>
 
+	<div if = "{opts.store.getState().loader.show == 'true'}" class = "ui active page dimmer">
+		<div class="content">
+			<div class="center">Loading...</div>
+		</div>
+	</div>
+
 
 	<script>
 
