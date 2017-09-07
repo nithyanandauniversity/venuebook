@@ -34,7 +34,7 @@
 								</h5>
 							</div>
 						</div>
-						<div class="extra content" if="creator" style="font-size: 0.5em;">
+						<div class="extra content" if="{creator}" style="font-size: 0.5em;">
 							<div class="right floated">
 								<span>Created by: {creator.first_name} {creator.last_name}</span>
 								<span> on {format(event.created_at, 'date', 'isoDate')}</span>

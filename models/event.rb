@@ -11,7 +11,7 @@ class Event < Sequel::Model
 
 	def creator
 		if created_by && User.find(id: created_by)
-			User.find(id: created_by)
+			User.select(:id, :first_name, :last_name).where(id: created_by).first
 		else
 			{}
 		end

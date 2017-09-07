@@ -67,8 +67,8 @@ class Participant < Sequel::Model
 		csv
 	end
 
-	def self.get(id)
-		response    = RestClient.get PARBOOK_URL + "/#{id}"
+	def self.get(id, basic_only = false)
+		response    = RestClient.get PARBOOK_URL + "/#{id}" + (basic_only ? "/?basic_only=true" : "")
 		participant = JSON.parse(response.body)
 
 		participant['center']       = Center.find(code: participant['center_code'])
