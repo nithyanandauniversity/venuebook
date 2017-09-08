@@ -206,6 +206,9 @@
 				params.center_code = this.currentUser.center_code;
 			}
 
+			// this.parent.parent.toggleDimmer('SHOW_LOADER');
+			$("#pageDimmer").addClass('active');
+
 			this.parent.opts.service.search(params, (err, response) => {
 				if (!err && response.body().length) {
 					let result = this.getData(response.body()[0]);
@@ -223,8 +226,11 @@
 					else {
 						// NO RESULTS
 					}
+
+					// this.parent.parent.toggleDimmer('HIDE_LOADER');
 					this.update();
 					this.tags['riot-pagination'].trigger('refresh');
+					$("#pageDimmer").removeClass('active');
 				}
 				else {
 					console.log("ERROR !");

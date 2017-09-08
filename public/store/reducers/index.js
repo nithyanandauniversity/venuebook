@@ -8,6 +8,7 @@ import downloads from './downloads';
 import events from './events';
 import users from './users';
 import routes from './routes';
+import loader from './loader';
 
 const rootReducer = combineReducers({
   participants,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   downloads,
   events,
   users,
-  routes
+  routes,
+  loader
 });
 
 export default rootReducer;

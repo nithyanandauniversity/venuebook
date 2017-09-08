@@ -24,8 +24,9 @@
 
 	<script>
 
-		this.searchQ       = '';
-		this.searchFilters = {};
+		this.searchQ           = '';
+		this.searchFilters     = {};
+		this.center_areas = {};
 
 		showNew(e) {
 			this.opts.store.dispatch({type: 'ADD_CENTER'});
