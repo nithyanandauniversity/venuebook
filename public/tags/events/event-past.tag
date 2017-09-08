@@ -153,6 +153,8 @@
 				params.center_id = this.currentUser.center_id;
 			}
 
+			$("#pageDimmer").addClass('active');
+
 			this.parent.opts.service.getPast(params, (err, response) => {
 				if (!err && response.body().length) {
 					let result = this.getData(response.body()[0]);
@@ -171,6 +173,7 @@
 					}
 					this.update();
 					this.tags['riot-pagination'].trigger('refresh');
+					$("#pageDimmer").removeClass('active');
 				}
 				else {
 					console.log("ERROR !");

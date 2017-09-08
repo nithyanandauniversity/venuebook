@@ -378,6 +378,7 @@
 		}
 
 		if (this.view_id) {
+			$("#pageDimmer").addClass('active');
 			this.parent.opts.service.get(this.view_id, (err, response) => {
 				if (!err) {
 					let data = response.body().data();
@@ -398,6 +399,7 @@
 					this.program = null;
 					this.venues  = [];
 				}
+				$("#pageDimmer").removeClass('active');
 			});
 		}
 

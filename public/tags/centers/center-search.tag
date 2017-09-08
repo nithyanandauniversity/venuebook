@@ -32,11 +32,11 @@
 				<label>Area</label>
 				<!-- <input type="text" ref="area" placeholder="Area (Ex: North America)" /> -->
 				<select
+					if    = "parent.center_areas"
 					ref   = "area"
 					class = "ui search dropdown">
 					<option value = "">Select area to add...</option>
 					<option
-						show  = "{ parent.center_areas }"
 						each  = "{area in parent.center_areas.obj}"
 						value = "{area}">
 						{area}
