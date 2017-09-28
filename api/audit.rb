@@ -8,16 +8,16 @@ class Audits < Grape::Middleware::Base
 		status, headers, response = @app.call(env)
 		if env["api.endpoint"]
 			log                       = {}
-			log[:time]                = Time.now.utc
+			log[:request_time]        = Time.now.utc
 			log[:method]              = env['REQUEST_METHOD']
-			log[:format]              = env['api.format']
+			# log[:format]              = env['api.format']
 			log[:url]                 = env['PATH_INFO']
 			log[:status]              = status
-			log[:ip]                  = env['REMOTE_ADDR']
+			log[:ip_address]          = env['REMOTE_ADDR']
 			log[:query_params]        = env['rack.request.query_hash']
 			log[:namespace]           = env["grape.routing_args"][:route_info].options[:namespace]
 			log[:raw_request_body]    = env['api.request.input']
-			log[:parsed_request_body] = env['api.request.body']
+			# log[:parsed_request_body] = env['api.request.body']
 
 			response_body = ""
 			# read the JSON string line by line
@@ -34,7 +34,10 @@ class Audits < Grape::Middleware::Base
 			# puts log.inspect
 			# puts "=========================================\n\n\n"
 
-			Audits.log_request(log)
+			unless log[:namespace] == "/sessions" && log[:parsed_request_body].nil?
+				Audits.log_request(log)
+			end
+
 		end
 
 		[status, headers, response]
@@ -79,7 +82,7 @@ class Audits < Grape::Middleware::Base
 		resource = {}
 		resource[:resource_name] = Audits.get_resource_name(namespace)
 		resource[:resource_id]   = resource[:resource_name] ? Audits.get_resource_id(method, url, response) : nil
-		return resource
+		return resource.to_json()
 	end
 
 	def self.get_resource_name(namespace)
