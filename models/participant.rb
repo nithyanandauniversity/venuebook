@@ -71,16 +71,19 @@ class Participant < Sequel::Model
 		response    = RestClient.get PARBOOK_URL + "/#{id}" + (basic_only ? "/?basic_only=true" : "")
 		participant = JSON.parse(response.body)
 
-		participant['center']       = Center.find(code: participant['center_code'])
-		participant['creator']      = participant['created_by'] ? User.find(id: participant['created_by']) : {}
-		participant['events_count'] = EventAttendance.where(member_id: participant['member_id']).exclude(attendance: EventAttendance::REGISTERED)
-			.map { |attendance|
-				attendance.event_id
-			}.compact.uniq.length
-		participant['registration_count'] = EventAttendance.where(member_id: participant['member_id'], attendance: EventAttendance::REGISTERED)
-			.map { |attendance|
-				attendance.event_id
-			}.compact.uniq.length
+		unless basic_only
+			participant['center']       = Center.find(code: participant['center_code'])
+			participant['creator']      = participant['created_by'] ? User.find(id: participant['created_by']) : {}
+			participant['events_count'] = EventAttendance.where(member_id: participant['member_id']).exclude(attendance: EventAttendance::REGISTERED)
+				.map { |attendance|
+					attendance.event_id
+				}.compact.uniq.length
+			participant['registration_count'] = EventAttendance.where(member_id: participant['member_id'], attendance: EventAttendance::REGISTERED)
+				.map { |attendance|
+					attendance.event_id
+				}.compact.uniq.length
+		end
+
 
 		participant
 	end

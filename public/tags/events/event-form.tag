@@ -43,7 +43,7 @@
 					<div class="three wide fields">
 						<div class="field {validation && validation.emptyDate && 'error'}">
 							<label>Start Date</label>
-							<div class="ui calendar" id="event-start-date">
+							<div class="ui calendar" id="event-start-date" hide="{ disableDateChange }">
 								<div class="ui input left icon">
 									<i class="calendar icon"></i>
 									<input
@@ -53,17 +53,23 @@
 										placeholder ="Start Date" />
 								</div>
 							</div>
+							<div class="ui input" if="{ event && disableDateChange }">
+								<input type="text" value="{event.start_date}" disabled />
+							</div>
 						</div>
 						<div class="field">
 							<label>End Date</label>
 							<div class="ui calendar" id="event-end-date">
-								<div class="ui input left icon">
+								<div class="ui input left icon" hide="{ disableDateChange }">
 									<i class="calendar icon"></i>
 									<input
 										type        = "text"
 										ref         = "end_date"
 										readonly    = ""
 										placeholder ="End Date" />
+								</div>
+								<div class="ui input" if="{ event && disableDateChange }">
+									<input type="text" value="{event.end_date}" disabled />
 								</div>
 							</div>
 						</div>
@@ -453,7 +459,7 @@
 
 		this.edit_id = this.opts.state.id;
 
-		loadEditForm(event, venues) {
+		loadEditForm(event, venues, attendances) {
 			// console.log("event, venues");
 			// console.log(event, venues);
 
@@ -464,15 +470,19 @@
 			this.refs.program_donation.value = event.program_donation;
 			this.refs.notes.value            = event.notes;
 
-			$("#event-start-date").calendar({
-				type        : 'date',
-				initialDate : event.start_date
-			});
+			this.disableDateChange           = attendances.length > 0;
 
-			$("#event-end-date").calendar({
-				type        : 'date',
-				initialDate : event.end_date
-			});
+			if (!this.disableDateChange) {
+				$("#event-start-date").calendar({
+					type        : 'date',
+					initialDate : event.start_date
+				});
+
+				$("#event-end-date").calendar({
+					type        : 'date',
+					initialDate : event.end_date
+				});
+			}
 
 			venues.forEach((v) => { this.insertVenue(v.venue_id, v.user_id) });
 			this.update();
@@ -494,10 +504,11 @@
 		if (this.edit_id) {
 			this.parent.opts.service.get(this.edit_id, (err, response) => {
 				if (!err) {
-					let data = response.body().data();
+					let data          = response.body().data();
+					let attendances   = data['attendances'].filter((a) => { return a.attendance > 1 });
 					this.event        = data['event'];
 					this.event_venues = data['event_venues'];
-					this.loadEditForm(this.event, this.event_venues);
+					this.loadEditForm(this.event, this.event_venues, attendances);
 				}
 				else {
 					this.event = null;
