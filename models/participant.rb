@@ -19,7 +19,7 @@ class Participant < Sequel::Model
 
 		# end
 
-		row = ["First name", "Last name", "Email Address", "Contact number"]
+		row = ["First name", "Last name", "Email Address", "Contact number", "Notes"]
 
 		row << "Address" if [true, 'true'].include?(params[:download][:with_address])
 		row << "IA Graduate" if [true, 'true'].include?(params[:download][:ia_graduate])
@@ -36,6 +36,7 @@ class Participant < Sequel::Model
 			smkt      = smkts[attribute['role'] || 0]
 			creator   = User.find(id: participant['created_by'])
 			address   = ''
+			notes     = participant['notes'] || ''
 
 			if participant['address']
 				street      = participant['address']['street'] ? participant['address']['street'].gsub(',', '.') : ''
@@ -51,7 +52,8 @@ class Participant < Sequel::Model
 				participant['first_name'],
 				participant['last_name'],
 				participant['email'],
-				number
+				number,
+				notes.gsub(',', '.')
 			]
 
 			row << address if [true, 'true'].include?(params[:download][:with_address])

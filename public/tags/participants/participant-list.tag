@@ -110,11 +110,11 @@
 								</span>
 							</div>
 							<div class="ui right aligned eight wide column">
-								<button
+								<!-- <button
 									class = "ui green button tiny {downloadProgress && 'disabled'}"
 									onclick = "{ downloadAllParticipantsList() }">
 									<i class = "icon download"></i> Download All
-								</button>
+								</button> -->
 							</div>
 						</div>
 					</div>

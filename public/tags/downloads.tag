@@ -15,9 +15,9 @@
 			</h4>
 
 			<div class="field">
-				<label for="mandatory">Mandatory Fields</label>
+				<label for="mandatory">Default / Mandatory Fields</label>
 				<div style="display: inline;">
-					<label>[First name / Last name / Email addresss / Contact number]</label>
+					<label>[First name / Last name / Email addresss / Contact number / Notes]</label>
 				</div>
 			</div>
 
