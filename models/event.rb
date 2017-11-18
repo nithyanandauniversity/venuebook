@@ -36,11 +36,10 @@ class Event < Sequel::Model
 			"City",
 			"Email Address",
 			"Contact Numbers",
-			# "Status",
-			# "Enricher",
 			"Payment Status",
 			"Amount",
 			"Payment Method",
+			"Pre-Registered",
 			"Venue"
 		]
 
@@ -86,10 +85,12 @@ class Event < Sequel::Model
 				smkts[participant_attributes['role'] || 0], participant['gender'],
 				"#{address['street']} #{address['city']} #{address['state']} #{address['postal_code']} #{address['coutnry']}".gsub(',', '.'),
 				address['city'].gsub(',','.'),
-				participant['email'], participant['contacts'][0]['value'],
+				participant['email'],
+				participant['contacts'][0] ? participant['contacts'][0]['value'] : '',
 				payment_status_options[data[:payment_status] || 0],
 				data[:amount],
 				payment_method_options[data[:payment_method] || 0],
+				data[:attendance] === 2 ? "Yes" : "No",
 				venues.join(',')
 			]
 		end
