@@ -98,4 +98,113 @@ class Event < Sequel::Model
 
 		csv
 	end
+
+
+
+
+
+	def self.import_file_sg(file)
+		DataImport::Events.import(file)
+		# data = File.read(file.path)
+
+		# rcount = 0
+		# count  = 0
+
+		# program_name_mapping = {
+		# 	"Local Event" => {
+		# 		"name"  => "Local Event",
+		# 		"types" => {
+		# 			"3rd Eye Meditation Workshop" => "Special Workshops",
+		# 			"Special Workshop"            => "Special Workshops"
+		# 		}
+		# 	},
+		# 	"Weekly Event" => {
+		# 		"name"  => "Weekly Event",
+		# 		"types" => {
+		# 			"Nithya Yoga"                => "Nithya Yoga",
+		# 			"Completion Sessions"        => "Completion Sessions",
+		# 			"Wealth Completion Sessions" => "Completion Sessions",
+		# 			"Nithya Dhyaan"              => "Nithya Dhyaan",
+		# 			"Weekend Gurukul"            => "Nithyananda Vidyalaya (NWG)"
+		# 		}
+		# 	},
+		# 	"Temple Activity / Pooja" => {
+		# 		"name"  => "Temple Activity / Pooja",
+		# 		"types" => {
+		# 			"Special Day Poojas"            => "Special Day Pooja",
+		# 			"Festival / Celebration Poojas" => "Special Day Pooja"
+		# 		}
+		# 	},
+		# 	"Bidadi Program" => {
+		# 		"name"  => "Bidadi Program",
+		# 		"types" => {
+		# 			"Kalpataru"                     => "Kalpataru",
+		# 			"Live Webinar"                  => "Live Webinar",
+		# 			"LSP"                           => "Live Webinar",
+		# 			"Akashik Readings by Balasants" => "Akashik Reading"
+		# 		}
+		# 	},
+		# 	"Outdoor Event" => {
+		# 		"name"  => "Outdoor Events",
+		# 		"types" => { "Nithya Yoga" => "Nithya Yoga" }
+		# 	},
+		# 	"Daily Event" => {
+		# 		"name"  => "Local Event",
+		# 		"types" => {}
+		# 	},
+		# }
+
+		# all_names = []
+		# all_types = []
+
+		# all_programs = {}
+
+		# data.split('\n').each do |_row|
+		# 	CSV.parse(_row) do |row|
+
+		# 		if rcount > 0
+		# 			program_name      = row[0]
+		# 			program_type      = row[1]
+		# 			donation          = row[2]
+		# 			start_date        = row[3]
+		# 			end_date          = row[4]
+		# 			notes             = row[5]
+		# 			created_at        = row[6]
+		# 			created_by        = row[7]
+		# 			updated_at        = row[8]
+		# 			created_by        = row[9]
+		# 			event_name        = row[10]
+		# 			registration_code = row[11]
+
+		# 			attendances       = row[12]
+		# 			registrations     = row[13]
+
+		# 			unless all_programs.key?("#{program_type}")
+		# 				all_programs["#{program_type}"] = []
+		# 			end
+
+		# 			unless all_programs["#{program_type}"].index("#{program_name}")
+		# 				all_programs["#{program_type}"] << program_name
+		# 			end
+
+
+		# 			unless all_names.index("#{program_name}")
+		# 				all_names << program_name
+		# 			end
+
+		# 			unless all_types.index("#{program_type}")
+		# 				all_types << program_type
+		# 			end
+
+		# 			count += 1
+		# 		end
+		# 		rcount += 1
+		# 	end
+
+		# 	puts "ALL NAMES :: #{all_names.inspect}\n"
+		# 	puts "ALL TYPES :: #{all_types.inspect}\n\n\n"
+		# 	puts "HASH ::::: #{all_programs}\n\n\n"
+		# 	puts "count :: #{count} || row count :: #{rcount}"
+		# end
+	end
 end
