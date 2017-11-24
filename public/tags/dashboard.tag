@@ -7,6 +7,10 @@
 				Welcome { currentUser.first_name } { currentUser.last_name } !
 			</h2>
 		</div>
+
+		<div class="ui red message" show="{loadingData}">
+			<h4> Loading Dashboard Data</h4>
+		</div>
 	</div>
 
 	<script>
@@ -17,7 +21,25 @@
 				console.log("Trigger Select Center");
 				this.parent.showCenterSelection();
 			}
+			else {
+				this.loadDashboardData();
+			}
 		}
+
+		loadDashboardData(){
+			console.log("COMING HERE !!!");
+			this.loadingData = true;
+			this.update();
+
+			setTimeout(() => {
+				this.loadingData = false;
+				this.update();
+			}, 5000);
+		}
+
+		this.on('loadData', () => {
+			this.loadDashboardData();
+		});
 
 		setTimeout(() => {
 			this.checkCenterSelection();

@@ -166,6 +166,7 @@
 				type : route.path,
 				data : this.currentUser
 			});
+			this.tags['dashboard'].trigger('loadData');
 			$("center-selection").modal('hide');
 		}
 
