@@ -181,6 +181,7 @@ module DataImport
 
 			all_programs = {}
 			creators     = {}
+			acreators    = {}
 			locations    = []
 			coordinators = {}
 
@@ -205,10 +206,12 @@ module DataImport
 						# ASSIGN PROGRAM ID =====================================================================================
 						program_id = Events.assign_program_id(program_type, program_name)
 
-						# ASSIGN CREATOR ========================================================================================
-						cr = Events.assign_creator(created_by, attendances, registrations)
-						puts "CR ::: #{cr}\n\n"
-						# creators[created_by] = cr unless creators[created_by]
+						# ASSIGN EVENT CREATOR ========================================================================================
+						cr = Events.assign_creator(created_by)
+						creators[created_by] = cr unless creators[created_by]
+
+						# ASSIGN ATTENDANCE CREATORS
+						Events.assign_attendance_creators(acreators, attendances, registrations)
 
 						# ASSIGN LOCATIONS ======================================================================================
 						locs = Events.assign_locations(attendances, registrations)
@@ -222,18 +225,17 @@ module DataImport
 							coordinators[k] = v unless coordinators[k]
 						end
 
-						puts " PRE "
-						puts "#{creators}"
-						puts "==========\n\n"
 						# ASSIGN ATTENDANCE RECORDS =============================================================================
-						# event_attendances = Events.assign_attendances(attendances, registrations, center_venues, creators)
+						event_attendances = Events.assign_attendances(attendances, registrations, center_venues, creators, acreators)
 
+						# event_obj = {}
 						count += 1
 					end
 					rcount += 1
 				end
 
 				puts "CREATORS ::::: #{creators}\n\n"
+				puts "ATTENDANCE CREATORS ::::: #{acreators}\n\n"
 				puts "LOCATIONS ::::: #{locations.uniq!}\n\n"
 				puts "COORDINATORS ::::: #{coordinators}\n\n"
 				puts "count :: #{count} || row count :: #{rcount}"
@@ -296,9 +298,18 @@ module DataImport
 		end
 
 
-		def self.assign_creator(created_by, attendances, registrations)
+		def self.assign_creator(created_by)
+			res     = Participant.get(created_by.gsub('SG-',''))
+			email   = res["email"]
+			email   = "tsytheowlcompany@gmail.com" if email == "tsy.theowlcompany@gmail.com"
+			email   = "srinithyasthirananda@gmail.com" if email == "icmprabhakar@gmail.com"
+			creator = User.find(email: email)
+			creator || nil
+		end
+
+		def self.assign_attendance_creators(acreators, attendances, registrations)
 			ids      = []
-			creators = []
+			creators = {}
 
 			attendances.each do |at|
 				ids << at['creator'] unless ids.index(at['creator'])
@@ -308,23 +319,19 @@ module DataImport
 			end
 
 			ids.uniq.each do |id|
+				# creators[id] = nil
 				if id
 					res   = Participant.get(id.gsub('SG-',''))
 					email = res["email"]
 					email = "tsytheowlcompany@gmail.com" if email == "tsy.theowlcompany@gmail.com"
-					user = User.find(email: email)
-					unless user
-						creators << email
+					email = "srinithyasthirananda@gmail.com" if email == "icmprabhakar@gmail.com"
+					user  = User.find(email: email)
+					if user
+						acreators[id] = user
 					end
-				else
-					creators << "no ID :: #{id}"
 				end
 			end
 
-			# res     = Participant.get(created_by.gsub('SG-',''))
-			# email   = res["email"]
-			# email   = "tsytheowlcompany@gmail.com" if email == "tsy.theowlcompany@gmail.com"
-			# creator = User.find(email: email)
 			creators
 		end
 
@@ -371,6 +378,7 @@ module DataImport
 					email = "tsytheowlcompany@gmail.com" if email == "tsy.theowlcompany@gmail.com"
 					email = "premteertha@gmail.com" if email == "ajarananda@gmail.com"
 					email = "ma.anupama@innerawakening.org" if email == "nithyadevi.nithyananda@gmail.com"
+					email = "srinithyasthirananda@gmail.com" if email == "icmprabhakar@gmail.com"
 
 					coordinator = User.find(email: email)
 					if coordinator && !coordinators[co]
@@ -388,15 +396,16 @@ module DataImport
 		end
 
 
-		def self.assign_attendances(att, reg, venues, creators)
+		def self.assign_attendances(att, reg, venues, creators, acreators)
 			data = []
 
 			reg.each do |_reg|
-				creator = creators[_reg['creator']]
-				puts _reg
-				puts creators
-				puts creator
-				puts "=="
+				creator = acreators[_reg['creator']]
+				# puts _reg
+				# puts "acreators :: #{acreators} \n\n"
+				# puts "creators :: #{creators} \n\n"
+				# puts "creator :: #{creator.inspect} \n\n"
+				# puts "#{_reg['creator']} :: =="
 				data << {
 					member_id: _reg['member_id'],
 					venue_id: _reg['location'] == "Yogam Center" ? venues[0].id : venues[1].id,
@@ -410,11 +419,37 @@ module DataImport
 					updated_at: _reg['updated_at']
 				}
 			end
-			puts "REGISTRATIONS :::"
-			puts reg.inspect
-			puts "==========================================\n\n"
-			puts data.inspect
-			puts "==========================================\n\n"
+
+			att.each do |_att|
+				creator    = acreators[_att['creator']]
+				registered = data.find { |d| d[:member_id] == _att['member_id'] }
+
+				if registered
+					# EDIT
+					data[:attendance]          = 2
+					data[:confirmation_status] = _att['attributes']['confirmation_status']
+					data[:payment_status]      = _att['attributes']['payment_status']
+					data[:payment_method]      = _att['attributes']['payment_method']
+					data[:amount]              = _att['attributes']['amount']
+					data[:updated_at]          = _att['updated_at']
+				else
+					# INSERT
+					data << {
+						member_id: _att['member_id'],
+						venue_id: _att['location'] == "Yogam Center" ? venues[0].id : venues[1].id,
+						attendance: 3,
+						confirmation_status: _att['attributes']['confirmation_status'],
+						payment_status: _att['attributes']['payment_status'],
+						payment_method: _att['attributes']['payment_method'],
+						amount: _att['attributes']['amount'],
+						created_by: creator[:id],# ? creator[:id] : nil,
+						created_at: _att['created_at'],
+						updated_at: _att['updated_at']
+					}
+				end
+			end
+
+			data
 		end
 
 
