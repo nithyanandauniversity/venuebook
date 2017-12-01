@@ -206,22 +206,16 @@ module DataImport
 						attendances       = JSON.parse("#{row[11]}") || []
 						registrations     = JSON.parse("#{row[12]}") || []
 
-						# ASSIGN PROGRAM ID =====================================================================================
-						program_id = Events.assign_program_id(program_type, program_name)
-
 						# ASSIGN EVENT CREATOR ==================================================================================
-						cr = Events.assign_creator(created_by)
-						creators[created_by] = cr unless creators[created_by]
-
-						# ASSIGN ATTENDANCE CREATORS ============================================================================
-						Events.assign_attendance_creators(acreators, attendances, registrations)
+						creators[created_by] = Events.assign_creator(created_by) unless creators[created_by]
 
 						# ASSIGN EVENT OBJECT ===================================================================================
 						event = {
 							name: event_name,
 							start_date: start_date,
+							notes: notes,
 							center_id: "",
-							program_id: program_id,
+							program_id: Events.assign_program_id(program_type, program_name),
 							program_donation: donation,
 							registration_code: registration_code,
 							created_by: creators[created_by].id,
@@ -229,20 +223,15 @@ module DataImport
 							updated_at: updated_at
 						}
 
-						# ASSIGN COORDINATORS ===================================================================================
-						# co = Events.assign_coordinators(attendances, registrations)
-						# co.each do |k,v|
-						# 	coordinators[k] = v unless coordinators[k]
-						# end
+						# ASSIGN ATTENDANCE CREATORS ============================================================================
+						acreators = Events.assign_attendance_creators(acreators, attendances, registrations)
 
 						# ASSIGN EVENT LOCATIONS ================================================================================
 						event[:event_venues] = Events.assign_locations(attendances, registrations, center_venues)
-						# locs.each do |l|
-						# 	locations << l if l
-						# end
 
 						# ASSIGN ATTENDANCE RECORDS =============================================================================
 						event[:event_attendances] = Events.assign_attendances(start_date, attendances, registrations, center_venues, creators, acreators)
+
 						uniq_records = []
 						registrations.each do |reg|
 							uniq_records << reg['member_id'] unless uniq_records.index reg['member_id']
@@ -261,11 +250,11 @@ module DataImport
 
 				puts "CREATORS ::::: #{creators}\n\n"
 				puts "ATTENDANCE CREATORS ::::: #{acreators}\n\n"
-				# puts "LOCATIONS ::::: #{locations.uniq!}\n\n"
-				# puts "COORDINATORS ::::: #{coordinators}\n\n"
 				puts "MISSING RECORDS :::::: #{missing_records}\n\n\n"
 				puts "count :: #{count} || row count :: #{rcount}\n\n"
 				puts "TOTAL EVENT OBJECTS :::>>> #{events.length}\n"
+
+				Events.create_events(events)
 			end
 		end
 
@@ -335,36 +324,28 @@ module DataImport
 		end
 
 		def self.assign_attendance_creators(acreators, attendances, registrations)
-			ids      = []
-			creators = {}
+			ids = []
 
-			attendances.each do |at|
-				ids << at['creator'] unless ids.index(at['creator'])
-			end
-			registrations.each do |re|
-				ids << re['creator'] unless ids.index(re['creator'])
-			end
+			attendances.each { |at| ids << at['creator'] unless ids.index(at['creator']) }
+			registrations.each { |re| ids << re['creator'] unless ids.index(re['creator']) }
 
 			ids.uniq.each do |id|
-				# creators[id] = nil
 				if id
 					res   = Participant.get(id.gsub('SG-',''))
 					email = res["email"]
 					email = "tsytheowlcompany@gmail.com" if email == "tsy.theowlcompany@gmail.com"
 					email = "srinithyasthirananda@gmail.com" if email == "icmprabhakar@gmail.com"
 					user  = User.find(email: email)
-					if user
+					if user && !acreators[id]
 						acreators[id] = user
 					end
 				end
 			end
 
-			creators
+			acreators
 		end
 
 		def self.assign_locations(attendances, registrations, venues)
-			# att = attendances.map { |a| a['location']  } || []
-			# reg = registrations.map { |r| r['location']  } || []
 			locs = {}
 
 			attendances.each do |att|
@@ -398,60 +379,10 @@ module DataImport
 			user && user.id || nil
 		end
 
-
-
-		# def self.assign_coordinators(attendances, registrations)
-		# 	att = attendances.map { |a| a['coordinator']  } || []
-		# 	reg = registrations.map { |r| r['coordinator']  } || []
-
-		# 	coo = []
-		# 	coordinators = {}
-
-		# 	att.each do |a|
-		# 		coo << a if a
-		# 	end
-
-		# 	reg.each do |a|
-		# 		coo << a if a
-		# 	end
-
-		# 	missings = []
-
-		# 	unless coo.nil?
-		# 		coo.uniq.each do |co|
-		# 			res   = Participant.get(co.gsub('SG-', ''))
-		# 			email = res['email']
-		# 			email = "tsytheowlcompany@gmail.com" if email == "tsy.theowlcompany@gmail.com"
-		# 			email = "premteertha@gmail.com" if email == "ajarananda@gmail.com"
-		# 			email = "ma.anupama@innerawakening.org" if email == "nithyadevi.nithyananda@gmail.com"
-		# 			email = "srinithyasthirananda@gmail.com" if email == "icmprabhakar@gmail.com"
-
-		# 			coordinator = User.find(email: email)
-		# 			if coordinator && !coordinators[co]
-		# 				coordinators[co.to_s] = coordinator
-		# 			end
-
-		# 			if coordinator.nil?
-		# 				missings << email
-		# 				puts "\n\nNOT FOUND !!! #{email}\n\n"
-		# 			end
-		# 		end
-		# 	end
-
-		# 	coordinators
-		# end
-
-
 		def self.assign_attendances(start_date, att, reg, venues, creators, acreators)
 			data = []
 
 			reg.each do |_reg|
-				creator = acreators[_reg['creator']]
-				# puts _reg
-				# puts "acreators :: #{acreators} \n\n"
-				# puts "creators :: #{creators} \n\n"
-				# puts "creator :: #{creator.inspect} \n\n"
-				# puts "#{_reg['creator']} :: =="
 				data << {
 					member_id: _reg['member_id'],
 					venue_id: _reg['location'] == "Yogam Center" ? venues[0].id : venues[1].id,
@@ -461,7 +392,7 @@ module DataImport
 					payment_status: _reg['attributes']['payment_status'],
 					payment_method: _reg['attributes']['payment_method'],
 					amount: _reg['attributes']['amount'],
-					created_by: creator[:id],# ? creator[:id] : nil,
+					created_by: acreators[_reg['creator']][:id],
 					created_at: _reg['created_at'],
 					updated_at: _reg['updated_at']
 				}
@@ -498,6 +429,40 @@ module DataImport
 			end
 
 			data
+		end
+
+
+		def self.create_events(events)
+			Sequel::Model.db.transaction do
+				events.each do |_event|
+					event = {
+						name: _event[:event_name],
+						start_date: _event[:start_date],
+						center_id: _event[:center_id],
+						program_id: _event[:program_id],
+						notes: _event[:notes],
+						program_donation: _event[:program_donation],
+						registration_code: _event[:registration_code],
+						created_by: _event[:created_by],
+						created_at: _event[:created_at],
+						updated_at: _event[:updated_at]
+					}
+
+					venues = []
+					_event[:event_venues].each do |_venue|
+						venues << {}
+					end
+
+					event_attendances = []
+					_event[:event_attendances].each do |_attendance|
+						event_attendances << {}
+					end
+
+					puts "EVENT :: #{event.inspect}\n"
+					puts "VENUES :: #{_event[:event_venues].inspect}\n"
+					puts "ATTENDANCES :: #{_event[:event_attendances].inspect}\n\n"
+				end
+			end
 		end
 
 
