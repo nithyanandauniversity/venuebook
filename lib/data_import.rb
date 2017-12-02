@@ -197,7 +197,7 @@ module DataImport
 						donation          = row[2]
 						start_date        = row[3]
 						end_date          = row[4]
-						notes             = row[5]
+						notes             = row[5] || ""
 						created_at        = row[6]
 						updated_at        = row[7]
 						created_by        = row[8]
@@ -214,7 +214,7 @@ module DataImport
 							name: event_name,
 							start_date: start_date,
 							notes: notes,
-							center_id: "",
+							center_id: 74,
 							program_id: Events.assign_program_id(program_type, program_name),
 							program_donation: donation,
 							registration_code: registration_code,
@@ -227,7 +227,9 @@ module DataImport
 						acreators = Events.assign_attendance_creators(acreators, attendances, registrations)
 
 						# ASSIGN EVENT LOCATIONS ================================================================================
-						event[:event_venues] = Events.assign_locations(attendances, registrations, center_venues)
+						_ev = Events.assign_locations(attendances, registrations, center_venues, event[:notes])
+						event[:event_venues] = _ev[0]
+						event[:notes]        = _ev[1]
 
 						# ASSIGN ATTENDANCE RECORDS =============================================================================
 						event[:event_attendances] = Events.assign_attendances(start_date, attendances, registrations, center_venues, creators, acreators)
@@ -239,7 +241,8 @@ module DataImport
 						attendances.each do |att|
 							uniq_records << att['member_id'] unless uniq_records.index att['member_id']
 						end
-						puts "\n\n#{event[:event_attendances].length} == #{uniq_records.length}\n\n"
+						# puts "\n\n#{event[:event_attendances].length} == #{uniq_records.length}\n\n"
+
 						missing_records << event[:event_attendances] if event[:event_attendances].length != uniq_records.length
 
 						events << event
@@ -248,8 +251,8 @@ module DataImport
 					rcount += 1
 				end
 
-				puts "CREATORS ::::: #{creators}\n\n"
-				puts "ATTENDANCE CREATORS ::::: #{acreators}\n\n"
+				# puts "CREATORS ::::: #{creators}\n\n"
+				# puts "ATTENDANCE CREATORS ::::: #{acreators}\n\n"
 				puts "MISSING RECORDS :::::: #{missing_records}\n\n\n"
 				puts "count :: #{count} || row count :: #{rcount}\n\n"
 				puts "TOTAL EVENT OBJECTS :::>>> #{events.length}\n"
@@ -345,7 +348,7 @@ module DataImport
 			acreators
 		end
 
-		def self.assign_locations(attendances, registrations, venues)
+		def self.assign_locations(attendances, registrations, venues, notes)
 			locs = {}
 
 			attendances.each do |att|
@@ -358,13 +361,14 @@ module DataImport
 
 			locations = []
 			locs.each do |location, coordinator|
+				notes += "\nLocation: #{location}"
 				locations << {
 					venue_id: location == "Yogam Center" ? venues[0].id : venues[1].id,
 					user_id: Events.get_user(coordinator)
 				}
 			end
 
-			locations
+			[locations, notes]
 		end
 
 		def self.get_user(coordinator)
@@ -384,7 +388,7 @@ module DataImport
 
 			reg.each do |_reg|
 				data << {
-					member_id: _reg['member_id'],
+					member_id: _reg['member_id'].gsub('SG-',''),
 					venue_id: _reg['location'] == "Yogam Center" ? venues[0].id : venues[1].id,
 					attendance: 1,
 					attendance_date: start_date,
@@ -400,7 +404,7 @@ module DataImport
 
 			att.each do |_att|
 				creator    = acreators[_att['creator']]
-				registered = data.find { |d| d[:member_id] == _att['member_id'] }
+				registered = data.find { |d| d[:member_id] == _att['member_id'].gsub('SG-','') }
 
 				if registered
 					# EDIT
@@ -413,7 +417,7 @@ module DataImport
 				else
 					# INSERT
 					data << {
-						member_id: _att['member_id'],
+						member_id: _att['member_id'].gsub('SG-',''),
 						venue_id: _att['location'] == "Yogam Center" ? venues[0].id : venues[1].id,
 						attendance: 3,
 						attendance_date: start_date,
@@ -435,12 +439,13 @@ module DataImport
 		def self.create_events(events)
 			Sequel::Model.db.transaction do
 				events.each do |_event|
-					event = {
-						name: _event[:event_name],
+					params = {
+						name: _event[:name],
 						start_date: _event[:start_date],
 						center_id: _event[:center_id],
 						program_id: _event[:program_id],
 						notes: _event[:notes],
+						uuid: SecureRandom.uuid,
 						program_donation: _event[:program_donation],
 						registration_code: _event[:registration_code],
 						created_by: _event[:created_by],
@@ -448,19 +453,27 @@ module DataImport
 						updated_at: _event[:updated_at]
 					}
 
-					venues = []
+					event = Event.create(params)
+
+					# venues = []
 					_event[:event_venues].each do |_venue|
-						venues << {}
+						# venues << {}
+						event.add_event_venue(_venue)
 					end
 
-					event_attendances = []
+					# event_attendances = []
 					_event[:event_attendances].each do |_attendance|
-						event_attendances << {}
+						# event_attendances << {}
+						_attendance[:event_id] = event.id
+						EventAttendance.create(_attendance)
 					end
 
 					puts "EVENT :: #{event.inspect}\n"
 					puts "VENUES :: #{_event[:event_venues].inspect}\n"
 					puts "ATTENDANCES :: #{_event[:event_attendances].inspect}\n\n"
+					puts "========================================================\n"
+					puts "#{event.inspect}"
+					puts "========================================================\n\n\n"
 				end
 			end
 		end
