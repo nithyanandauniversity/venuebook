@@ -201,7 +201,7 @@ module DataImport
 						created_at        = row[6]
 						updated_at        = row[7]
 						created_by        = row[8]
-						event_name        = row[9]
+						event_name        = row[9] || ""
 						registration_code = row[10]
 						attendances       = JSON.parse("#{row[11]}") || []
 						registrations     = JSON.parse("#{row[12]}") || []
@@ -209,13 +209,16 @@ module DataImport
 						# ASSIGN EVENT CREATOR ==================================================================================
 						creators[created_by] = Events.assign_creator(created_by) unless creators[created_by]
 
+						# ASSIGN EVENT PROGRAM ==================================================================================
+						pro = Events.assign_program_id(program_type, program_name, event_name)
+
 						# ASSIGN EVENT OBJECT ===================================================================================
 						event = {
-							name: event_name,
+							name: pro[1],
 							start_date: start_date,
 							notes: notes,
 							center_id: 74,
-							program_id: Events.assign_program_id(program_type, program_name),
+							program_id: pro[0],
 							program_donation: donation,
 							registration_code: registration_code,
 							created_by: creators[created_by].id,
@@ -262,7 +265,7 @@ module DataImport
 		end
 
 
-		def self.assign_program_id(program_type, program_name)
+		def self.assign_program_id(program_type, program_name, event_name)
 
 			program_name_mapping = {
 				"Local Event" => {
@@ -313,7 +316,8 @@ module DataImport
 			event_program_name = program_name_mapping["#{program_type}"]["types"]["#{program_name}"] || "Others"
 
 			program_id = Program.find(program_name: event_program_name, program_type: event_program_type).id
-			program_id
+			event_name = [event_name, program_name].join(" ") if event_program_name == "Others"
+			[program_id, event_name]
 		end
 
 
@@ -468,12 +472,12 @@ module DataImport
 						EventAttendance.create(_attendance)
 					end
 
-					puts "EVENT :: #{event.inspect}\n"
-					puts "VENUES :: #{_event[:event_venues].inspect}\n"
-					puts "ATTENDANCES :: #{_event[:event_attendances].inspect}\n\n"
+					# puts "EVENT :: #{event.inspect}\n"
+					# puts "VENUES :: #{_event[:event_venues].inspect}\n"
+					# puts "ATTENDANCES :: #{_event[:event_attendances].inspect}\n\n"
 					puts "========================================================\n"
 					puts "#{event.inspect}"
-					puts "========================================================\n\n\n"
+					puts "========================================================\n\n"
 				end
 			end
 		end
