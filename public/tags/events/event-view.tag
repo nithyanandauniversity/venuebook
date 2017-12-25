@@ -33,6 +33,10 @@
 									 </span>
 								</h5>
 							</div>
+							<div style="margin-top: 20px;">
+								<h6 style="margin: 0;">Notes</h6>
+								<p style="font-size: 0.6em;">{event.notes}</p>
+							</div>
 						</div>
 						<div class="extra content" if="{creator}" style="font-size: 0.5em;">
 							<div class="right floated">
