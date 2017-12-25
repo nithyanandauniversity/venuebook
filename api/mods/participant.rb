@@ -9,13 +9,9 @@ module Venuebook
 
 			get do
 				if authorize! :read, Participant
-					if current_user['role'] >= 3
-						params[:search][:center_code] ||= current_user['center_code']
-					# elsif current_user['role'] == 3
-						# params[:search][:center_code] ||= current_user['center_code']
-					end
 
 					if params[:search]
+						params[:search][:center_code] ||= current_user['center_code'] if current_user['role'] >= 3
 						puts "Search !!!"
 						ext_search = params[:search][:ext_search] || nil
 
@@ -39,6 +35,7 @@ module Venuebook
 						return Participant.search(params)
 
 					elsif params[:download]
+						params[:download][:center_code] ||= current_user['center_code'] if current_user['role'] >= 3
 						# puts "Download !!!"
 						return Participant.download(params)
 						# content_type "text/csv"
