@@ -182,7 +182,7 @@ describe 'Participant' do
 
 		contact_id = participant['contacts'][1]['id']
 
-		delete "/api/v1/participants/#{participant_id}/contact/#{contact_id}", nil, {'HTTP_TOKEN' => @token}
+		delete "/api/v1/participants/#{participant_id}/contacts/#{contact_id}", nil, {'HTTP_TOKEN' => @token}
 
 		new_participant = Participant.get(response['member_id'])
 
@@ -191,7 +191,7 @@ describe 'Participant' do
 
 		address_id = participant['addresses'][1]['id']
 
-		delete "/api/v1/participants/#{participant_id}/address/#{address_id}", nil, {'HTTP_TOKEN' => @token}
+		delete "/api/v1/participants/#{participant_id}/addresses/#{address_id}", nil, {'HTTP_TOKEN' => @token}
 
 		new_participant = Participant.get(response['member_id'])
 

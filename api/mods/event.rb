@@ -25,10 +25,15 @@ module Venuebook
 						size      = params[:past] && params[:past][:limit].to_i || 10
 						center_id = current_user['role'] < 3 ? params[:past][:center_id] : current_user['center_id']
 
-						events = Event.where(center_id: center_id)
-							.filter('start_date <= ?', (Date.today - 1.day))
-							.reverse(:start_date)
-							.paginate(page, size)
+						if params[:past][:keyword] || params[:past][:search_params]
+							events = Event.search(params[:past])
+						else
+							events = Event.where(center_id: center_id)
+						end
+
+						events = events.filter('start_date <= ?', (Date.today - 1.day))
+									.reverse(:start_date)
+									.paginate(page, size)
 
 						[{
 							events: JSON.parse(events.to_json(:include => :program)),

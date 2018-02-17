@@ -180,11 +180,11 @@ class Participant < Sequel::Model
 	end
 
 	def self.deleteContact(id, contact_id)
-		RestClient.delete PARBOOK_URL + "/#{id}/contact/#{contact_id}"
+		RestClient.delete PARBOOK_URL + "/#{id}/contacts/#{contact_id}"
 	end
 
 	def self.deleteAddress(id, address_id)
-		RestClient.delete PARBOOK_URL + "/#{id}/address/#{address_id}"
+		RestClient.delete PARBOOK_URL + "/#{id}/addresses/#{address_id}"
 	end
 
 	def self.delete(id)
