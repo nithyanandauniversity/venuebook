@@ -128,7 +128,8 @@
 
 		switchPage(pageNo) {
 			if (pageNo) {
-				this.getPast({page: pageNo, limit: this.perPage});
+				// this.getPast({page: pageNo, limit: this.perPage});
+				this.performSearch(pageNo);
 			}
 		}
 
@@ -182,10 +183,12 @@
 			});
 		}
 
-		performSearch() {
+		performSearch(pageNo = 1) {
 			let state = this.parent.opts.store.getState();
+			let params = state.events.query || this.getDefaultQueryParams();
+			params.page = pageNo;
 			// console.log('PERFORM SEARCH', state.participants.query);
-			this.getPast(state.events.query || this.getDefaultQueryParams());
+			this.getPast(params);
 		}
 
 		this.performSearch();

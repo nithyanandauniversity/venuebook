@@ -32,9 +32,14 @@ class Event < Sequel::Model
 
 			if data[:event_date]
 				chk_start = data[:event_date][0]
-				chk_end   = data[:event_date][1] || chk_start
+				chk_end   = data[:event_date][1]
 
-				events = events.where("start_date > ?", chk_start).or("end_date < ?", chk_end)
+				if !chk_end
+					events = events.where(start_date: chk_start)
+				else
+					events = events.where("start_date >= ? AND start_date < ?", chk_start, chk_end)
+				end
+
 			end
 
 			if data[:user_id]

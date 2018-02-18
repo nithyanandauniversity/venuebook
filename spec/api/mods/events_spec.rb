@@ -111,7 +111,7 @@ describe "Events" do
 
 	it "should be able to search past events by date range" do
 		Event.dataset.all { |e| e.destroy }
-		Event.create(name: "test one", start_date: Date.today - 4.day, end_date: Date.today - 3.day)
+		Event.create(name: "test one", start_date: Date.today - 7.day, end_date: Date.today - 3.day)
 		Event.create(name: "test two event", start_date: Date.today - 6.day, end_date: Date.today - 5.day)
 		Event.create(name: "test three event", start_date: Date.today - 5.day, end_date: Date.today - 4.day, program_id: 4)
 		Event.create(name: "test four event", start_date: Date.today - 4.day, end_date: Date.today - 3.day, program_id: 5)
@@ -127,7 +127,17 @@ describe "Events" do
 
 		response1 = JSON.parse(last_response.body)[0]['events']
 
-		expect(response1.length).to eql 2
+		expect(response1.length).to eql 1
+
+		get "/api/v1/events", {past: {
+			page: 1,
+			limit: 10,
+			search_params: {event_date: [Date.today - 5.day, Date.today - 3.day]}
+		}}, {'HTTP_TOKEN' => @token}
+
+		response2 = JSON.parse(last_response.body)[0]['events']
+
+		expect(response2.length).to eql 2
 	end
 
 	it "should be able to search past events by coordinator name" do
