@@ -132,6 +132,10 @@
 					console.log('show past !');
 					this.showPast();
 				}
+				else if (this.prevState.view == 'SEARCH_EVENT') {
+					console.log('show search !');
+					this.doSearch(this.prevState.query);
+				}
 				else {
 					console.log('show upcoming !');
 					this.showUpcoming();
