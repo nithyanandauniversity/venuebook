@@ -41,7 +41,7 @@
 				<i class="icon calendar"></i> Upcoming Events
 			</a>
 			<a
-				class   = "orange item {opts.state.view == 'PAST_EVENT' || opts.state.view == 'SEARCH_EVENT' && 'active'}"
+				class   = "orange item {opts.state.view == 'PAST_EVENT' && 'active'} {opts.state.view == 'SEARCH_EVENT' && 'active'}"
 				onclick = "{ showPast }">
 				<i class="icon checked calendar"></i> Past Events
 			</a>

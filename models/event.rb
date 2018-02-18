@@ -37,7 +37,7 @@ class Event < Sequel::Model
 				if !chk_end
 					events = events.where(start_date: chk_start)
 				else
-					events = events.where("start_date >= ? AND start_date < ?", chk_start, chk_end)
+					events = events.where("start_date >= ? AND start_date < ?", Date.parse(chk_start), Date.parse(chk_end))
 				end
 
 			end
