@@ -342,8 +342,8 @@
 		}
 
 		loadDates() {
-			let start_date = new Date(this.event.start_date);
-			let end_date   = new Date(this.event.end_date);
+			let start_date = new Date(this.event.start_date + " 00:00:00:000");
+			let end_date   = new Date(this.event.end_date + " 00:00:00:000");
 			let diff       = (end_date - start_date) / 1000 / 60 / 60 / 24;
 
 			this.event_dates = [start_date];
@@ -353,6 +353,8 @@
 					this.event_dates.push( new Date(start_date.getTime() + (1000*60*60*24) * (i+1)) );
 				}
 			}
+
+			console.log("this.event_dates", this.event_dates);
 		}
 
 		requestReport(venue, date_index) {
