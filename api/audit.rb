@@ -14,7 +14,7 @@ class Audits < Grape::Middleware::Base
 			log[:url]                 = env['PATH_INFO']
 			log[:status]              = status
 			log[:ip_address]          = env['REMOTE_ADDR']
-			log[:query_params]        = env['rack.request.query_hash']
+			log[:query_params]        = env['rack.request.query_hash'].to_s
 			log[:namespace]           = env["grape.routing_args"][:route_info].options[:namespace]
 			log[:raw_request_body]    = env['api.request.input']
 			# log[:parsed_request_body] = env['api.request.body']
@@ -139,7 +139,7 @@ class Audits < Grape::Middleware::Base
 		log = Logger.new(STDOUT)
 		begin
 			# Post data to the AuditLogs API
-			response = RestClient.post AUDITBOOK_URL, params
+			response = RestClient.post AUDITBOOK_URL, audit_log: params
 			log.info response.inspect
 
 		rescue Exception => e
