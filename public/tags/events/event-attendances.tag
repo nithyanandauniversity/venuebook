@@ -635,8 +635,8 @@
 		}
 
 		loadDates() {
-			let start_date = new Date(this.opts.event.start_date);
-			let end_date   = new Date(this.opts.event.end_date);
+			let start_date = new Date(this.opts.event.start_date + " 00:00:00:000");
+			let end_date   = new Date(this.opts.event.end_date + " 00:00:00:000");
 			let diff       = (end_date - start_date) / 1000 / 60 / 60 / 24;
 
 			this.event_dates = [start_date];

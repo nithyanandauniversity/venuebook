@@ -203,12 +203,12 @@
 		}
 
 		addToAttendance(participant, venue_id, attendance_date) {
-
+			console.log("ATTENDANCE DATE :: ", attendance_date);
 			let params = {
 				attendance : {
 					event_id        : this.view_id,
 					venue_id        : venue_id,
-					attendance_date : attendance_date,
+					attendance_date : attendance_date.toDateString(),
 					member_id       : participant.member_id,
 					attendance      : 3
 				},
