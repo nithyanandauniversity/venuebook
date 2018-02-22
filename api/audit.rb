@@ -9,10 +9,10 @@ class Audits < Grape::Middleware::Base
 		if env["api.endpoint"]
 			log                       = {}
 			log[:request_time]        = Time.now.utc
-			log[:method]              = env['REQUEST_METHOD']
+			log[:http_method]         = env['REQUEST_METHOD']
 			# log[:format]              = env['api.format']
 			log[:url]                 = env['PATH_INFO']
-			log[:status]              = status
+			log[:http_status]         = status
 			log[:ip_address]          = env['REMOTE_ADDR']
 			log[:query_params]        = env['rack.request.query_hash'].to_s
 			log[:namespace]           = env["grape.routing_args"][:route_info].options[:namespace]
@@ -21,14 +21,14 @@ class Audits < Grape::Middleware::Base
 
 			response_body = ""
 			# read the JSON string line by line
-			response.each { |part| response_body += part }
-			log[:response] = response_body
+			response.each { |part| response_body += part.to_s }
+			log[:http_response] = response_body
 
-			current_user       = Audits.current_user(env['HTTP_TOKEN'])
-			log[:current_user] = current_user ? current_user[0] : nil
-			log[:category]     = Audits.get_category(log[:namespace])
-			log[:sub_category] = Audits.get_sub_category(log[:url])
-			log[:resource]     = Audits.get_resource(log[:namespace], log[:method], log[:url], response_body)
+			current_user             = Audits.current_user(env['HTTP_TOKEN'])
+			log[:current_user]       = current_user ? current_user[0] : nil
+			log[:audit_category]     = Audits.get_category(log[:namespace])
+			log[:audit_sub_category] = Audits.get_sub_category(log[:url])
+			log[:audit_resource]     = Audits.get_resource(log[:namespace], log[:method], log[:url], response_body)
 
 			# puts "\n\n\n========================================="
 			# puts log.inspect
@@ -139,6 +139,7 @@ class Audits < Grape::Middleware::Base
 		log = Logger.new(STDOUT)
 		begin
 			# Post data to the AuditLogs API
+			puts "AUDITBOOK_URL :: #{AUDITBOOK_URL}"
 			response = RestClient.post AUDITBOOK_URL, audit_log: params
 			log.info response.inspect
 
