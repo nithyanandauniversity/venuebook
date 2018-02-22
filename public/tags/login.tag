@@ -7,7 +7,7 @@
 			</div>
 		</h2>
 		<form class="ui huge form">
-			<div class="ui stacked segment">
+			<div class="ui segment">
 				<div class="field">
 					<div class="ui left icon huge input">
 						<i class="user icon"></i>
@@ -36,6 +36,9 @@
 			</div>
 
 		</form>
+		<br>
+		<br>
+		<label>(v1.0.0-build.8)</label>
 
 		<div
 			class = "ui error message"

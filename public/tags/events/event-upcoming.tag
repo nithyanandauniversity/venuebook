@@ -78,6 +78,8 @@
 				params.center_id = this.currentUser.center_id;
 			}
 
+			$("#pageDimmer").addClass('active');
+
 			this.parent.opts.service.getUpcoming(params, (err, response) => {
 				if (!err) {
 					this.upcoming = this.getData(response.body()[0])['events'];
@@ -87,6 +89,7 @@
 				}
 
 				this.update();
+				$("#pageDimmer").removeClass('active');
 			});
 		}
 

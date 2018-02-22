@@ -104,4 +104,15 @@ export default class EventService {
 			});
 	}
 
+	remove(id, callback) {
+		this.reloadApi();
+		this.collection.delete(id)
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 }

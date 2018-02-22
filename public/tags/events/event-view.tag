@@ -33,6 +33,16 @@
 									 </span>
 								</h5>
 							</div>
+							<div style="margin-top: 20px;">
+								<h6 style="margin: 0;">Notes</h6>
+								<p style="font-size: 0.6em;">{event.notes}</p>
+							</div>
+						</div>
+						<div class="extra content" if="{creator}" style="font-size: 0.5em;">
+							<div class="right floated">
+								<span>Created by: {creator.first_name} {creator.last_name}</span>
+								<span> on {format(event.created_at, 'date', 'isoDate')}</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -193,12 +203,12 @@
 		}
 
 		addToAttendance(participant, venue_id, attendance_date) {
-
+			console.log("ATTENDANCE DATE :: ", attendance_date);
 			let params = {
 				attendance : {
 					event_id        : this.view_id,
 					venue_id        : venue_id,
-					attendance_date : attendance_date,
+					attendance_date : attendance_date.toDateString(),
 					member_id       : participant.member_id,
 					attendance      : 3
 				},
@@ -332,8 +342,8 @@
 		}
 
 		loadDates() {
-			let start_date = new Date(this.event.start_date);
-			let end_date   = new Date(this.event.end_date);
+			let start_date = new Date(this.event.start_date + " 00:00:00:000");
+			let end_date   = new Date(this.event.end_date + " 00:00:00:000");
 			let diff       = (end_date - start_date) / 1000 / 60 / 60 / 24;
 
 			this.event_dates = [start_date];
@@ -343,6 +353,8 @@
 					this.event_dates.push( new Date(start_date.getTime() + (1000*60*60*24) * (i+1)) );
 				}
 			}
+
+			console.log("this.event_dates", this.event_dates);
 		}
 
 		requestReport(venue, date_index) {
@@ -372,10 +384,12 @@
 		}
 
 		if (this.view_id) {
+			$("#pageDimmer").addClass('active');
 			this.parent.opts.service.get(this.view_id, (err, response) => {
 				if (!err) {
 					let data = response.body().data();
 					this.event   = data.event;
+					this.creator = data.creator;
 					this.program = data.program;
 					this.venues  = data.event_venues;
 					this.initTab();
@@ -391,6 +405,7 @@
 					this.program = null;
 					this.venues  = [];
 				}
+				$("#pageDimmer").removeClass('active');
 			});
 		}
 

@@ -72,7 +72,14 @@
 					( activeVenue == 'ALL' && ( date_index == 'ALL' || ( date_index != 'ALL' && attendance[format(parent.event_dates[date_index], 'date', 'isoDate')] ) ) ) ||
 					( activeVenue != 'ALL' && ( (date_index == 'ALL' && attendance.attended_venues.includes(activeVenue)) || (date_index != 'ALL' && attendance[format(parent.event_dates[date_index], 'date', 'isoDate')] == activeVenue) ) )
 				}">
-				<td>{i + 1}</td>
+				<td>
+					<a
+						class          = "ui grey circular label att-count"
+						data-content   = "Added by {attendance.creator.first_name}"
+						data-inverted  = ""
+						data-position  = "top center"
+						data-variation = "small">{i + 1}</a>
+				</td>
 				<td show = "{activeVenue == 'ALL'}">
 					{attendance.venue.name}
 				</td>
@@ -561,6 +568,10 @@
 				value = value.trim() + ' [' + participant.email + ']';
 			}
 
+			if (participant.contact && participant.contact.value) {
+				value = value.trim() + ' < ' + participant.contact.value + ' >'
+			}
+
 			return {value: value.trim(), data: participant};
 		}
 
@@ -577,10 +588,6 @@
 						keyword : query,
 						version : Date.now()
 					}
-
-					// if (this.opts.currentUser.role > 2) {
-					// 	params.center_id = this.opts.currentUser.center_id;
-					// }
 
 					if (this.currentUser) {
 						params.center_code = this.currentUser.center_code;
@@ -604,19 +611,21 @@
 						params.ext_search = null;
 					}
 
-					// console.log("params");
-					// console.log(params);
+					if (this.triggerTimer) { clearTimeout(this.triggerTimer); }
 
-					this.opts.service.search(params, (err, response) => {
-						if (!err && response.body().length) {
-							let result = response.body()[0].data();
+					this.triggerTimer = setTimeout(() => {
+						this.opts.service.search(params, (err, response) => {
+							if (!err && response.body().length) {
+								let result = response.body()[0].data();
 
-							done({suggestions: result.participants.map(this.formatResults)});
-						}
-						else {
-							done({suggestions: []});
-						}
-					});
+								done({suggestions: result.participants.map(this.formatResults)});
+							}
+							else {
+								done({suggestions: []});
+							}
+						});
+					}, 600);
+
 				},
 				onSelect : (item) => {
 					$("#search-attendance")[0].value = '';
@@ -626,8 +635,8 @@
 		}
 
 		loadDates() {
-			let start_date = new Date(this.opts.event.start_date);
-			let end_date   = new Date(this.opts.event.end_date);
+			let start_date = new Date(this.opts.event.start_date + " 00:00:00:000");
+			let end_date   = new Date(this.opts.event.end_date + " 00:00:00:000");
 			let diff       = (end_date - start_date) / 1000 / 60 / 60 / 24;
 
 			this.event_dates = [start_date];
@@ -682,6 +691,7 @@
 
 				setTimeout( () => {
 					this.setAttValues();
+					$('.att-count').popup();
 				}, 20);
 			}
 		});

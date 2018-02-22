@@ -128,6 +128,8 @@
 					initVal = this.currentPage - minPos;
 				}
 
+				if (initVal <= 0) { initVal = 1; }
+
 				for (let i = initVal; i < this.currentPage; i++) {
 					this.pages.push(i);
 				}

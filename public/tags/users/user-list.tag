@@ -159,8 +159,19 @@
 		this.perPage = 10;
 
 		switchPage(pageNo) {
+			let state = this.parent.opts.store.getState();
 			if (pageNo) {
-				this.getUsers({page: pageNo, limit: this.perPage});
+				if (state.users.query) {
+					this.getUsers({
+						page       : pageNo,
+						limit      : state.users.query.limit || this.perPage,
+						keyword    : state.users.query.keyword,
+						attributes : state.users.query.attributes
+					});
+				}
+				else {
+					this.getUsers({page: pageNo, limit: this.perPage});
+				}
 			}
 		}
 
@@ -181,6 +192,8 @@
 				params.keyword = this.parent.searchQ;
 			}
 
+			$("#pageDimmer").addClass('active');
+
 			this.parent.opts.service.search(params, (err, response) => {
 				if (!err && response.body().length) {
 					let result = this.getData(response.body()[0]);
@@ -200,6 +213,7 @@
 					}
 					this.update();
 					this.tags['riot-pagination'].trigger('refresh');
+					$("#pageDimmer").removeClass('active');
 				}
 				else {
 					console.log("ERROR !");
@@ -209,7 +223,6 @@
 
 		performSearch() {
 			let state = this.parent.opts.store.getState();
-			console.log('PERFORM SEARCH', state.users.query);
 			this.getUsers(state.users.query || this.getDefaultQueryParams());
 		}
 

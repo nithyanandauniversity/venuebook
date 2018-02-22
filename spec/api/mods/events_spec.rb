@@ -60,6 +60,147 @@ describe "Events" do
 		expect(response.length).to eql 2
 	end
 
+	it "should be able to search past events by name" do
+		Event.dataset.all { |e| e.destroy }
+		Event.create(name: "test one", start_date: Date.today - 4.day, end_date: Date.today - 3.day)
+		Event.create(name: "test two event", start_date: Date.today - 6.day, end_date: Date.today - 5.day)
+
+		expect(Event.count).to eql 2
+
+		get "/api/v1/events", {past: {
+			page: 1,
+			limit: 10,
+			keyword: 'two'
+		}}, {'HTTP_TOKEN' => @token}
+
+		response1 = JSON.parse(last_response.body)[0]['events']
+
+		expect(response1.length).to eql 1
+
+		get "/api/v1/events", {past: {
+			page: 1,
+			limit: 10,
+			keyword: 'test'
+		}}, {'HTTP_TOKEN' => @token}
+
+		response2 = JSON.parse(last_response.body)[0]['events']
+
+		expect(response2.length).to eql 2
+	end
+
+	it "should be able to search past events by program ids" do
+		Event.dataset.all { |e| e.destroy }
+		Event.create(name: "test one", start_date: Date.today - 4.day, end_date: Date.today - 3.day)
+		Event.create(name: "test two event", start_date: Date.today - 6.day, end_date: Date.today - 5.day)
+		Event.create(name: "test three event", start_date: Date.today - 6.day, end_date: Date.today - 5.day, program_id: 4)
+		Event.create(name: "test four event", start_date: Date.today - 6.day, end_date: Date.today - 5.day, program_id: 5)
+		Event.create(name: "test five event", start_date: Date.today - 6.day, end_date: Date.today - 5.day, program_id: 6)
+
+		expect(Event.count).to eql 5
+
+		get "/api/v1/events", {past: {
+			page: 1,
+			limit: 10,
+			search_params: {program_id: [4,6]}
+		}}, {'HTTP_TOKEN' => @token}
+
+		response1 = JSON.parse(last_response.body)[0]['events']
+
+		expect(response1.length).to eql 2
+	end
+
+	it "should be able to search past events by date range" do
+		Event.dataset.all { |e| e.destroy }
+		Event.create(name: "test one", start_date: Date.today - 7.day, end_date: Date.today - 3.day)
+		Event.create(name: "test two event", start_date: Date.today - 6.day, end_date: Date.today - 5.day)
+		Event.create(name: "test three event", start_date: Date.today - 5.day, end_date: Date.today - 4.day, program_id: 4)
+		Event.create(name: "test four event", start_date: Date.today - 4.day, end_date: Date.today - 3.day, program_id: 5)
+		Event.create(name: "test five event", start_date: Date.today - 3.day, end_date: Date.today - 2.day, program_id: 6)
+
+		expect(Event.count).to eql 5
+
+		get "/api/v1/events", {past: {
+			page: 1,
+			limit: 10,
+			search_params: {event_date: [Date.today - 4.day]}
+		}}, {'HTTP_TOKEN' => @token}
+
+		response1 = JSON.parse(last_response.body)[0]['events']
+
+		expect(response1.length).to eql 1
+
+		get "/api/v1/events", {past: {
+			page: 1,
+			limit: 10,
+			search_params: {event_date: [Date.today - 5.day, Date.today - 3.day]}
+		}}, {'HTTP_TOKEN' => @token}
+
+		response2 = JSON.parse(last_response.body)[0]['events']
+
+		expect(response2.length).to eql 2
+	end
+
+	it "should be able to search past events by coordinator name" do
+		Event.dataset.all { |e| e.destroy }
+		EventVenue.dataset.all { |e| e.destroy }
+
+		post '/api/v1/events', {
+			event: {start_date: Date.today - 3.day, end_date: Date.today - 2.day, center_id: 4543, program_id: 3},
+			venues: [
+				{venue_id: 11, user_id: 33},
+				{venue_id: 11, user_id: 34},
+			]
+		}, {'HTTP_TOKEN' => @token}
+
+		post '/api/v1/events', {
+			event: {start_date: Date.today - 3.day, end_date: Date.today - 2.day, center_id: 4543, program_id: 3},
+			venues: [
+				{venue_id: 11, user_id: 30},
+				{venue_id: 11, user_id: 34},
+			]
+		}, {'HTTP_TOKEN' => @token}
+
+		post '/api/v1/events', {
+			event: {start_date: Date.today - 3.day, end_date: Date.today - 2.day, center_id: 4543, program_id: 3},
+			venues: [
+				{venue_id: 11, user_id: 33},
+				{venue_id: 11, user_id: 34},
+			]
+		}, {'HTTP_TOKEN' => @token}
+
+		expect(Event.count).to eql 3
+
+		get "/api/v1/events", {past: {
+			page: 1,
+			limit: 10,
+			search_params: {user_id: 30}
+		}}, {'HTTP_TOKEN' => @token}
+
+		response1 = JSON.parse(last_response.body)[0]['events']
+
+		expect(response1.length).to eql 1
+
+		get "/api/v1/events", {past: {
+			page: 1,
+			limit: 10,
+			search_params: {user_id: 34}
+		}}, {'HTTP_TOKEN' => @token}
+
+		response2 = JSON.parse(last_response.body)[0]['events']
+
+		expect(response2.length).to eql 3
+
+		get "/api/v1/events", {past: {
+			page: 1,
+			limit: 10,
+			search_params: {user_id: 33}
+		}}, {'HTTP_TOKEN' => @token}
+
+		response3 = JSON.parse(last_response.body)[0]['events']
+
+		expect(response3.length).to eql 2
+	end
+
 	it "should be able to get event by id" do
 		center = Center.create(name: "Yogam", state: "Singapore", country: "Singapore")
 		ca1    = User.create(first_name: "Center admin1", email: "centeradmin1@gmail.com", password: "123123", role: 3, center_id: center.id)
@@ -91,9 +232,6 @@ describe "Events" do
 
 		expect(response['event']['id']).to eql event.id
 		expect(response['event_venues'].length).to eql 2
-	end
-
-	it "should be able to find past events" do
 	end
 
 	it "should be able to create event with multiple venues" do

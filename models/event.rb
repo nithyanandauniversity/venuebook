@@ -11,10 +11,47 @@ class Event < Sequel::Model
 
 	def creator
 		if created_by && User.find(id: created_by)
-			User.find(id: created_by)
+			User.select(:id, :first_name, :last_name).where(id: created_by).first
 		else
 			{}
 		end
+	end
+
+	def self.search(params)
+		if params[:keyword]
+			events = Event.where((Sequel.ilike(:name, "%#{params[:keyword]}%")))
+		else
+			events = Event.order("events.id")
+		end
+
+		if params[:search_params]
+			data = params[:search_params]
+			if data[:program_id]
+				events = events.where("program_id IN ?", data[:program_id]) if data[:program_id].count
+			end
+
+			if data[:event_date]
+				chk_start = data[:event_date][0]
+				chk_end   = data[:event_date][1]
+
+				if !chk_end
+					events = events.where(start_date: chk_start)
+				else
+					events = events.where("start_date >= ? AND start_date < ?", Date.parse(chk_start), Date.parse(chk_end))
+				end
+
+			end
+
+			if data[:user_id]
+				event_ids = EventVenue.where(user_id: data[:user_id]).map { |ev|
+					ev.event_id if ev.event_id
+				}.compact
+
+				events = events.where(id: event_ids)
+			end
+		end
+
+		events
 	end
 
 	def get_attendance_csv(params)
@@ -36,11 +73,10 @@ class Event < Sequel::Model
 			"City",
 			"Email Address",
 			"Contact Numbers",
-			# "Status",
-			# "Enricher",
 			"Payment Status",
 			"Amount",
 			"Payment Method",
+			"Pre-Registered",
 			"Venue"
 		]
 
@@ -86,15 +122,21 @@ class Event < Sequel::Model
 				smkts[participant_attributes['role'] || 0], participant['gender'],
 				"#{address['street']} #{address['city']} #{address['state']} #{address['postal_code']} #{address['coutnry']}".gsub(',', '.'),
 				address['city'].gsub(',','.'),
-				participant['email'], participant['contacts'][0]['value'],
+				participant['email'],
+				participant['contacts'][0] ? participant['contacts'][0]['value'] : '',
 				payment_status_options[data[:payment_status] || 0],
 				data[:amount],
 				payment_method_options[data[:payment_method] || 0],
+				data[:attendance] === 2 ? "Yes" : "No",
 				venues.join(',')
 			]
 		end
 		# end
 
 		csv
+	end
+
+	def self.import_file_sg(file)
+		DataImport::Events.import(file)
 	end
 end

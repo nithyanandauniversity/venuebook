@@ -19,7 +19,7 @@ class Participant < Sequel::Model
 
 		# end
 
-		row = ["First name", "Last name", "Email Address", "Contact number"]
+		row = ["First name", "Last name", "Email Address", "Contact number", "Notes"]
 
 		row << "Address" if [true, 'true'].include?(params[:download][:with_address])
 		row << "IA Graduate" if [true, 'true'].include?(params[:download][:ia_graduate])
@@ -36,6 +36,7 @@ class Participant < Sequel::Model
 			smkt      = smkts[attribute['role'] || 0]
 			creator   = User.find(id: participant['created_by'])
 			address   = ''
+			notes     = participant['notes'] || ''
 
 			if participant['address']
 				street      = participant['address']['street'] ? participant['address']['street'].gsub(',', '.') : ''
@@ -51,7 +52,8 @@ class Participant < Sequel::Model
 				participant['first_name'],
 				participant['last_name'],
 				participant['email'],
-				number
+				number,
+				notes.gsub(',', '.')
 			]
 
 			row << address if [true, 'true'].include?(params[:download][:with_address])
@@ -67,19 +69,23 @@ class Participant < Sequel::Model
 		csv
 	end
 
-	def self.get(id)
-		response    = RestClient.get PARBOOK_URL + "/#{id}"
+	def self.get(id, basic_only = false)
+		response    = RestClient.get PARBOOK_URL + "/#{id}" + (basic_only ? "/?basic_only=true" : "")
 		participant = JSON.parse(response.body)
 
-		participant['center']       = Center.find(code: participant['center_code'])
-		participant['events_count'] = EventAttendance.where(member_id: participant['member_id']).exclude(attendance: EventAttendance::REGISTERED)
-			.map { |attendance|
-				attendance.event_id
-			}.compact.uniq.length
-		participant['registration_count'] = EventAttendance.where(member_id: participant['member_id'], attendance: EventAttendance::REGISTERED)
-			.map { |attendance|
-				attendance.event_id
-			}.compact.uniq.length
+		unless basic_only
+			participant['center']       = Center.find(code: participant['center_code'])
+			participant['creator']      = participant['created_by'] ? User.find(id: participant['created_by']) : {}
+			participant['events_count'] = EventAttendance.where(member_id: participant['member_id']).exclude(attendance: EventAttendance::REGISTERED)
+				.map { |attendance|
+					attendance.event_id
+				}.compact.uniq.length
+			participant['registration_count'] = EventAttendance.where(member_id: participant['member_id'], attendance: EventAttendance::REGISTERED)
+				.map { |attendance|
+					attendance.event_id
+				}.compact.uniq.length
+		end
+
 
 		participant
 	end
@@ -102,7 +108,7 @@ class Participant < Sequel::Model
 	def self.get_events(member_id, attendance_only)
 		events = {}
 
-		attendances = EventAttendance.where(member_id: member_id)
+		attendances = EventAttendance.where(member_id: member_id).order(:attendance_date)
 		attendances = attendances.exclude(attendance: EventAttendance::REGISTERED) if attendance_only
 		attendances.each do |attendance|
 			if !events[attendance.event_id.to_s.to_sym]
@@ -174,11 +180,11 @@ class Participant < Sequel::Model
 	end
 
 	def self.deleteContact(id, contact_id)
-		RestClient.delete PARBOOK_URL + "/#{id}/contact/#{contact_id}"
+		RestClient.delete PARBOOK_URL + "/#{id}/contacts/#{contact_id}"
 	end
 
 	def self.deleteAddress(id, address_id)
-		RestClient.delete PARBOOK_URL + "/#{id}/address/#{address_id}"
+		RestClient.delete PARBOOK_URL + "/#{id}/addresses/#{address_id}"
 	end
 
 	def self.delete(id)

@@ -115,7 +115,11 @@
 		}
 
 		remove(e) {
-			return(e) => {}
+			return(e) => {
+				if (confirm("Are you sure you want to delete the Event?")) {
+					this.parent.removeEvent(e.item);
+				}
+			}
 		}
 
 		getData(res) {
@@ -124,7 +128,8 @@
 
 		switchPage(pageNo) {
 			if (pageNo) {
-				this.getPast({page: pageNo, limit: this.perPage});
+				// this.getPast({page: pageNo, limit: this.perPage});
+				this.performSearch(pageNo);
 			}
 		}
 
@@ -149,6 +154,8 @@
 				params.center_id = this.currentUser.center_id;
 			}
 
+			$("#pageDimmer").addClass('active');
+
 			this.parent.opts.service.getPast(params, (err, response) => {
 				if (!err && response.body().length) {
 					let result = this.getData(response.body()[0]);
@@ -167,6 +174,7 @@
 					}
 					this.update();
 					this.tags['riot-pagination'].trigger('refresh');
+					$("#pageDimmer").removeClass('active');
 				}
 				else {
 					console.log("ERROR !");
@@ -175,10 +183,12 @@
 			});
 		}
 
-		performSearch() {
+		performSearch(pageNo = 1) {
 			let state = this.parent.opts.store.getState();
+			let params = state.events.query || this.getDefaultQueryParams();
+			params.page = pageNo;
 			// console.log('PERFORM SEARCH', state.participants.query);
-			this.getPast(state.events.query || this.getDefaultQueryParams());
+			this.getPast(params);
 		}
 
 		this.performSearch();

@@ -61,11 +61,15 @@
 						<button
 							class      = "ui button {gender == 'Male' && 'primary active'}"
 							data-value = "Male"
-							onclick    = {setGender('Male')}>Male</button>
+							onclick    = "{setGender('Male')}">
+							Male
+						</button>
 						<button
 							class      = "ui button {gender == 'Female' && 'primary active'}"
 							data-value = "Female"
-							onclick    = {setGender('Female')}>Female</button>
+							onclick    = "{setGender('Female')}">
+							Female
+						</button>
 					</div>
 				</div>
 

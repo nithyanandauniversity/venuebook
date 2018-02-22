@@ -38,7 +38,14 @@
 				each  = "{registration, i in parent.registrations}"
 				class = "{registration.attendance > 1 && 'success'}"
 				if    = "{activeVenue == 'ALL' || registration.venue_id == activeVenue}">
-				<td>{i + 1}</td>
+				<td>
+					<a
+						class          = "ui grey circular label reg-count"
+						data-content   = "Added by {registration.creator.first_name}"
+						data-inverted  = ""
+						data-position  = "top center"
+						data-variation = "small">{i + 1}</a>
+				</td>
 				<td show = "{activeVenue == 'ALL'}">
 					{registration.venue.name}
 				</td>
@@ -575,6 +582,10 @@
 				value = value.trim() + ' [' + participant.email + ']';
 			}
 
+			if (participant.contact && participant.contact.value) {
+				value = value.trim() + ' < ' + participant.contact.value + ' >'
+			}
+
 			return {value: value.trim(), data: participant};
 		}
 
@@ -614,16 +625,21 @@
 						params.ext_search = null;
 					}
 
-					this.opts.service.search(params, (err, response) => {
-						if (!err && response.body().length) {
-							let result = response.body()[0].data();
+					if (this.triggerTimer) { clearTimeout(this.triggerTimer); }
 
-							done({suggestions: result.participants.map(this.formatResults)});
-						}
-						else {
-							done({suggestions: []});
-						}
-					});
+					this.triggerTimer = setTimeout(() => {
+						this.opts.service.search(params, (err, response) => {
+							if (!err && response.body().length) {
+								let result = response.body()[0].data();
+
+								done({suggestions: result.participants.map(this.formatResults)});
+							}
+							else {
+								done({suggestions: []});
+							}
+						});
+					}, 600);
+
 				},
 				onSelect : (item) => {
 					$("#search-registration")[0].value = '';
@@ -656,6 +672,7 @@
 
 				setTimeout( () => {
 					this.setRegValues();
+					$('.reg-count').popup();
 					// $(".search.ui.dropdown").dropdown();
 				}, 20);
 			}

@@ -40,7 +40,7 @@ export default class Services {
 
 		api.on('error', (error, config, message) => {
 			console.log("error, config, message");
-			console.log(error.response);
+			console.log(error.response, config, message);
 		});
 	}
 

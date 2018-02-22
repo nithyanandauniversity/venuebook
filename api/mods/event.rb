@@ -25,10 +25,15 @@ module Venuebook
 						size      = params[:past] && params[:past][:limit].to_i || 10
 						center_id = current_user['role'] < 3 ? params[:past][:center_id] : current_user['center_id']
 
-						events = Event.where(center_id: center_id)
-							.filter('start_date <= ?', (Date.today - 1.day))
-							.reverse(:start_date)
-							.paginate(page, size)
+						if params[:past][:keyword] || params[:past][:search_params]
+							events = Event.search(params[:past])
+						else
+							events = Event.where(center_id: center_id)
+						end
+
+						events = events.filter('start_date <= ?', (Date.today - 1.day))
+									.reverse(:start_date)
+									.paginate(page, size)
 
 						[{
 							events: JSON.parse(events.to_json(:include => :program)),
@@ -150,7 +155,17 @@ module Venuebook
 			delete "/:id" do
 				if authorize! :destroy, Event
 					event = Event.find(id: params[:id])
-					event.destroy
+					if event
+						if EventAttendance.where(event_id: event.id).count > 0
+							error!({status: 422, message: "Event has Registrations or Attendances"}, 422)
+						else
+							EventVenue.where(event_id: params[:id]).destroy
+							event.destroy
+							'true'
+						end
+					else
+						error!({status: 421, message: "Event not available"}, 421)
+					end
 				end
 			end
 		end

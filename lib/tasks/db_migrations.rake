@@ -7,16 +7,24 @@ namespace :migrations do
 		creator   = args[:creator]
 		file      = args[:file]
 
-		response  = Participant.import_file(creator, File.open(file))
+		user = User.find(email: creator)
 
-		CSV.open("errors_list.csv", "w") do |csv|
-			response.force_encoding("UTF-8").split('\n').each do |_row|
-				_row = _row.gsub(/\\"/,"")
-				_row = _row.gsub(/\\'/,"")
-				row = _row.split(',')
-				csv << row
+		unless user
+			puts "CREATOR (#{creator}) NOT FOUND !"
+			return
+		else
+			response  = Participant.import_file(user.id, File.open(file))
+
+			CSV.open("errors_list.csv", "w") do |csv|
+				response.force_encoding("UTF-8").split('\n').each do |_row|
+					_row = _row.gsub(/\\"/,"")
+					_row = _row.gsub(/\\'/,"")
+					row = _row.split(',')
+					csv << row
+				end
 			end
 		end
+
 	end
 
 	desc "Update Participants Information"
@@ -43,7 +51,7 @@ namespace :migrations do
 			center_code: args[:code]
 		}
 
-		DataImport::Participant.download(params)
+		DataImport::Participants.download(params)
 	end
 
 	desc "Import Participants Information from Singapore"
@@ -68,6 +76,14 @@ namespace :migrations do
 		file = args[:file]
 
 		DataImport::Centers.import(file)
+	end
+
+
+	desc "Import all past events from SG Database"
+	task :events_sg, [:file] => :environment do |t, args|
+		file = args[:file]
+
+		response = Event.import_file_sg(File.open(file))
 	end
 
 end
