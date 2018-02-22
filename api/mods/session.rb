@@ -27,7 +27,7 @@ module Venuebook
 					}
 
 					# token = JWT.encode payload, rsa_private, 'RS256'
-					token = JWT.encode payload, hmac_secret, 'HS256'
+					token = JWT.encode payload, SECRET, 'HS256'
 
 					{
 						token: token,
