@@ -629,7 +629,7 @@
 				},
 				onSelect : (item) => {
 					$("#search-attendance")[0].value = '';
-					this.parent.addToAttendance(item.data, this.activeVenue, this.parent.event_dates[this.date_index]);
+					this.parent.addToAttendance(item.data, this.activeVenue, new Date(this.parent.event_dates[this.date_index]));
 				}
 			});
 		}
