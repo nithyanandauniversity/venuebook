@@ -136,6 +136,10 @@
 					console.log('show search !');
 					this.doSearch(this.prevState.query);
 				}
+				else if (this.prevState.view == 'VIEW_EVENT') {
+					console.log('show event view !');
+					this.viewEvent({id: this.prevState.id});
+				}
 				else {
 					console.log('show upcoming !');
 					this.showUpcoming();
