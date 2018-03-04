@@ -491,7 +491,8 @@
 			setTimeout(() => {
 				this.assignVenues(venues);
 				$(".ui.search.event_venue.dropdown").dropdown();
-			}, 50)
+				this.update();
+			}, 100);
 		}
 
 		assignVenues(venues) {
