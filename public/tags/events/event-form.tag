@@ -186,6 +186,10 @@
 		this.venues        = [];
 		this.allVenues     = [];
 
+		this.programReady     = false;
+		this.venueReady       = false;
+		this.coordinatorReady = false;
+
 		this.currentUser = this.parent.opts.store.getState().routes.data;
 
 		getData(res) {
@@ -415,7 +419,7 @@
 				else {
 					this.programs = [];
 				}
-
+				this.programReady = true;
 				this.update();
 			});
 		}
@@ -431,7 +435,7 @@
 				else {
 					this.allVenues = [];
 				}
-
+				this.venueReady = true;
 				this.update();
 			});
 		}
@@ -448,7 +452,7 @@
 				else {
 					this.allCoordinators = [];
 				}
-
+				this.coordinatorReady = true;
 				this.update();
 			});
 		}
@@ -463,36 +467,45 @@
 			// console.log("event, venues");
 			// console.log(event, venues);
 
-			this.refs.name.value             = event.name;
-			this.refs.program_id.value       = event.program_id;
-			this.refs.start_date.value       = event.start_date;
-			this.refs.end_date.value         = event.end_date;
-			this.refs.program_donation.value = event.program_donation;
-			this.refs.notes.value            = event.notes;
+			if (!(this.programReady && this.venueReady && this.coordinatorReady)) {
+				setTimeout(() => { this.loadEditForm(event, venues, attendances); }, 1000);
+				return;
+			}
+			else {
 
-			this.disableDateChange           = attendances &&  attendances.length > 0;
+				this.refs.name.value             = event.name;
+				this.refs.program_id.value       = event.program_id;
+				this.refs.start_date.value       = event.start_date;
+				this.refs.end_date.value         = event.end_date;
+				this.refs.program_donation.value = event.program_donation;
+				this.refs.notes.value            = event.notes;
 
-			if (!this.disableDateChange) {
-				$("#event-start-date").calendar({
-					type        : 'date',
-					initialDate : event.start_date
-				});
+				this.disableDateChange           = attendances &&  attendances.length > 0;
 
-				$("#event-end-date").calendar({
-					type        : 'date',
-					initialDate : event.end_date
-				});
+				if (!this.disableDateChange) {
+					$("#event-start-date").calendar({
+						type        : 'date',
+						initialDate : event.start_date
+					});
+
+					$("#event-end-date").calendar({
+						type        : 'date',
+						initialDate : event.end_date
+					});
+				}
+
+				venues.forEach((v) => { this.insertVenue(v.venue_id, v.user_id) });
+				this.update();
+
+
+				setTimeout(() => {
+					this.assignVenues(venues);
+					$(".ui.search.event_venue.dropdown").dropdown();
+					$("#pageDimmer").removeClass('active');
+				}, 50);
+
 			}
 
-			venues.forEach((v) => { this.insertVenue(v.venue_id, v.user_id) });
-			this.update();
-
-
-			setTimeout(() => {
-				this.assignVenues(venues);
-				$(".ui.search.event_venue.dropdown").dropdown();
-				this.update();
-			}, 100);
 		}
 
 		assignVenues(venues) {
@@ -515,32 +528,32 @@
 				else {
 					this.event = null;
 					console.log("ERROR LOADING EVENT !");
+					$("#pageDimmer").removeClass('active');
 				}
-				$("#pageDimmer").removeClass('active');
 			});
 		}
 		else {
 			if (this.opts.state.view == 'ADD_EVENT' && this.opts.state.params && this.opts.state.params.event) {
 				$("#pageDimmer").addClass('active');
 
-				setTimeout(() => {
-					let event         = this.opts.state.params.event;
-					delete event.id
-					event.start_date  = '';
-					event.end_date    = '';
-					this.event        = event;
-					this.event_venues = this.opts.state.params.venues.map((ev) => {
-						return {
-							venue_id : ev.venue_id,
-							venue    : ev.venue,
-							user_id  : ev.user_id,
-							user     : ev.user
-						};
-					});
+				let event         = this.opts.state.params.event;
+				delete event.id
+				event.start_date  = '';
+				event.end_date    = '';
+				this.event        = event;
+				this.event_venues = this.opts.state.params.venues.map((ev) => {
+					return {
+						venue_id : ev.venue_id,
+						venue    : ev.venue,
+						user_id  : ev.user_id,
+						user     : ev.user
+					};
+				});
 
-					this.loadEditForm(this.event, this.event_venues);
-				}, 200);
-				$("#pageDimmer").removeClass('active');
+				this.loadEditForm(this.event, this.event_venues);
+				// setTimeout(() => {
+				// }, 10);
+				// $("#pageDimmer").removeClass('active');
 			}
 			else {
 				setTimeout(() => {
