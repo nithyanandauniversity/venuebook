@@ -470,7 +470,7 @@
 			this.refs.program_donation.value = event.program_donation;
 			this.refs.notes.value            = event.notes;
 
-			this.disableDateChange           = attendances.length > 0;
+			this.disableDateChange           = attendances &&  attendances.length > 0;
 
 			if (!this.disableDateChange) {
 				$("#event-start-date").calendar({
@@ -502,6 +502,7 @@
 		}
 
 		if (this.edit_id) {
+			$("#pageDimmer").addClass('active');
 			this.parent.opts.service.get(this.edit_id, (err, response) => {
 				if (!err) {
 					let data          = response.body().data();
@@ -514,19 +515,45 @@
 					this.event = null;
 					console.log("ERROR LOADING EVENT !");
 				}
+				$("#pageDimmer").removeClass('active');
 			});
 		}
 		else {
-			setTimeout(() => {
-				$("#event-start-date").calendar({type: 'date'});
-				$("#event-end-date").calendar({type: 'date'});
+			if (this.opts.state.view == 'ADD_EVENT' && this.opts.state.params && this.opts.state.params.event) {
+				$("#pageDimmer").addClass('active');
 
-				$(".ui.search.event_venue.dropdown").dropdown();
-			}, 10)
+				setTimeout(() => {
+					let event         = this.opts.state.params.event;
+					delete event.id
+					event.start_date  = '';
+					event.end_date    = '';
+					this.event        = event;
+					this.event_venues = this.opts.state.params.venues.map((ev) => {
+						return {
+							venue_id : ev.venue_id,
+							venue    : ev.venue,
+							user_id  : ev.user_id,
+							user     : ev.user
+						};
+					});
 
-			this.insertVenue();
+					this.loadEditForm(this.event, this.event_venues);
+				}, 100);
+				$("#pageDimmer").removeClass('active');
+			}
+			else {
+				setTimeout(() => {
+					$("#event-start-date").calendar({type: 'date'});
+					$("#event-end-date").calendar({type: 'date'});
 
-			this.update();
+					$(".ui.search.event_venue.dropdown").dropdown();
+				}, 10)
+
+				this.insertVenue();
+
+				this.update();
+			}
+
 		}
 
 	</script>

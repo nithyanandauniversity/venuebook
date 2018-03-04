@@ -4,7 +4,8 @@ export default function events(state = {view: UPCOMING_EVENT}, action) {
 	switch (action.type) {
 		case ADD_EVENT:
 			return {
-				view : ADD_EVENT
+				view   : ADD_EVENT,
+				params : action.params
 			}
 		case VIEW_EVENT:
 			return {

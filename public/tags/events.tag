@@ -88,9 +88,9 @@
 		this.currentUser  = this.opts.store.getState().routes.data;
 		this.showSearch = false;
 
-		createEvent() {
+		createEvent(params) {
 			this.prevState = this.opts.store.getState().events;
-			this.opts.store.dispatch({type: 'ADD_EVENT'});
+			this.opts.store.dispatch({type: 'ADD_EVENT', params: params});
 			this.update();
 		}
 

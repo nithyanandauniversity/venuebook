@@ -75,6 +75,15 @@
 						</div>
 					</div>
 				</div>
+				<div class="ui right aligned grid">
+					<div class="right floated column">
+						<button
+							class   = "ui basic green button right floated"
+							onclick = "{ copyEvent() }">
+							<i class="icon copy"></i> Copy Event
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -381,6 +390,18 @@
 					link.click();
 				}
 			});
+		}
+
+		copyEvent(e) {
+			return(e) => {
+				if (confirm("Are you sure you want to copy this event?")) {
+					console.log("COPY EVENT :: ", this.event);
+					this.parent.createEvent({
+						event: this.event,
+						venues: this.venues
+					})
+				}
+			}
 		}
 
 		if (this.view_id) {
