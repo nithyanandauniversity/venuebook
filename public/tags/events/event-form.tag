@@ -538,7 +538,7 @@
 					});
 
 					this.loadEditForm(this.event, this.event_venues);
-				}, 100);
+				}, 200);
 				$("#pageDimmer").removeClass('active');
 			}
 			else {
