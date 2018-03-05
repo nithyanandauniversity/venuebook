@@ -75,7 +75,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="ui right aligned grid">
+				<div
+					if    = "{ currentUser.role < 5 }"
+					class = "ui right aligned grid">
 					<div class="right floated column">
 						<button
 							class   = "ui basic green button right floated"
