@@ -25,7 +25,7 @@ role :app, %w{iamsaravana.com}
 role :web, %w{iamsaravana.com}
 role :db,  %w{iamsaravana.com}
 
-set :branch, 'release_1.2.1'
+set :branch, 'release_1.2.2'
 # set :branch, 'master'
 set :deploy_to, '/var/www/venuebook_staging'
 set :rails_env, :staging
