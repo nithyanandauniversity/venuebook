@@ -19,19 +19,20 @@
 	</div>
 
 	<div
-		class = "ui text menu"
+		class = "ui text horizontal menu"
+		style = "flex-wrap: wrap;"
 		show  = "{parent.event_dates && parent.event_dates.length > 1}">
 		<div class="header item">Event Dates : </div>
 		<a
-			class   = "item ui horizontal large label {date_index == 'ALL' ? 'brown' : 'grey'}"
+			class   = "item ui large label {date_index == 'ALL' ? 'brown' : 'grey'}"
 			style   = "margin-right: 8px;"
 			onclick = "{ selectEventDate() }">
 			ALL
 		</a>
 		<a
 			each    = "{event_date, i in parent.event_dates}"
-			class   = "item ui horizontal large label {parseInt(date_index) == i ? 'brown' : 'grey'}"
-			style   = "margin-right: 8px;"
+			class   = "item ui large label {parseInt(date_index) == i ? 'brown' : 'grey'}"
+			style   = "margin-right: 8px; margin-bottom: 5px;"
 			onclick = "{ selectEventDate() }">
 			{format(event_date, 'date', 'longDate')}
 		</a>
