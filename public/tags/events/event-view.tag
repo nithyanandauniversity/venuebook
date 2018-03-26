@@ -310,9 +310,11 @@
 
 				let attended_dates = groups[id].reduce( (arr = [], att, idx) => {
 					if (att.attendance > 1) {
-						attendance[att.attendance_date] = att.venue_id;
-						venue_ids.push(att.venue_id);
-						arr.push(att.attendance_date);
+						if (!attendance[att.attendance_date]) {
+							attendance[att.attendance_date] = att.venue_id;
+							venue_ids.push(att.venue_id);
+							arr.push(att.attendance_date);
+						}
 					}
 					return arr;
 				}, []);
