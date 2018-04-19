@@ -73,7 +73,20 @@ export default class EventService {
 		this.reloadApi();
 		this.api.one('events', id)
 			.all('event_attendances')
-			.getAll({download: params})
+			.getAll({download_attendance: params})
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
+	getRegistrationReport(id, callback) {
+		this.reloadApi();
+		this.api.one('events', id)
+			.all('event_attendances')
+			.getAll({download_registration: true})
 			.then((response) => {
 				callback(null, response);
 			})
