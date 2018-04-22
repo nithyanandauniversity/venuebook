@@ -139,7 +139,7 @@ class Audits < Grape::Middleware::Base
 		log = Logger.new(STDOUT)
 		begin
 			# Post data to the AuditLogs API
-			puts "AUDITBOOK_URL :: #{AUDITBOOK_URL}"
+			# puts "AUDITBOOK_URL :: #{AUDITBOOK_URL}"
 			response = RestClient.post AUDITBOOK_URL, audit_log: params
 			log.info response.inspect
 

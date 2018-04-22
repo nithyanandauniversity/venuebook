@@ -222,4 +222,14 @@ describe 'Participant' do
 		expect(response['id']).to eql participant['id']
 	end
 
+
+	it "should be able to merge multiple participants to one and all its associations" do
+		participant = Participant.create(participant: {first_name: "Saravana", last_name: "B", email: "sgsaravana@gmail.com", gender: "Male"})
+
+		puts participant
+		# response = JSON.parse(last_response.body)
+
+		# expect(response['id']).to eql participant['id']
+	end
+
 end
