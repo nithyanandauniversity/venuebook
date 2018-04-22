@@ -121,7 +121,7 @@
 					</div>
 				</td>
 				<td show = "{date_index == 'ALL'}">
-					{attendance.entry_percentage} %
+					{attendance.entry_percentage.toFixed(2)} %
 				</td>
 				<td>
 					<button
