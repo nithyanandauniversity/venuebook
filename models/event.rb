@@ -55,12 +55,31 @@ class Event < Sequel::Model
 	end
 
 	def get_attendance_csv(params)
+		records = EventAttendance.where(event_id: id).where("attendance IN ?", [2,3])
+		records = records.where(venue_id: params[:venue_id]) if !params[:venue_id].blank?
+		records = records.where(attendance_date: params[:attendance_date]) if !params[:attendance_date].blank?
 
-		smkts = ["None", "Volunteer", "Thanedar", "Kotari", "Mahant", "Sri Mahant"]
+		download_csv(records)
+	end
+
+	def get_registration_csv
+		records = EventAttendance.where(event_id: id).where("attendance = ?", 1)
+
+		download_csv(records)
+	end
+
+	def self.import_file_sg(file)
+		DataImport::Events.import(file)
+	end
+
+	private
+
+	def download_csv(records)
+
+		smkts                  = ["None", "Volunteer", "Thanedar", "Kotari", "Mahant", "Sri Mahant"]
 		payment_status_options = ['Not Paid', 'Partial', 'Full Paid']
 		payment_method_options = ['Cash', 'Cheque', 'Bank', 'Online', 'Coupon']
 
-		# CSV.generate do |csv|
 		csv = []
 		csv << [
 			"#",
@@ -80,14 +99,8 @@ class Event < Sequel::Model
 			"Venue"
 		]
 
-		records = EventAttendance.where(event_id: id).where("attendance IN ?", [2,3])
-		records = records.where(venue_id: params[:venue_id]) if !params[:venue_id].blank?
-		records = records.where(attendance_date: params[:attendance_date]) if !params[:attendance_date].blank?
-
+		count        = 0
 		record_group = {}
-
-		count = 0
-
 		puts records.inspect
 
 		records.each do |record|
@@ -131,12 +144,9 @@ class Event < Sequel::Model
 				venues.join(',')
 			]
 		end
-		# end
 
-		csv
+		return csv
 	end
 
-	def self.import_file_sg(file)
-		DataImport::Events.import(file)
-	end
+
 end

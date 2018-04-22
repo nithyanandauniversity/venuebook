@@ -18,6 +18,19 @@
 		</a>
 	</div>
 
+	<h3
+		class = "ui dividing header"
+		if    = "{parent.registrations && parent.registrations.length > 0}">
+		<span>Registration details </span>
+		<!-- <span if="{ date_index != 'ALL' }">on {format(parent.event_dates[date_index], 'date', 'longDate')} </span> -->
+		<!-- <span>at location: { activeVenueName }</span> -->
+		<span style = "position: relative; float: right; bottom: 10px;">
+			<button class = "ui green button tiny" onclick = "{ downloadRegistrationList() }">
+				<i class = "icon download"></i> Download List
+			</button>
+		</span>
+	</h3>
+
 	<table
 		class = "ui orange table"
 		show  = "{parent.registrations && parent.registrations.length > 0}">
@@ -508,6 +521,12 @@
 
 					this.activeVenueName = (venue && venue.venue) ? venue.venue.name : '';
 				}
+			}
+		}
+
+		downloadRegistrationList(e) {
+			return(e) => {
+				this.parent.requestRegistrationReport();
 			}
 		}
 
