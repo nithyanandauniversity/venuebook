@@ -38,7 +38,7 @@
 		</form>
 		<br>
 		<br>
-		<label>(v1.2.3)</label>
+		<label>(v1.2.4)</label>
 
 		<div
 			class = "ui error message"
