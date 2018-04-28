@@ -161,9 +161,14 @@ module Venuebook
 
 			delete "/:id" do
 				if authorize! :destroy, EventAttendance
-					attendance = EventAttendance.find(id: params[:id])
-					event_id = attendance[:event_id]
-					attendance.destroy
+					attendance_record = EventAttendance.find(id: params[:id])
+					event_id = attendance_record[:event_id]
+
+					if attendance_record[:attendance] == 2
+						attendance_record.update(attendance: 1)
+					else
+						attendance_record.destroy
+					end
 
 					return {event_attendances: EventAttendance.all_attendances(event_id)}.to_json()
 				end
