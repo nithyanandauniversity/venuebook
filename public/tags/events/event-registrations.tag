@@ -148,7 +148,7 @@
 	<div
 		class = "ui fluid input huge right action left icon input"
 		style = "position: absolute; bottom: 10px; left: 10px; right: 10px;"
-		show  = "{parent.allowRegistration && activeVenue != 'ALL'}">
+		show  = "{(parent.allowRegistration || (parent.attendances && parent.attendances.length == 0)) && activeVenue != 'ALL'}">
 		<input
 			id          = "search-registration"
 			type        = "text"

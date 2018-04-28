@@ -12,8 +12,6 @@ module Venuebook
 					data = params[:attendance]
 					data[:created_by] = current_user['id']
 
-					# puts "DATA IS :: #{data.inspect}\n\n"
-
 					case data[:attendance].to_i
 					when EventAttendance::REGISTERED
 						registration = EventAttendance.where(
