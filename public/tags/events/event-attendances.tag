@@ -93,7 +93,7 @@
 				</td>
 				<td>
 					<select
-						class    = "search ui dropdown small"
+						class    = "search ui dropdown small { (date_index > 0 || date_index != 'ALL' && parent.parent.event_dates.length > 1) && 'disabled'}"
 						onchange = "{ attendanceChanged() }"
 						ref      = "{'payment_status_' + i}">
 						<option value="">Payment Status</option>
@@ -121,7 +121,7 @@
 					</div>
 				</td>
 				<td show = "{date_index == 'ALL'}">
-					{attendance.entry_percentage} %
+					{attendance.entry_percentage.toFixed(2)} %
 				</td>
 				<td>
 					<button
@@ -652,7 +652,7 @@
 		setAttValues() {
 
 			let attendances = this.parent.attendances.filter((attendance) => {
-				return (attendance.venue_id == this.activeVenue && (this.date_index == 'ALL' || new Date(attendance.attendance_date).toString() == this.parent.event_dates[this.date_index].toString()));
+				return (attendance.venue_id == this.activeVenue && (this.date_index == 'ALL' || new Date(attendance.attendance_date).toDateString() == this.parent.event_dates[this.date_index].toDateString()));
 			});
 
 			for (let i = 0; i < attendances.length; i++) {

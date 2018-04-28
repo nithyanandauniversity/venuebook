@@ -25,7 +25,7 @@ role :app, %w{globaltof.nithyananda.org}
 role :web, %w{globaltof.nithyananda.org}
 role :db,  %w{globaltof.nithyananda.org}
 
-set :branch, 'production_1.2.3'
+set :branch, 'production_1.2.4'
 # set :branch, 'master'
 set :deploy_to, '/var/www/venuebook'
 set :rails_env, :production
