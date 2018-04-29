@@ -105,6 +105,15 @@ class Participant < Sequel::Model
 		JSON.parse(response.body)
 	end
 
+	def self.merge_participants(id, merge_id, params)
+		response = RestClient.put PARBOOK_URL + "/#{id}/merge/#{merge_id}", params
+		JSON.parse(response.body)
+	end
+
+	def self.merge_attendances(id, data)
+		return do_merge_attendances(id, data[:merge_ids])
+	end
+
 	def self.get_events(member_id, attendance_only)
 		events = {}
 
@@ -191,7 +200,39 @@ class Participant < Sequel::Model
 		RestClient.delete PARBOOK_URL + "/#{id}"
 	end
 
+	def self.bulkDelete(params)
+		response = RestClient.post PARBOOK_URL + "/bulk_delete", {participants: params.merge_ids}
+		JSON.parse(response)['count']
+	end
+
 	def self.delete_all
 		RestClient.delete PARBOOK_URL + '/delete_all'
+	end
+
+
+
+	private
+
+	def self.do_merge_attendances(member_id, merge_ids)
+		Sequel::Model.db.transaction do
+			begin
+				merge_ids.each do |_member_id|
+					attendances = EventAttendance.where(member_id: _member_id)
+					if attendances && attendances.count
+						EventAttendance.where(member_id: _member_id).each do |_attendance|
+							if EventAttendance.where(event_id: _attendance.event_id, member_id: member_id).count > 0
+								_attendance.delete
+							else
+								_attendance.update(member_id: member_id)
+							end
+						end
+					end
+				end
+				return true
+			rescue Exception => e
+				puts "\nMerge Attendances Error: #{e}\n\n"
+				return false
+			end
+		end
 	end
 end

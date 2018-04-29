@@ -224,12 +224,67 @@ describe 'Participant' do
 
 
 	it "should be able to merge multiple participants to one and all its associations" do
-		participant = Participant.create(participant: {first_name: "Saravana", last_name: "B", email: "sgsaravana@gmail.com", gender: "Male"})
+		post '/api/v1/participants',
+			{
+				participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"},
+				addresses: [
+					{street: "some road", city: "City", country: "SG"},
+					{street: "another one", city: "SG", country: "SG"}
+				 ],
+				 contacts: [
+					{contact_type: "Home", value: "3342453"},
+					{contact_type: "Mobile", value: "454625363", is_default: true}
+				 ]
+			}, {'HTTP_TOKEN' => @token}
 
-		puts participant
-		# response = JSON.parse(last_response.body)
+		response    = JSON.parse(last_response.body)
+		participant = Participant.get(response['member_id'])
 
-		# expect(response['id']).to eql participant['id']
+		post '/api/v1/participants',
+			{
+				participant: {first_name:"Saravana", last_name:"B", email:"sgravana@gmail.com", gender:"Male"},
+				addresses: [
+					{street: "some road", city: "City", country: "SG"},
+					{street: "another one", city: "SG", country: "SG"}
+				 ],
+				 contacts: [
+					{contact_type: "Home", value: "86286022"}
+				 ]
+			}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+		dup1     = Participant.get(response['member_id'])
+
+		post '/api/v1/participants',
+			{
+				participant: {first_name:"Nithya Shreshthananda", last_name:"", email:"sgravana@gmail.com", gender:"Male"},
+				addresses: [
+					{street: "another one", city: "SG", country: "SG"}
+				 ],
+				 contacts: [
+					{contact_type: "Home", value: "98897484"}
+				 ]
+			}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+		dup2     = Participant.get(response['member_id'])
+
+		puts "Calling merge !!!"
+
+		put "/api/v1/participants/#{participant['member_id']}/merge/#{participant['member_id']}", {
+			merge_data: {
+				master_record: {first_name: "Nithya Shreshthananda", last_name: ""},
+				address_ids: [dup1['addresses'][1]['id']],
+				contact_ids: [dup1['contacts'][0]['id'], dup2['contacts'][0]['id']],
+				merge_ids: [dup1['member_id'], dup2['member_id']]
+			}
+		}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+		puts response
+
+		expect(response['participant']['first_name']).to eql "Nithya Shreshthananda"
+		expect(response['delete_count']).to eql 2
 	end
 
 end

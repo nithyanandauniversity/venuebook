@@ -80,13 +80,18 @@ module Venuebook
 				end
 			end
 
-			# params do
-			# 	optional :csv, type: File, desc: 'csv containing users to be invited'
-			# end
-
-			# params do
-			# 	requires :csv, type: File, desc: 'Participants csv file'
-			# end
+			put '/:id/merge/:merge_id' do
+				if authorize! :update, Participant
+					response = {}
+					response[:participant] = Participant.merge_participants(params[:id], params[:merge_id], params)
+					# MERGE ATTENDANCES / REGISTRATIONS
+					if Participant.merge_attendances(params[:id], params[:merge_data])
+						# DELETE MERGED USERS
+						response[:delete_count] = Participant.bulkDelete(params[:merge_data])
+					end
+					response
+				end
+			end
 
 			post '/import_file' do
 				puts params.inspect
