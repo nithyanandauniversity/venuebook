@@ -9,3 +9,4 @@ db/*.db
 *.csv
 passenger.*.pid*
 node_modules/
+public

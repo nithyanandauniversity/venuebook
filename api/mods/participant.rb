@@ -32,7 +32,16 @@ module Venuebook
 							end
 						end
 
-						return Participant.search(params)
+						participants = Participant.search(params)
+
+						participants[0]['participants'].each do |participant|
+							participant['center'] = Center.find(code: participant['center_code']) if participant['center_code']
+						end
+
+						return participants
+
+					elsif params[:member_ids]
+						Participant.getMany(params)
 
 					elsif params[:download]
 						params[:download][:center_code] ||= current_user['center_code'] if current_user['role'] >= 3

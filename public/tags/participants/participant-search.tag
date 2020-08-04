@@ -14,7 +14,7 @@
 		<i class="search icon"></i>
 		<!-- </div> -->
 		<div
-			class   = "ui brown basic button"
+			class   = "ui brown button {!showExtSearch && 'basic'}"
 			style   = "margin-right: 1px;"
 			onclick = "{ toggleExtSearch() }">
 			<i class = "sitemap icon" style = "margin: 0;"></i>
@@ -25,7 +25,15 @@
 			onclick = "{ parent.showNew }">
 			<i class = "add user icon"></i> New
 		</div>
+		<div
+			class   = "ui orange button { !showMergeDiv && 'basic'}"
+			if      = "{currentUser.role < 4}"
+			onclick = "{ toggleMerge() }">
+			<i class="columns icon"></i> Merge
+		</div>
 	</div>
+
+	{parent.opts.store.view}
 
 	<div class="ui message info" if = "{ extSearchApply }">
 		<h3>
@@ -166,6 +174,7 @@
 	<script>
 
 		this.showExtSearch      = false;
+		this.showMergeDiv       = false;
 		this.extSearchTypeValue = {};
 		this.countries          = this.parent.opts.countries();
 
@@ -177,6 +186,15 @@
 		];
 
 		this.currentUser  = this.parent.opts.store.getState().routes.data;
+
+		toggleMerge(e) {
+			return(e) => {
+				console.log("Coming here : show merge page");
+				this.showMergeDiv  = !this.showMergeDiv;
+				this.showExtSearch = false;
+				this.parent.showMerge();
+			}
+		}
 
 		setSearchParams() {
 			this.parent.searchQ  = this.refs.searchQ.value;
@@ -211,6 +229,8 @@
 			return(e) => {
 				this.showExtSearch = !this.showExtSearch;
 				if (this.showExtSearch) {
+					// this.showMergeDiv = false;
+					// this.parent.resetSearch(this.parent.opts.state.view == "MERGE_PARTICIPANT");
 					setTimeout(() => {
 						this.loadSearchInput();
 						$(".ui.search.dropdown").dropdown({

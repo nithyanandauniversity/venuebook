@@ -98,6 +98,30 @@ describe 'Participant' do
 		expect(response['first_name']).to eql "Saravana"
 	end
 
+	it "should be able to get multiple participants by member_id" do
+		post '/api/v1/participants',
+			{participant: {first_name:"Saravana", last_name:"Balaraj", email:"sgsaravana@gmail.com", gender:"Male"}},
+			{'HTTP_TOKEN' => @token}
+		user1 = JSON.parse(last_response.body)
+
+		post '/api/v1/participants',
+			{participant: {first_name: "Nithya", last_name: "Shreshthananda", email: "sgravana@gmail.com", gender: "Male"}},
+			{'HTTP_TOKEN' => @token}
+		user2 = JSON.parse(last_response.body)
+
+		post '/api/v1/participants',
+			{participant: {first_name: "Senthuran", last_name: "P", email: "psenthu@gmail.com", gender: "Male"}},
+			{'HTTP_TOKEN' => @token}
+		user3 = JSON.parse(last_response.body)
+
+		get "/api/v1/participants", {member_ids: [user1['member_id'], user2['member_id']]}, {'HTTP_TOKEN' => @token}
+
+		response = JSON.parse(last_response.body)
+		expect(response.length).to eql 2
+		expect(response[0]['first_name']).to eql user1['first_name']
+		expect(response[1]['first_name']).to eql user2['first_name']
+	end
+
 	it "should be able to create participant" do
 		post '/api/v1/participants',
 			{
@@ -281,7 +305,6 @@ describe 'Participant' do
 		}, {'HTTP_TOKEN' => @token}
 
 		response = JSON.parse(last_response.body)
-		puts response
 
 		expect(response['participant']['first_name']).to eql "Nithya Shreshthananda"
 		expect(response['delete_count']).to eql 2

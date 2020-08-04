@@ -9,6 +9,17 @@ class Participant < Sequel::Model
 		JSON.parse(response.body)
 	end
 
+	def center
+		puts "coming here..."
+		puts center_code
+		if center_code && Center.find(center_code: center_code)
+			Center.find(center_code: center_code)
+		else
+			{}
+		end
+		# center_code ? Center.where(center_code: center_code) : {}
+	end
+
 	def self.download(params)
 		response = RestClient.get PARBOOK_URL, {params: params}
 		results  = JSON.parse(response.body)
@@ -75,7 +86,7 @@ class Participant < Sequel::Model
 
 		unless basic_only
 			participant['center']       = Center.find(code: participant['center_code'])
-			participant['creator']      = participant['created_by'] ? User.find(id: participant['created_by']) : {}
+			participant['creator']      = participant['created_by'] ? User.select(:id, :first_name, :last_name, :email, :role, :center_id, :permissions).where(id: participant['created_by']).first : {}
 			participant['events_count'] = EventAttendance.where(member_id: participant['member_id']).exclude(attendance: EventAttendance::REGISTERED)
 				.map { |attendance|
 					attendance.event_id
@@ -88,6 +99,24 @@ class Participant < Sequel::Model
 
 
 		participant
+	end
+
+	def self.getMany(params)
+		response     = RestClient.get PARBOOK_URL, {params: params}
+		participants = JSON.parse(response.body)
+
+		participants.each do |participant|
+			participant['center']       = Center.find(code: participant['center_code'])
+			participant['creator']      = participant['created_by'] ? User.select(:id, :first_name, :last_name, :email, :role, :center_id, :permissions).where(id: participant['created_by']).first : {}
+			participant['events_count'] = EventAttendance.where(member_id: participant['member_id']).exclude(attendance: EventAttendance::REGISTERED)
+				.map { |attendance|
+					attendance.event_id
+				}.compact.uniq.length
+			participant['registration_count'] = EventAttendance.where(member_id: participant['member_id'], attendance: EventAttendance::REGISTERED)
+				.map { |attendance|
+					attendance.event_id
+				}.compact.uniq.length
+		end
 	end
 
 	def self.create(params)

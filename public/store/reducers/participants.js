@@ -1,4 +1,4 @@
-import { LIST_PARTICIPANT, ADD_PARTICIPANT, VIEW_PARTICIPANT, EDIT_PARTICIPANT, SEARCH_PARTICIPANT, DELETE_PARTICIPANT } from '../../constants/ParticipantActions'
+import { LIST_PARTICIPANT, ADD_PARTICIPANT, VIEW_PARTICIPANT, EDIT_PARTICIPANT, SEARCH_PARTICIPANT, MERGE_PARTICIPANT, DELETE_PARTICIPANT } from '../../constants/ParticipantActions'
 
 export default function participants(state = {view: LIST_PARTICIPANT, page: 1}, action) {
 	switch (action.type) {
@@ -26,6 +26,12 @@ export default function participants(state = {view: LIST_PARTICIPANT, page: 1}, 
 			return	{
 				view  : SEARCH_PARTICIPANT,
 				query : action.query
+			}
+		case MERGE_PARTICIPANT:
+			return	{
+				view : MERGE_PARTICIPANT,
+				step : action.step,
+				data : action.data
 			}
 		case DELETE_PARTICIPANT:
 			return {

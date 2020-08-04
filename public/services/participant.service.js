@@ -48,6 +48,17 @@ export default class ParticipantService {
 			});
 	}
 
+	getManyParticipants(ids, callback) {
+		this.reloadApi();
+		this.collection.getAll({member_ids: ids})
+			.then((response) => {
+				callback(null, response);
+			})
+			.catch((err) => {
+				callback(err);
+			});
+	}
+
 	getAttendances(id, callback) {
 		this.reloadApi();
 		this.api.one('participants', id)

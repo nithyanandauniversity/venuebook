@@ -2,12 +2,12 @@
 
 	<!-- Participant Search Component -->
 	<participant-search
-		show = "{opts.state.view == 'LIST_PARTICIPANT' || opts.state.view == 'SEARCH_PARTICIPANT'}">
+		show = "{['LIST_PARTICIPANT','SEARCH_PARTICIPANT','MERGE_PARTICIPANT'].indexOf(opts.state.view) >= 0}">
 	</participant-search>
 
 	<!-- Participant List Component -->
 	<participant-list
-		show = "{opts.state.view == 'LIST_PARTICIPANT' || opts.state.view == 'SEARCH_PARTICIPANT'}">
+		show = "{['LIST_PARTICIPANT','SEARCH_PARTICIPANT','MERGE_PARTICIPANT'].indexOf(opts.state.view) >= 0}">
 	</participant-list>
 
 	<!-- Participant Form Component for Add / Edit -->
@@ -33,6 +33,40 @@
 			// this.tags['participant-form'].trigger('create');
 		}
 
+		showMerge() {
+			if (this.opts.state.view != 'MERGE_PARTICIPANT') {
+				console.log("merge");
+				this.opts.store.dispatch({type: 'MERGE_PARTICIPANT', step: 1});
+			}
+			else {
+				console.log("search")
+				this.opts.store.dispatch({type: 'SEARCH_PARTICIPANT'});
+			}
+
+			console.log("this.opts.state.view");
+			console.log(this.opts.state.view);
+			this.update();
+			this.tags['participant-list'].trigger('merge');
+		}
+
+		goToMergeStepOne(data) {
+			this.opts.store.dispatch({type: 'MERGE_PARTICIPANT', step: 1, data: data});
+			this.update();
+			this.tags['participant-list'].trigger('merge');
+		}
+
+		goToMergeStepTwo(data) {
+			this.opts.store.dispatch({type: 'MERGE_PARTICIPANT', step: 2, data: data});
+			this.update();
+			this.tags['participant-list'].trigger('merge');
+		}
+
+		resetSearch() {
+			this.opts.store.dispatch({type: 'SEARCH_PARTICIPANT'});
+			this.update();
+			// if (triggerMerge) { this.tags['participant-list'].trigger('merge'); }
+		}
+
 		showList(e) {
 
 			if (this.searchQ != '') {
@@ -46,8 +80,7 @@
 		}
 
 		performSearch(pageNo) {
-			// console.log("this.extSearch");
-			// console.log(this.extSearch);
+
 			let params = {
 				page       : pageNo || 1,
 				limit      : 10,
